@@ -1,0 +1,13 @@
+{
+  "name": "acl-access",
+  "scripts": {
+    "watch": "cp node_modules/@fortawesome/fontawesome-free/webfonts/*.* public/webfonts/ && sass --no-source-map --watch resources/sass:public",
+    "build": "cp node_modules/@fortawesome/fontawesome-free/webfonts/*.* public/webfonts/ && sass --no-source-map --style=compressed resources/sass:public"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.10.2",
+    "bootstrap": "^4.3.1",
+    "sass": "^1.22.12"
+  }
+}

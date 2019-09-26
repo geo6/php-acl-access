@@ -1,0 +1,66 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/password.css') }}">
+{% endblock %}
+
+{% block title %}Account recovery{% endblock%}
+
+{% block content %}
+<div class="row justify-content-md-center mt-5">
+    <div class="col-5">
+        <h1>Account recovery</h1>
+
+        {% if success is defined and success == true %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">
+                <i class="fas fa-thumbs-up"></i>
+                Yay!
+            </h4>
+            A new password has been generated!<br>
+            Check your emails to get your new password.<br>
+            <br>
+            You can now go back to the <a class="alert-link" href="{{ path('login') }}">login page</a>.
+        </div>
+        {% else %}
+
+        {% if error is defined and error == true %}
+        <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-circle"></i>
+            Your recovery is expired or you didn't provide the correct recovery code.
+        </div>
+        {% endif %}
+
+        <div class="border border-secondary rounded p-3">
+
+            <form method="post" action="{{ path('password.code', {'uuid': uuid}) }}" autocomplete="off">
+                <div class="form-group">
+                    <label class="control-label" for="inputEmail">Your email address</label>
+                    <input class="form-control" id="inputEmail" name="email" type="email"
+                        value="{{ email is not null ? email }}" {{ email is not null ? 'readonly' : 'required' }}>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="inputCode">Your recovery code</label>
+                    <input class="form-control" id="inputCode" name="code" required="required" type="text" minlength="6"
+                        maxlength="6" placeholder="XXXXXX">
+                    <small class="form-text text-muted">
+                        Your recovery code has been sent to you by email.
+                    </small>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary" name="action" value="login">
+                        Next
+                        <i class="fas fa-hand-point-right"></i>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        {% endif%}
+
+        {% include '@includes/footer.html.twig' %}
+
+    </div>
+</div>
+{% endblock %}

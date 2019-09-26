@@ -1,0 +1,31 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/login.css') }}">
+{% endblock %}
+
+{% block title %}Login{% endblock%}
+
+{% block content %}
+<div class="row justify-content-md-center mt-5">
+    <div class="col-5">
+        {% if global.logo is not null %}
+        <div class="text-center">
+            <img src="{{ global.logo }}" alt="{{ global.title }}" height="150" class="mx-auto">
+        </div>
+        {% endif %}
+
+        <h1>{{ global.title }}</h1>
+
+        {% if error is defined and error == true %}
+        <div class="alert alert-danger" role="alert">
+            {{ 'The login or password you\'ve entered is incorrect.' | trans }}
+        </div>
+        {% endif %}
+
+        {% include '@includes/form.html.twig' %}
+
+        {% include '@includes/footer.html.twig' %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends '@layout/default.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/profile.css') }}">
+{% endblock %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    <h1>
+        <i class="fas fa-user"></i>
+        {{ 'Profile' | trans }}
+    </h1>
+
+    <hr>
+
+    <div class="row">
+        <div id="user-data" class="col">
+            <h2>
+                <i class="fas fa-id-card"></i>
+                {{ 'Data' | trans }}
+            </h2>
+
+            <table class="table mb-0">
+                <tbody>
+                    <tr>
+                        <th>{{ 'Login' | trans }}</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="user-roles" class="col">
+            <h2>
+                <i class="fas fa-users"></i>
+                {{ 'Roles' | trans }}
+            </h2>
+            <ul class="list-unstyled">
+                {% for role in user.roles %}
+                <li>
+                    <i class="fas fa-users"></i>
+                    {{ role }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="d-flex justify-content-end">
+        <a class="text-decoration-none" href="{{ path('logout') }}">
+            <i class="fas fa-sign-out-alt"></i>
+            {{ 'Log out' | trans }}
+        </a>
+    </div>
+</div>
+{% endblock %}

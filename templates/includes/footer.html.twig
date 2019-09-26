@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-between mt-3 text-muted small">
+    <div class="flex-grow-1">
+        <ul class="list-inline">
+            {% if lang != 'en' %}
+            <li class="list-inline-item"><a href="?lang=en" class="text-muted">English</a></li>
+            {% endif %}
+            {% if lang != 'fr' %}
+            <li class="list-inline-item"><a href="?lang=fr" class="text-muted">Français</a></li>
+            {% endif %}
+            {% if lang != 'nl' %}
+            <li class="list-inline-item"><a href="?lang=nl" class="text-muted">Nederlands</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div>
+        {{ global.attributions | raw }}
+    </div>
+</div>
