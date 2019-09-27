@@ -13,10 +13,10 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
-    \Zend\I18n\ConfigProvider::class,
     // Include cache configuration
     new ArrayProvider($cacheConfig),
 
+    \Zend\Db\ConfigProvider::class,
     \Zend\Expressive\Authentication\ConfigProvider::class,
     \Zend\Expressive\Authentication\Session\ConfigProvider::class,
     \Zend\Expressive\Helper\ConfigProvider::class,
@@ -27,6 +27,8 @@ $aggregator = new ConfigAggregator([
     \Zend\Expressive\Session\Ext\ConfigProvider::class,
     \Zend\Expressive\Twig\ConfigProvider::class,
     \Zend\HttpHandlerRunner\ConfigProvider::class,
+    \Zend\I18n\ConfigProvider::class,
+    \Zend\Log\ConfigProvider::class,
     \Zend\Mail\ConfigProvider::class,
     \Zend\Session\ConfigProvider::class,
     \Zend\Validator\ConfigProvider::class,
