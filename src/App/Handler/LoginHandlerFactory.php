@@ -14,12 +14,17 @@ use Zend\Expressive\Template\TemplateRendererInterface;
  */
 class LoginHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : LoginHandler
+    public function __invoke(ContainerInterface $container): LoginHandler
     {
+        $config = $container->get('config');
+
         return new LoginHandler(
             $container->get(TemplateRendererInterface::class),
             $container->get(RouterInterface::class),
-            $container->get(PhpSession::class)
+            $container->get(PhpSession::class),
+            [
+                'authentication' => $config['authentication'] ?? [],
+            ]
         );
     }
 }

@@ -3,4 +3,6 @@
 !cache/.gitkeep
 !code
 !code/.gitkeep
+!log
+!log/.gitkeep
 !.gitignore

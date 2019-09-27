@@ -64,6 +64,13 @@ class RecoveryCodeHandler implements RequestHandlerInterface
 
                         self::sendEmail($this->config['mail'], $to, $user, $password);
 
+                        Log::write(
+                            sprintf('data/log/%s.log', date('Ym')),
+                            'Password reset for "{identity}" ({email}).',
+                            ['identity' => $user->getIdentity(), 'email' => $to],
+                            Logger::NOTICE
+                        );
+
                         $success = true;
                     }
                 }

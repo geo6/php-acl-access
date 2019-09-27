@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\RecoveryCode;
 use App\UserRepository;
+use Geo6\Zend\Log\Log;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,6 +16,7 @@ use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Expressive\Authentication\UserInterface;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
+use Zend\Log\Logger;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
@@ -58,6 +60,13 @@ class PasswordHandler implements RequestHandlerInterface
                 $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
 
                 self::sendEmail($this->config['mail'], $to, $user, $code->getCode(), $url);
+
+                Log::write(
+                    sprintf('data/log/%s.log', date('Ym')),
+                    'Account recovery process initiated for e-mail address "{email}".',
+                    ['email' => $to],
+                    Logger::NOTICE
+                );
 
                 return new RedirectResponse($redirect . '?' . http_build_query(['email' => $to]));
             } else {

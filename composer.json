@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.1",
         "geo6/zend-acl-postgresql": "dev-master",
+        "geo6/zend-log-filesystem": "dev-master",
         "ircmaxell/random-lib": "^1.2",
         "ramsey/uuid": "^3.8",
         "zendframework/zend-component-installer": "^2.1.1",
