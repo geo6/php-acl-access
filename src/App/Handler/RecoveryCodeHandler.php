@@ -52,7 +52,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
                 $content = parse_ini_file($path);
 
                 if ($content['code'] === $code && $content['email'] === $email) {
-                    // unlink($path);
+                    unlink($path);
 
                     $userRepository = new UserRepository($this->config['authentication']['pdo']);
                     $user = $userRepository->search($content['email']);
