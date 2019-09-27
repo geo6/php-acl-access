@@ -34,8 +34,8 @@ class TemplateMiddleware implements MiddlewareInterface
             $this->renderer::TEMPLATE_ALL,
             'global',
             [
-                'logo' => $this->config['logo'],
-                'title' => $this->config['title'],
+                'logo'         => $this->config['logo'],
+                'title'        => $this->config['title'],
                 'attributions' => $this->config['attributions'],
             ]
         );

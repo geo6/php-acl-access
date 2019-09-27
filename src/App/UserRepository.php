@@ -28,14 +28,13 @@ class UserRepository extends PdoDatabase
             $config['password'] ?? null
         );
 
-        parent::__construct($this->pdo, $config, __NAMESPACE__ . '\UserRepository::createUser');
+        parent::__construct($this->pdo, $config, __NAMESPACE__.'\UserRepository::createUser');
     }
 
     public function search(string $email): ?UserInterface
     {
-
         $sql = sprintf(
-            "SELECT %s FROM %s WHERE %s = :email",
+            'SELECT %s FROM %s WHERE %s = :email',
             $this->config['field']['identity'],
             $this->config['table'],
             $this->config['field']['email']
@@ -44,7 +43,7 @@ class UserRepository extends PdoDatabase
 
         if (false === $stmt) {
             throw new Exception(
-                'An error occurred when preparing to fetch user details from ' .
+                'An error occurred when preparing to fetch user details from '.
                     'the repository; please verify your configuration'
             );
         }

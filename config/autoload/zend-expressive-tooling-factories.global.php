@@ -13,10 +13,10 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\LoginHandler::class => App\Handler\LoginHandlerFactory::class,
-            App\Handler\PasswordHandler::class => App\Handler\PasswordHandlerFactory::class,
-            App\Handler\ProfileHandler::class => App\Handler\ProfileHandlerFactory::class,
-            App\Handler\RecoveryCodeHandler::class => App\Handler\RecoveryCodeHandlerFactory::class,
+            App\Handler\LoginHandler::class          => App\Handler\LoginHandlerFactory::class,
+            App\Handler\PasswordHandler::class       => App\Handler\PasswordHandlerFactory::class,
+            App\Handler\ProfileHandler::class        => App\Handler\ProfileHandlerFactory::class,
+            App\Handler\RecoveryCodeHandler::class   => App\Handler\RecoveryCodeHandlerFactory::class,
             App\Middleware\TemplateMiddleware::class => App\Middleware\TemplateMiddlewareFactory::class,
         ],
     ],

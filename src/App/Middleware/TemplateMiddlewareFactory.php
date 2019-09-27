@@ -16,8 +16,8 @@ class TemplateMiddlewareFactory
         return new TemplateMiddleware(
             $container->get(TemplateRendererInterface::class),
             [
-                'logo' => $config['logo'] ?? null,
-                'title' => $config['title'] ?? null,
+                'logo'         => $config['logo'] ?? null,
+                'title'        => $config['title'] ?? null,
                 'attributions' => $config['attributions'] ?? null,
             ]
         );

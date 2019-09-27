@@ -56,15 +56,15 @@ class RecoveryCode
 
         $this->uuid = (Uuid::uuid4())->toString();
 
-        $content = sprintf('code = %s', $this->code) . PHP_EOL;
+        $content = sprintf('code = %s', $this->code).PHP_EOL;
 
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                $content .= sprintf('%s = %s', $key, $value) . PHP_EOL;
+                $content .= sprintf('%s = %s', $key, $value).PHP_EOL;
             }
         }
 
-        file_put_contents($directory . '/' . $this->uuid, $content);
+        file_put_contents($directory.'/'.$this->uuid, $content);
 
         return $this->uuid;
     }
@@ -72,7 +72,7 @@ class RecoveryCode
     public static function clean(string $directory = self::DIRECTORY, $timeout = self::TIMEOUT): void
     {
         if (file_exists($directory) && is_dir($directory) && is_readable($directory)) {
-            $glob = glob($directory . '/*');
+            $glob = glob($directory.'/*');
 
             foreach ($glob as $file) {
                 $time = filemtime($file);

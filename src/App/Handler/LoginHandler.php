@@ -11,10 +11,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Session\SessionInterface;
 use Zend\Expressive\Authentication\UserInterface;
 use Zend\Expressive\Router\RouteResult;
+use Zend\Expressive\Router\RouterInterface;
+use Zend\Expressive\Session\SessionInterface;
 use Zend\Expressive\Session\SessionMiddleware;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Log\Logger;
@@ -68,6 +68,7 @@ class LoginHandler implements RequestHandlerInterface
 
         // Display initial login form
         $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
+
         return new HtmlResponse($this->renderer->render(
             'app::login',
             []

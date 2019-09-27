@@ -18,7 +18,7 @@ class PasswordHandlerFactory
             $container->get(TemplateRendererInterface::class),
             $container->get(RouterInterface::class),
             [
-                'mail' => $config['mail'] ?? [],
+                'mail'           => $config['mail'] ?? [],
                 'authentication' => $config['authentication'] ?? [],
             ]
         );

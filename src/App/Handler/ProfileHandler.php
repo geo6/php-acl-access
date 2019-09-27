@@ -26,7 +26,7 @@ class ProfileHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $session  = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         $user = $session->get(UserInterface::class);
 
         return new HtmlResponse($this->renderer->render(

@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
 
-/**
+/*
  * Setup routes with a single request method:
  *
  * $app->get('/', App\Handler\HomePageHandler::class, 'home');
@@ -37,7 +37,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->route('/login', [
         Zend\Expressive\Session\SessionMiddleware::class,
-        App\Handler\LoginHandler::class
+        App\Handler\LoginHandler::class,
     ], ['GET', 'POST'], 'login');
 
     $app->route('/password', App\Handler\PasswordHandler::class, ['GET', 'POST'], 'password');
@@ -46,18 +46,18 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/check/{resource}[/{privilege}]', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\CheckHandler::class
+        App\Handler\CheckHandler::class,
     ], 'check');
 
     $app->get('/profile', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\ProfileHandler::class
+        App\Handler\ProfileHandler::class,
     ], 'profile');
 
     $app->get('/logout', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\LoginHandler::class
+        App\Handler\LoginHandler::class,
     ], 'logout');
 };

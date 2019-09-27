@@ -16,7 +16,7 @@ class RecoveryCodeHandlerFactory
         return new RecoveryCodeHandler(
             $container->get(TemplateRendererInterface::class),
             [
-                'mail' => $config['mail'] ?? [],
+                'mail'           => $config['mail'] ?? [],
                 'authentication' => $config['authentication'] ?? [],
             ]
         );

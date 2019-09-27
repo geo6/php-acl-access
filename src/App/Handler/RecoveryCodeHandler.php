@@ -46,7 +46,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
             $email = $params['email'] ?? null;
             $code = $params['code'] ?? null;
 
-            $path = RecoveryCode::DIRECTORY . '/' . $uuid;
+            $path = RecoveryCode::DIRECTORY.'/'.$uuid;
 
             if (file_exists($path) && is_readable($path)) {
                 $content = parse_ini_file($path);
@@ -82,17 +82,17 @@ class RecoveryCodeHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::recovery-code',
             [
-                'uuid' => $uuid,
-                'email' => $query['email'] ?? null,
+                'uuid'    => $uuid,
+                'email'   => $query['email'] ?? null,
                 'success' => $success ?? false,
-                'error' => $error ?? false,
+                'error'   => $error ?? false,
             ]
         ));
     }
 
     private static function resetPassword(array $config, string $email): string
     {
-        $factory = new RandomLib\Factory;
+        $factory = new RandomLib\Factory();
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
         $password = $generator->generateString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
@@ -105,7 +105,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
         );
 
         $sql = sprintf(
-            "UPDATE %s SET %s = :hash WHERE %s = :email",
+            'UPDATE %s SET %s = :hash WHERE %s = :email',
             $config['table'],
             $config['field']['password'],
             $config['field']['email']
@@ -126,7 +126,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
     {
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody($user->getIdentity() . ' / ' . $password);
+        $mail->setBody($user->getIdentity().' / '.$password);
         $mail->setFrom($config['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - New password');
