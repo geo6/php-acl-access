@@ -3,5 +3,6 @@ composer.phar
 clover.xml
 coveralls-upload.json
 phpunit.xml
+.cache/
 vendor/
 node_modules/
