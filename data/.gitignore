@@ -3,6 +3,11 @@
 !cache/.gitkeep
 !code
 !code/.gitkeep
+!languages
+!languages/fr
+!languages/fr/*
+!languages/nl
+!languages/nl/*
 !log
 !log/.gitkeep
 !.gitignore
