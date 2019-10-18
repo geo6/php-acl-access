@@ -32,6 +32,7 @@ use Zend\Expressive\MiddlewareFactory;
  *     'contact'
  * );
  */
+
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
 
@@ -42,12 +43,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->route('/password', App\Handler\PasswordHandler::class, ['GET', 'POST'], 'password');
     $app->route('/password/recovery-code/{uuid}', App\Handler\RecoveryCodeHandler::class, ['GET', 'POST'], 'password.code');
-
-    $app->get('/check/{resource}[/{privilege}]', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\CheckHandler::class,
-    ], 'check');
 
     $app->get('/profile', [
         Zend\Expressive\Session\SessionMiddleware::class,
