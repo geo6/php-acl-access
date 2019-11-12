@@ -1,5 +1,8 @@
 <div class="border border-secondary rounded p-3">
     <form method="post" action="{{ path('login') }}" autocomplete="off">
+        {% if __csrf is defined %}
+        <input type="hidden" name="__csrf" value="{{ __csrf }}">
+        {% endif %}
         <div class="form-group">
             <label class="control-label" for="inputLogin">{{ 'Login' | trans }}</label>
             <input class="form-control" id="inputLogin" name="login" required="required" type="text">

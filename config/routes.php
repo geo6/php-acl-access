@@ -38,6 +38,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->route('/login', [
         Zend\Expressive\Session\SessionMiddleware::class,
+        Zend\Expressive\Csrf\CsrfMiddleware::class,
         App\Handler\LoginHandler::class,
     ], ['GET', 'POST'], 'login');
 
