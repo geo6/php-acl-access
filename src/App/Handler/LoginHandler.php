@@ -10,8 +10,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\TextResponse;
 use Zend\Expressive\Authentication\Session\PhpSession;
 use Zend\Expressive\Authentication\UserInterface;
+use Zend\Expressive\Csrf\CsrfMiddleware;
 use Zend\Expressive\Router\RouteResult;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Session\SessionInterface;
@@ -50,6 +52,7 @@ class LoginHandler implements RequestHandlerInterface
     {
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         $route = ($request->getAttribute(RouteResult::class))->getMatchedRouteName();
+        $guard = $request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
 
         // Logout
         if ($route === 'logout') {
@@ -67,11 +70,15 @@ class LoginHandler implements RequestHandlerInterface
         }
 
         // Display initial login form
+        $token = $guard->generateToken();
+
         $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
 
         return new HtmlResponse($this->renderer->render(
             'app::login',
-            []
+            [
+                '__csrf' => $token,
+            ]
         ));
     }
 
@@ -97,6 +104,9 @@ class LoginHandler implements RequestHandlerInterface
         SessionInterface $session,
         string $redirect
     ): ResponseInterface {
+        $guard = $request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
+        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+
         $query = $request->getParsedBody();
 
         $usernameField = $this->config['authentication']['username'];
@@ -106,9 +116,22 @@ class LoginHandler implements RequestHandlerInterface
         // to auth attempt
         $session->unset(UserInterface::class);
 
+        // Check CSRF
+        $token = $query['__csrf'] ?? '';
+        if (strlen($token) === 0 || !$guard->validateToken($token)) {
+            Log::write(
+                sprintf('data/log/%s.log', date('Ym')),
+                'Invalid CSRF token ({username}).',
+                ['username' => $query[$usernameField] ?? null],
+                Logger::CRIT
+            );
+
+            return new TextResponse('Token not provided (or expired). Please try to login again!', 412);
+        }
+
         // Login was successful
         $user = $this->adapter->authenticate($request);
-        if ($user) {
+        if (!is_null($user)) {
             $session->unset(self::REDIRECT_ATTRIBUTE);
 
             Log::write(
