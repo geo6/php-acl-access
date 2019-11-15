@@ -4,6 +4,26 @@
 <link rel="stylesheet" href="{{ asset('/login.css') }}">
 {% endblock %}
 
+{% block scripts %}
+{% if reCAPTCHA is defined and reCAPTCHA is not null %}
+<script src="https://www.google.com/recaptcha/api.js?hl={{ lang }}&amp;render={{ reCAPTCHA }}"></script>
+<script>
+    grecaptcha.ready(() => {
+        grecaptcha
+            .execute('{{ reCAPTCHA }}', { action: 'login' })
+            .then(token => {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'reCAPTCHA');
+                input.value = token;
+
+                document.querySelector('form').append(input);
+            });
+    });
+</script>
+{% endif %}
+{% endblock %}
+
 {% block title %}Login{% endblock%}
 
 {% block content %}
@@ -17,9 +37,9 @@
 
         <h1>{{ global.title }}</h1>
 
-        {% if error is defined and error == true %}
-        <div class="alert alert-danger" role="alert">
-            {{ 'The login or password you\'ve entered is incorrect.' | trans }}
+        {% if error is defined %}
+        <div class="alert alert-warning" role="alert">
+            {{ error | trans }}
         </div>
         {% endif %}
 

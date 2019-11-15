@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Handler\Exception\CSRFException;
+use App\Handler\Exception\LoginException;
+use App\Handler\Exception\ReCAPTCHAException;
+use ErrorException;
+use Exception;
 use Geo6\Zend\Log\Log;
+use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Request;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
+use Zend\Diactoros\Uri;
 use Zend\Expressive\Authentication\Session\PhpSession;
 use Zend\Expressive\Authentication\UserInterface;
+use Zend\Expressive\Csrf\CsrfGuardInterface;
 use Zend\Expressive\Csrf\CsrfMiddleware;
 use Zend\Expressive\Router\RouteResult;
 use Zend\Expressive\Router\RouterInterface;
@@ -40,8 +49,12 @@ class LoginHandler implements RequestHandlerInterface
     /** @var RouterInterface */
     private $router;
 
-    public function __construct(TemplateRendererInterface $renderer, RouterInterface $router, PhpSession $adapter, array $config)
-    {
+    public function __construct(
+        TemplateRendererInterface $renderer,
+        RouterInterface $router,
+        PhpSession $adapter,
+        array $config
+    ) {
         $this->renderer = $renderer;
         $this->router = $router;
         $this->adapter = $adapter;
@@ -66,20 +79,47 @@ class LoginHandler implements RequestHandlerInterface
 
         // Handle submitted credentials
         if ('POST' === $request->getMethod()) {
-            return $this->handleLoginAttempt($request, $session, $redirect);
+            try {
+                $user = $this->handleLoginAttempt($request, !is_null($this->config['reCAPTCHA']));
+
+                Log::write(
+                    sprintf('data/log/%s.log', date('Ym')),
+                    'Login successful ({username}).',
+                    ['username' => $user->getIdentity()],
+                    Logger::INFO
+                );
+
+                return new RedirectResponse($redirect);
+            } catch (CSRFException $e) {
+                return new TextResponse('Token not provided (or expired). Please try to login again!', 412);
+            } catch (ReCAPTCHAException $e) {
+                return new HtmlResponse($this->renderer->render('app::login', [
+                    '__csrf' => $guard->generateToken(),
+                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'error' => $e->getMessage(),
+                ]));
+            } catch (LoginException $e) {
+                return new HtmlResponse($this->renderer->render('app::login', [
+                    '__csrf' => $guard->generateToken(),
+                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'error' => $e->getMessage(),
+                ]));
+            } catch (Exception $e) {
+                return new HtmlResponse($this->renderer->render('app::login', [
+                    '__csrf' => $guard->generateToken(),
+                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'error' => $e->getMessage(),
+                ]));
+            }
         }
 
         // Display initial login form
-        $token = $guard->generateToken();
-
         $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
 
-        return new HtmlResponse($this->renderer->render(
-            'app::login',
-            [
-                '__csrf' => $token,
-            ]
-        ));
+        return new HtmlResponse($this->renderer->render('app::login', [
+            '__csrf' => $guard->generateToken(),
+            'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+        ]));
     }
 
     private function getRedirect(
@@ -101,9 +141,8 @@ class LoginHandler implements RequestHandlerInterface
 
     private function handleLoginAttempt(
         ServerRequestInterface $request,
-        SessionInterface $session,
-        string $redirect
-    ): ResponseInterface {
+        bool $reCAPTCHA
+    ): UserInterface {
         $guard = $request->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
 
@@ -119,44 +158,80 @@ class LoginHandler implements RequestHandlerInterface
         // Check CSRF
         $token = $query['__csrf'] ?? '';
         if (strlen($token) === 0 || !$guard->validateToken($token)) {
-            Log::write(
-                sprintf('data/log/%s.log', date('Ym')),
-                'Invalid CSRF token ({username}).',
-                ['username' => $query[$usernameField] ?? null],
-                Logger::CRIT
-            );
-
-            return new TextResponse('Token not provided (or expired). Please try to login again!', 412);
+            throw new CSRFException($query[$usernameField] ?? null);
         }
 
-        // Login was successful
+        // Check reCAPTCHA
+        if ($reCAPTCHA === true) {
+            $response = self::reCAPTCHA($this->config['reCAPTCHA']['secret'], $query['reCAPTCHA'] ?? '');
+
+            $threshold = $this->config['reCAPTCHA']['threshold'] ?? 0.5;
+
+            if ($response['success'] !== true || $response['score'] < $threshold) {
+                throw new ReCAPTCHAException($query[$usernameField] ?? null, $response['score'], $threshold);
+            }
+        }
+
         $user = $this->adapter->authenticate($request);
-        if (!is_null($user)) {
-            $session->unset(self::REDIRECT_ATTRIBUTE);
-
-            Log::write(
-                sprintf('data/log/%s.log', date('Ym')),
-                'Login successful ({username}).',
-                ['username' => $user->getIdentity()],
-                Logger::INFO
-            );
-
-            return new RedirectResponse($redirect);
-        }
 
         // Login failed
-        Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
-            'Login failed ({username}).',
-            ['username' => $query[$usernameField] ?? null],
-            Logger::WARN
+        if (is_null($user)) {
+            throw new LoginException($query[$usernameField] ?? null);
+        }
+
+        $session->unset(self::REDIRECT_ATTRIBUTE);
+
+        return $user;
+    }
+
+    private static function reCAPTCHA(string $secret, string $token): array
+    {
+        $response = (new Client())->request(
+            'POST',
+            'https://www.google.com/recaptcha/api/siteverify',
+            [
+                'form_params' => [
+                    'secret' => $secret,
+                    'response' => $token,
+                ]
+            ]
         );
 
-        return new HtmlResponse($this->renderer->render(
-            'app::login',
-            [
-                'error' => true,
-            ]
-        ));
+        if ($response->getStatusCode() !== 200) {
+            throw new ErrorException('reCAPTCHA request failed.');
+        }
+
+        $json = json_decode((string) $response->getBody(), true);
+
+        if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
+            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
+
+            foreach ($json['error-codes'] as $code) {
+                switch ($code) {
+                    case 'missing-input-secret':
+                        $message .= 'The secret parameter is missing.' . PHP_EOL;
+                        break;
+                    case 'invalid-input-secret':
+                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
+                        break;
+                    case 'missing-input-response':
+                        $message .= 'The response parameter is missing.' . PHP_EOL;
+                        break;
+                    case 'invalid-input-response':
+                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
+                        break;
+                    case 'bad-request':
+                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
+                        break;
+                    case 'timeout-or-duplicate':
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
+                        break;
+                }
+            }
+
+            throw new Exception($message);
+        }
+
+        return $json;
     }
 }
