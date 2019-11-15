@@ -36,8 +36,8 @@ class ReCAPTCHAException extends AbstractException
     public function getData(): array
     {
         return [
-            'username' => $this->username,
-            'score' => $this->score,
+            'username'  => $this->username,
+            'score'     => $this->score,
             'threshold' => $this->threshold,
         ];
     }

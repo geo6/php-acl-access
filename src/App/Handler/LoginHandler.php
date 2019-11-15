@@ -14,14 +14,11 @@ use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Request;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
-use Zend\Diactoros\Uri;
 use Zend\Expressive\Authentication\Session\PhpSession;
 use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Csrf\CsrfGuardInterface;
 use Zend\Expressive\Csrf\CsrfMiddleware;
 use Zend\Expressive\Router\RouteResult;
 use Zend\Expressive\Router\RouterInterface;
@@ -94,21 +91,21 @@ class LoginHandler implements RequestHandlerInterface
                 return new TextResponse('Token not provided (or expired). Please try to login again!', 412);
             } catch (ReCAPTCHAException $e) {
                 return new HtmlResponse($this->renderer->render('app::login', [
-                    '__csrf' => $guard->generateToken(),
+                    '__csrf'    => $guard->generateToken(),
                     'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
-                    'error' => $e->getMessage(),
+                    'error'     => $e->getMessage(),
                 ]));
             } catch (LoginException $e) {
                 return new HtmlResponse($this->renderer->render('app::login', [
-                    '__csrf' => $guard->generateToken(),
+                    '__csrf'    => $guard->generateToken(),
                     'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
-                    'error' => $e->getMessage(),
+                    'error'     => $e->getMessage(),
                 ]));
             } catch (Exception $e) {
                 return new HtmlResponse($this->renderer->render('app::login', [
-                    '__csrf' => $guard->generateToken(),
+                    '__csrf'    => $guard->generateToken(),
                     'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
-                    'error' => $e->getMessage(),
+                    'error'     => $e->getMessage(),
                 ]));
             }
         }
@@ -117,7 +114,7 @@ class LoginHandler implements RequestHandlerInterface
         $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
 
         return new HtmlResponse($this->renderer->render('app::login', [
-            '__csrf' => $guard->generateToken(),
+            '__csrf'    => $guard->generateToken(),
             'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
         ]));
     }
@@ -191,9 +188,9 @@ class LoginHandler implements RequestHandlerInterface
             'https://www.google.com/recaptcha/api/siteverify',
             [
                 'form_params' => [
-                    'secret' => $secret,
+                    'secret'   => $secret,
                     'response' => $token,
-                ]
+                ],
             ]
         );
 
@@ -204,27 +201,27 @@ class LoginHandler implements RequestHandlerInterface
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
-            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
+            $message = 'Issue(s) with reCAPTCHA request:'.PHP_EOL;
 
             foreach ($json['error-codes'] as $code) {
                 switch ($code) {
                     case 'missing-input-secret':
-                        $message .= 'The secret parameter is missing.' . PHP_EOL;
+                        $message .= 'The secret parameter is missing.'.PHP_EOL;
                         break;
                     case 'invalid-input-secret':
-                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The secret parameter is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'missing-input-response':
-                        $message .= 'The response parameter is missing.' . PHP_EOL;
+                        $message .= 'The response parameter is missing.'.PHP_EOL;
                         break;
                     case 'invalid-input-response':
-                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The response parameter is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'bad-request':
-                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The request is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'timeout-or-duplicate':
-                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.'.PHP_EOL;
                         break;
                 }
             }

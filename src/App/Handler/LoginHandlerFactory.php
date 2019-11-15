@@ -40,7 +40,7 @@ class LoginHandlerFactory
             $container->get(PhpSession::class),
             [
                 'authentication' => $config['authentication'] ?? [],
-                'reCAPTCHA' => $config['reCAPTCHA'] ?? null,
+                'reCAPTCHA'      => $config['reCAPTCHA'] ?? null,
             ]
         );
     }
