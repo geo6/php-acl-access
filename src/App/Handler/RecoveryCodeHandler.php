@@ -48,7 +48,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
             $email = $params['email'] ?? null;
             $code = $params['code'] ?? null;
 
-            $path = RecoveryCode::DIRECTORY . '/' . $uuid;
+            $path = RecoveryCode::DIRECTORY.'/'.$uuid;
 
             if (file_exists($path) && is_readable($path)) {
                 $content = parse_ini_file($path);
@@ -128,7 +128,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
     {
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody($user->getIdentity() . ' / ' . $password);
+        $mail->setBody($user->getIdentity().' / '.$password);
         $mail->setFrom($config['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - New password');

@@ -39,7 +39,7 @@ class BruteForceProtection
 
     private function getPath(): string
     {
-        return self::DIRECTORY . '/' . md5($this->ip);
+        return self::DIRECTORY.'/'.md5($this->ip);
     }
 
     private function read(): void
@@ -63,11 +63,11 @@ class BruteForceProtection
     private function write(): void
     {
         $data = [
-            'ip' => $this->ip,
-            'creation' => $this->creation->format('c'),
-            'count' => $this->count,
+            'ip'         => $this->ip,
+            'creation'   => $this->creation->format('c'),
+            'count'      => $this->count,
             'lastUpdate' => $this->lastUpdate->format('c'),
-            'lockUntil' => !is_null($this->lockUntil) ? $this->lockUntil->format('c') : null,
+            'lockUntil'  => !is_null($this->lockUntil) ? $this->lockUntil->format('c') : null,
         ];
 
         file_put_contents($this->getPath(), json_encode($data));
@@ -126,7 +126,7 @@ class BruteForceProtection
 
     private static function clean(): void
     {
-        $glob = glob(self::DIRECTORY . '/*');
+        $glob = glob(self::DIRECTORY.'/*');
 
         foreach ($glob as $path) {
             $json = json_decode(file_get_contents($path), true);
