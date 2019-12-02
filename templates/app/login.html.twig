@@ -43,6 +43,16 @@
         </div>
         {% endif %}
 
+        {% if locked == true %}
+        <div class="alert alert-danger" role="alert">
+            {{ 'You\'ve exceeded the number of login attempts. Your IP address is now blocked. Please try again later.' | trans }}
+        </div>
+        {% elseif reCAPTCHA is not null %}
+        <div class="alert alert-warning" role="alert">
+            {{ 'You\'ve attempted too many failed login attempts. CAPTCHA has been enabled.' | trans }}
+        </div>
+        {% endif %}
+
         {% include '@includes/form.html.twig' %}
 
         {% include '@includes/footer.html.twig' %}

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\BruteForceProtection;
 use App\Handler\Exception\CSRFException;
 use App\Handler\Exception\LoginException;
 use App\Handler\Exception\ReCAPTCHAException;
+use DateInterval;
+use DateTime;
 use ErrorException;
 use Exception;
 use Geo6\Zend\Log\Log;
@@ -33,6 +36,9 @@ use Zend\Log\Logger;
 class LoginHandler implements RequestHandlerInterface
 {
     private const REDIRECT_ATTRIBUTE = 'authentication:redirect';
+    private const ENABLE_RECAPTCHA = 3;
+    private const ENABLE_LOCK = 5;
+    private const LOCK_INTERVAL = 'PT1H';
 
     /** @var array */
     private $config;
@@ -74,10 +80,14 @@ class LoginHandler implements RequestHandlerInterface
 
         $redirect = $this->getRedirect($request, $session);
 
+        $protection = new BruteForceProtection($request);
+
+        $reCAPTCHA = ($protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : false);
+
         // Handle submitted credentials
-        if ('POST' === $request->getMethod()) {
+        if ('POST' === $request->getMethod() && $protection->isLocked() === false) {
             try {
-                $user = $this->handleLoginAttempt($request, !is_null($this->config['reCAPTCHA']));
+                $user = $this->handleLoginAttempt($request, $reCAPTCHA !== false);
 
                 Log::write(
                     sprintf('data/log/%s.log', date('Ym')),
@@ -86,26 +96,37 @@ class LoginHandler implements RequestHandlerInterface
                     Logger::INFO
                 );
 
+                $protection->clear();
+
                 return new RedirectResponse($redirect);
             } catch (CSRFException $e) {
                 return new TextResponse('Token not provided (or expired). Please try to login again!', 412);
             } catch (ReCAPTCHAException $e) {
                 return new HtmlResponse($this->renderer->render('app::login', [
                     '__csrf'    => $guard->generateToken(),
-                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'reCAPTCHA' => $protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : null,
                     'error'     => $e->getMessage(),
+                    'locked'    => $protection->isLocked(),
                 ]));
             } catch (LoginException $e) {
+                $protection->increment();
+
+                if ($protection->getCount() >= self::ENABLE_LOCK) {
+                    $protection->lockUntil((new DateTime())->add(new DateInterval(self::LOCK_INTERVAL)));
+                }
+
                 return new HtmlResponse($this->renderer->render('app::login', [
                     '__csrf'    => $guard->generateToken(),
-                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'reCAPTCHA' => $protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : null,
                     'error'     => $e->getMessage(),
+                    'locked'    => $protection->isLocked(),
                 ]));
             } catch (Exception $e) {
                 return new HtmlResponse($this->renderer->render('app::login', [
                     '__csrf'    => $guard->generateToken(),
-                    'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+                    'reCAPTCHA' => $protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : null,
                     'error'     => $e->getMessage(),
+                    'locked'    => $protection->isLocked(),
                 ]));
             }
         }
@@ -115,7 +136,8 @@ class LoginHandler implements RequestHandlerInterface
 
         return new HtmlResponse($this->renderer->render('app::login', [
             '__csrf'    => $guard->generateToken(),
-            'reCAPTCHA' => $this->config['reCAPTCHA']['key'] ?? null,
+            'reCAPTCHA' => $protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : null,
+            'locked'    => $protection->isLocked(),
         ]));
     }
 
@@ -173,6 +195,8 @@ class LoginHandler implements RequestHandlerInterface
 
         // Login failed
         if (is_null($user)) {
+
+
             throw new LoginException($query[$usernameField] ?? null);
         }
 
@@ -201,27 +225,27 @@ class LoginHandler implements RequestHandlerInterface
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
-            $message = 'Issue(s) with reCAPTCHA request:'.PHP_EOL;
+            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
 
             foreach ($json['error-codes'] as $code) {
                 switch ($code) {
                     case 'missing-input-secret':
-                        $message .= 'The secret parameter is missing.'.PHP_EOL;
+                        $message .= 'The secret parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-secret':
-                        $message .= 'The secret parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'missing-input-response':
-                        $message .= 'The response parameter is missing.'.PHP_EOL;
+                        $message .= 'The response parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-response':
-                        $message .= 'The response parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'bad-request':
-                        $message .= 'The request is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'timeout-or-duplicate':
-                        $message .= 'The response is no longer valid: either is too old or has been used previously.'.PHP_EOL;
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
                         break;
                 }
             }

@@ -5,22 +5,24 @@
         {% endif %}
         <div class="form-group">
             <label class="control-label" for="inputLogin">{{ 'Login' | trans }}</label>
-            <input class="form-control" id="inputLogin" name="login" required="required" type="text">
+            <input class="form-control" id="inputLogin" name="login" required type="text"
+                {{ locked == true ? 'disabled' }}>
         </div>
         <div class="form-group">
             <label class="control-label" for="inputPassword">{{ 'Password' | trans }}</label>
-            <input class="form-control" id="inputPassword" name="password" required="required" type="password">
+            <input class="form-control" id="inputPassword" name="password" required type="password"
+                {{ locked == true ? 'disabled' }}>
         </div>
         <div class="form-group">
             <label class="control-label" for="inputLanguage">{{ 'Language' | trans }}</label>
-            <select class="form-control" name="lang" id="inputLanguage">
+            <select class="form-control" name="lang" id="inputLanguage" {{ locked == true ? 'disabled' }}>
                 <option value="en" {{ lang == 'en' ? 'selected' }}>English</option>
                 <option value="fr" {{ lang == 'fr' ? 'selected' }}>Français</option>
                 <option value="nl" {{ lang == 'nl' ? 'selected' }}>Nederlands</option>
             </select>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary" name="action" value="login">
+            <button type="submit" class="btn btn-primary" name="action" value="login" {{ locked == true ? 'disabled' }}>
                 <i class="fas fa-sign-in-alt"></i>
                 {{ 'Log In' | trans }}
             </button>
