@@ -35,7 +35,7 @@ class DataModel
 
         $resources = [];
         foreach ($result as $record) {
-            $resources[] = (new ReflectionHydrator())->hydrate($record, new Resource);
+            $resources[] = (new ReflectionHydrator())->hydrate($record, new Resource());
         }
 
         return $resources;
@@ -57,7 +57,7 @@ class DataModel
 
         $roles = [];
         foreach ($result as $record) {
-            $roles[] = (new ReflectionHydrator())->hydrate($record, new Role);
+            $roles[] = (new ReflectionHydrator())->hydrate($record, new Role());
         }
 
         return $roles;
@@ -75,7 +75,7 @@ class DataModel
             'login',
             'fullname',
             'email',
-            '_roles' => $sql->select(['ur' => self::TABLE_USER_ROLE])->columns([new Expression('to_json(array_agg(id_role))')])->where('ur.id_user = u.id')
+            '_roles' => $sql->select(['ur' => self::TABLE_USER_ROLE])->columns([new Expression('to_json(array_agg(id_role))')])->where('ur.id_user = u.id'),
         ]);
         $select->order('login');
 
@@ -83,7 +83,7 @@ class DataModel
 
         $users = [];
         foreach ($result as $record) {
-            $user = (new ReflectionHydrator())->hydrate($record, new User);
+            $user = (new ReflectionHydrator())->hydrate($record, new User());
 
             if (!is_null($record['_roles'])) {
                 $ids = json_decode($record['_roles']);

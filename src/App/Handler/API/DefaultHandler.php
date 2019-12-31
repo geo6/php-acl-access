@@ -64,7 +64,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
                 } elseif (isset($object)) {
                     return new JsonResponse($object);
                 } else {
-                    return new JsonResponse(new stdClass, 404);
+                    return new JsonResponse(new stdClass(), 404);
                 }
                 break;
             case 'POST':
@@ -73,7 +73,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
                     return new JsonResponse($object);
                 } else {
-                    return new JsonResponse(new stdClass, 404);
+                    return new JsonResponse(new stdClass(), 404);
                 }
                 break;
             case 'PUT':
@@ -82,7 +82,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
                     return new JsonResponse($object);
                 } else {
-                    return new JsonResponse(new stdClass, 404);
+                    return new JsonResponse(new stdClass(), 404);
                 }
                 break;
             case 'DELETE':
@@ -91,7 +91,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
                     return new JsonResponse($object);
                 } else {
-                    return new JsonResponse(new stdClass, 404);
+                    return new JsonResponse(new stdClass(), 404);
                 }
 
                 break;
@@ -110,7 +110,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         $result = $tableGateway->select(['id' => $id])->toArray();
 
-        return (new ReflectionHydrator())->hydrate(current($result), new $this->class);
+        return (new ReflectionHydrator())->hydrate(current($result), new $this->class());
     }
 
     protected function update(Adapter $adapter, $object, array $data)
@@ -126,7 +126,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         $rowGateway->save();
 
-        return (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class);
+        return (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class());
     }
 
     protected function delete(Adapter $adapter, $object)

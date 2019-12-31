@@ -6,22 +6,22 @@
  * removing factory definitions; other dependency types may be overwritten
  * when regenerating this file via zend-expressive-tooling commands.
  */
- 
+
 declare(strict_types=1);
 
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\Admin\HomeHandler::class => App\Handler\Admin\HomeHandlerFactory::class,
+            App\Handler\Admin\HomeHandler::class      => App\Handler\Admin\HomeHandlerFactory::class,
             App\Handler\Admin\ResourcesHandler::class => App\Handler\Admin\ResourcesHandlerFactory::class,
-            App\Handler\Admin\RolesHandler::class => App\Handler\Admin\RolesHandlerFactory::class,
-            App\Handler\Admin\UsersHandler::class => App\Handler\Admin\UsersHandlerFactory::class,
-            App\Handler\LoginHandler::class => App\Handler\LoginHandlerFactory::class,
-            App\Handler\PasswordHandler::class => App\Handler\PasswordHandlerFactory::class,
-            App\Handler\ProfileHandler::class => App\Handler\ProfileHandlerFactory::class,
-            App\Handler\RecoveryCodeHandler::class => App\Handler\RecoveryCodeHandlerFactory::class,
-            App\Middleware\DbMiddleware::class => App\Middleware\DbMiddlewareFactory::class,
-            App\Middleware\TemplateMiddleware::class => App\Middleware\TemplateMiddlewareFactory::class,
+            App\Handler\Admin\RolesHandler::class     => App\Handler\Admin\RolesHandlerFactory::class,
+            App\Handler\Admin\UsersHandler::class     => App\Handler\Admin\UsersHandlerFactory::class,
+            App\Handler\LoginHandler::class           => App\Handler\LoginHandlerFactory::class,
+            App\Handler\PasswordHandler::class        => App\Handler\PasswordHandlerFactory::class,
+            App\Handler\ProfileHandler::class         => App\Handler\ProfileHandlerFactory::class,
+            App\Handler\RecoveryCodeHandler::class    => App\Handler\RecoveryCodeHandlerFactory::class,
+            App\Middleware\DbMiddleware::class        => App\Middleware\DbMiddlewareFactory::class,
+            App\Middleware\TemplateMiddleware::class  => App\Middleware\TemplateMiddlewareFactory::class,
         ],
     ],
 ];

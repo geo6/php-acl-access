@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\DataModel;
 use JsonSerializable;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\RowGateway\AbstractRowGateway;
-use Zend\Db\Sql\Sql;
 
 class User implements JsonSerializable
 {
@@ -32,11 +28,11 @@ class User implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
-            'login' => $this->login,
+            'id'       => $this->id,
+            'login'    => $this->login,
             'fullname' => $this->fullname,
-            'email' => $this->email,
-            'roles' => $this->getRoles(),
+            'email'    => $this->email,
+            'roles'    => $this->getRoles(),
         ];
     }
 }

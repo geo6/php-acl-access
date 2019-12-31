@@ -37,17 +37,17 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->route('/access/api/resources[/{id:\d+}]', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\API\ResourceHandler::class
+        App\Handler\API\ResourceHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.resources');
     $app->route('/access/api/roles[/{id:\d+}]', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\API\RoleHandler::class
+        App\Handler\API\RoleHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.roles');
     $app->route('/access/api/users[/{id:\d+}]', [
         Zend\Expressive\Session\SessionMiddleware::class,
         Zend\Expressive\Authentication\AuthenticationMiddleware::class,
-        App\Handler\API\UserHandler::class
+        App\Handler\API\UserHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.users');
 
     $app->get('/', App\Handler\HomePageHandler::class, 'home');

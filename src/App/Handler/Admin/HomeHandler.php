@@ -32,8 +32,8 @@ class HomeHandler implements RequestHandlerInterface
             'app::admin/home',
             [
                 'resources' => DataModel::getResources($adapter),
-                'roles' => DataModel::getRoles($adapter),
-                'users' => DataModel::getUsers($adapter),
+                'roles'     => DataModel::getRoles($adapter),
+                'users'     => DataModel::getUsers($adapter),
             ]
         ));
     }
