@@ -15,6 +15,7 @@ return [
     'twig' => [
         'extensions' => [
             App\Twig\TranslationExtension::class,
+            Blast\BaseUrl\BasePathTwigExtension::class,
         ],
     ],
 ];

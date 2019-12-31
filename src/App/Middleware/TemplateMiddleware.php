@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Blast\BaseUrl\BaseUrlMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -26,10 +27,12 @@ class TemplateMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // Language
         $lang = $request->getAttribute(LanguageMiddleware::LANGUAGE_ATTRIBUTE);
 
         $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'lang', $lang);
 
+        // Default information
         $this->renderer->addDefaultParam(
             $this->renderer::TEMPLATE_ALL,
             'global',

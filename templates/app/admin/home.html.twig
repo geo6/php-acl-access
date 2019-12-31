@@ -1,0 +1,42 @@
+{% extends '@layout/admin.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/admin.css') }}">
+{% endblock %}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-md-center">
+    <div class="col col-lg-4">
+        <div class="list-group">
+            <a href="{{ path('admin.users') }}"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-fw fa-user"></i>
+                    Users
+                </span>
+                <span class="badge badge-primary badge-pill">{{ users | length }}</span>
+            </a>
+            <a href="{{ path('admin.roles') }}"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-fw fa-users"></i>
+                    Roles
+                </span>
+                <span class="badge badge-primary badge-pill">{{ roles | length }}</span>
+            </a>
+            <a href="{{ path('admin.resources') }}"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-fw fa-cog"></i>
+                    Resources
+                </span>
+                <span class="badge badge-primary badge-pill">{{ resources | length }}</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

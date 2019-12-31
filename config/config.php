@@ -16,6 +16,7 @@ $aggregator = new ConfigAggregator([
     // Include cache configuration
     new ArrayProvider($cacheConfig),
 
+    \Blast\BaseUrl\ConfigProvider::class,
     \Zend\Db\ConfigProvider::class,
     \Zend\Expressive\Authentication\ConfigProvider::class,
     \Zend\Expressive\Authentication\Session\ConfigProvider::class,
@@ -28,6 +29,7 @@ $aggregator = new ConfigAggregator([
     \Zend\Expressive\Session\Ext\ConfigProvider::class,
     \Zend\Expressive\Twig\ConfigProvider::class,
     \Zend\HttpHandlerRunner\ConfigProvider::class,
+    \Zend\Hydrator\ConfigProvider::class,
     \Zend\I18n\ConfigProvider::class,
     \Zend\Log\ConfigProvider::class,
     \Zend\Mail\ConfigProvider::class,
@@ -50,10 +52,10 @@ $aggregator = new ConfigAggregator([
     //   - `*.global.php`
     //   - `local.php`
     //   - `*.local.php`
-    new PhpFileProvider(realpath(__DIR__).'/autoload/{{,*.}global,{,*.}local}.php'),
+    new PhpFileProvider(realpath(__DIR__) . '/autoload/{{,*.}global,{,*.}local}.php'),
 
     // Load development config if it exists
-    new PhpFileProvider(realpath(__DIR__).'/development.config.php'),
+    new PhpFileProvider(realpath(__DIR__) . '/development.config.php'),
 ], $cacheConfig['config_cache_path']);
 
 return $aggregator->getMergedConfig();

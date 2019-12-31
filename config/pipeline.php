@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use \Blast\BaseUrl\BaseUrlMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
+use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
 use Zend\Expressive\Helper\UrlHelperMiddleware;
 use Zend\Expressive\MiddlewareFactory;
@@ -18,6 +20,7 @@ use Zend\Stratigility\Middleware\ErrorHandler;
 /*
  * Setup middleware pipeline:
  */
+
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.
@@ -41,6 +44,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - $app->pipe('/api', $apiMiddleware);
     // - $app->pipe('/docs', $apiDocMiddleware);
     // - $app->pipe('/files', $filesMiddleware);
+    $app->pipe(BaseUrlMiddleware::class);
 
     // Register the routing middleware in the middleware pipeline.
     // This middleware registers the Zend\Expressive\Router\RouteResult request attribute.
@@ -52,6 +56,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - method not allowed
     // Order here matters; the MethodNotAllowedMiddleware should be placed
     // after the Implicit*Middleware.
+    $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(ImplicitHeadMiddleware::class);
     $app->pipe(ImplicitOptionsMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);
@@ -65,6 +70,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - route-based authentication
     // - route-based validation
     // - etc.
+    $app->pipe(App\Middleware\DbMiddleware::class);
     $app->pipe(App\Middleware\LanguageMiddleware::class);
     $app->pipe(App\Middleware\TemplateMiddleware::class);
 

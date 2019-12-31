@@ -1,0 +1,74 @@
+<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" id="modal-user">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content" autocomplete="off">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-user"></i>
+                    User
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-pills nav-justified mb-3" id="userTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab"
+                            aria-controls="details" aria-selected="true">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="roles-tab" data-toggle="tab" href="#roles" role="tab"
+                            aria-controls="roles" aria-selected="false">
+                            <i class="fas fa-users"></i>
+                            Roles
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="userTabContent">
+                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                        <div class="form-group">
+                            <label for="inputLogin">Login</label>
+                            <input type="text" class="form-control" required id="inputLogin" name="login">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail">Email address</label>
+                            <input type="email" class="form-control" required id="inputEmail" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFullname">Fullname</label>
+                            <input type="text" class="form-control" required id="inputFullname" name="fullname">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="roles" role="tabpanel" aria-labelledby="roles-tab">
+                        <ul class="list-group">
+                            {% for role in roles %}
+                            <li class="list-group-item">
+                                <input type="checkbox" name="roles[]" value="{{ role.id }}" id="role-{{ role.id }}">
+                                <label class="form-check-label" for="role-{{ role.id }}">{{ role.name }}</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" id="btn-password" disabled>
+                    <i class="fas fa-redo"></i>
+                    Reset password
+                </button>
+                <button type="button" class="btn btn-danger" id="btn-delete">
+                    <i class="fas fa-trash-alt"></i>
+                    Delete
+                </button>
+                <button type="submit" class="btn btn-primary" id="btn-update">
+                    <i class="fas fa-save"></i>
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
