@@ -56,7 +56,7 @@ class PasswordHandler implements RequestHandlerInterface
                 $uuid = $code->store(['email' => $to]);
 
                 $redirect = $this->router->generateUri('password.code', ['uuid' => $uuid]);
-                $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
+                $url = 'http'.(isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '').'://'.$server['HTTP_HOST'].$redirect;
 
                 self::sendEmail($this->config['mail'], $to, $user, $code->getCode(), $url);
 
@@ -67,7 +67,7 @@ class PasswordHandler implements RequestHandlerInterface
                     Logger::NOTICE
                 );
 
-                return new RedirectResponse($redirect . '?' . http_build_query(['email' => $to]));
+                return new RedirectResponse($redirect.'?'.http_build_query(['email' => $to]));
             } else {
                 $error = true;
             }
@@ -85,7 +85,7 @@ class PasswordHandler implements RequestHandlerInterface
     {
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody('Code: ' . $code . ' (' . (date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)) . ')' . PHP_EOL . $url);
+        $mail->setBody('Code: '.$code.' ('.(date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)).')'.PHP_EOL.$url);
         $mail->setFrom($config['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - Verification code');

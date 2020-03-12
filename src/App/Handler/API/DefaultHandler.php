@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\Handler\API;
 
 use App\Middleware\DbMiddleware;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use stdClass;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\RowGateway\RowGateway;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Hydrator\ReflectionHydrator;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use stdClass;
 
 abstract class DefaultHandler implements RequestHandlerInterface
 {

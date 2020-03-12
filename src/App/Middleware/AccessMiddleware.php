@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use Blast\BaseUrl\BaseUrlMiddleware;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Laminas\Permissions\Acl\AclInterface;
+use Mezzio\Authentication\AuthenticationInterface;
+use Mezzio\Authentication\UserInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\Response\RedirectResponse;
-use Mezzio\Authentication\AuthenticationInterface;
-use Mezzio\Authentication\UserInterface;
-use Laminas\Permissions\Acl\AclInterface;
 
 /**
  * @see \Mezzio\Authentication\AuthenticationMiddleware
@@ -47,7 +47,7 @@ class AccessMiddleware implements MiddlewareInterface
             } else {
                 // return $this->auth->unauthorizedResponse($request);
 
-                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
             }
         }
 

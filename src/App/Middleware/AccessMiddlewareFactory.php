@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Permissions;
-use Psr\Container\ContainerInterface;
 use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Exception\InvalidConfigException;
 use Mezzio\Router\RouterInterface;
-use Laminas\Permissions\Acl\Acl;
+use Psr\Container\ContainerInterface;
 
 /**
  * @see \Mezzio\Authentication\AuthenticationMiddlewareFactory

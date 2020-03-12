@@ -6,13 +6,13 @@ namespace App\Handler\Admin;
 
 use App\DataModel;
 use App\Middleware\DbMiddleware;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Template\TemplateRendererInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class RolesHandler implements RequestHandlerInterface
 {

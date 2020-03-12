@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Handler\Admin;
 
-use Fig\Http\Message\StatusCodeInterface;
 use Geo6\Zend\Log\Log;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Permissions\Acl\AclInterface;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Laminas\Diactoros\Response\HtmlResponse;
-use Mezzio\Authentication\UserInterface;
-use Mezzio\Template\TemplateRendererInterface;
-use Laminas\Permissions\Acl\AclInterface;
 
 class LogHandler implements RequestHandlerInterface
 {
@@ -61,10 +60,10 @@ class LogHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/log',
             [
-                'title' => date('F Y', mktime(12, 0, 0, intval($month), 1, intval($year))),
-                'log' => $log,
+                'title'    => date('F Y', mktime(12, 0, 0, intval($month), 1, intval($year))),
+                'log'      => $log,
                 'previous' => $previous,
-                'next' => $next,
+                'next'     => $next,
             ]
         ));
     }

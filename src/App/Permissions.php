@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
-use PDO;
-use PDOException;
-use Mezzio\Authentication\Exception as AuthenticationException;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Exception\ExceptionInterface as AclExceptionInterface;
+use Mezzio\Authentication\Exception as AuthenticationException;
+use PDO;
+use PDOException;
 
 class Permissions extends Acl
 {
@@ -75,7 +75,7 @@ class Permissions extends Acl
 
         if (false === $stmtUser) {
             throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch user details from ' .
+                'An error occurred when preparing to fetch user details from '.
                     'the repository; please verify your configuration'
             );
         }
