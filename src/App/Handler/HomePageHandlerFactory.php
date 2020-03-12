@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Expressive\Router\RouterInterface;
 
 class HomePageHandlerFactory
 {

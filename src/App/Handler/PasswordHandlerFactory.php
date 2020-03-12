@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use Mezzio\Router\RouterInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 class PasswordHandlerFactory
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Mezzio\Application;
+use Mezzio\MiddlewareFactory;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Application;
-use Zend\Expressive\MiddlewareFactory;
 
 /*
  * Setup routes with a single request method:
@@ -28,7 +28,7 @@ use Zend\Expressive\MiddlewareFactory;
  * $app->route(
  *     '/contact',
  *     App\Handler\ContactHandler::class,
- *     Zend\Expressive\Router\Route::HTTP_METHOD_ANY,
+ *     Mezzio\Router\Route::HTTP_METHOD_ANY,
  *     'contact'
  * );
  */
@@ -53,8 +53,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
 
     $app->route('/login', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Csrf\CsrfMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Csrf\CsrfMiddleware::class,
         App\Handler\LoginHandler::class,
     ], ['GET', 'POST'], 'login');
 
@@ -62,8 +62,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->route('/password/recovery-code/{uuid}', App\Handler\RecoveryCodeHandler::class, ['GET', 'POST'], 'password.code');
 
     $app->get('/profile', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\ProfileHandler::class,
     ], 'profile');
 
@@ -89,8 +89,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     ], 'admin.resources');
 
     $app->get('/logout', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\LoginHandler::class,
     ], 'logout');
 };

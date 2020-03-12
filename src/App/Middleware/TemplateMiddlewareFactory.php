@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 class TemplateMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : TemplateMiddleware
+    public function __invoke(ContainerInterface $container): TemplateMiddleware
     {
         $config = $container->get('config');
 

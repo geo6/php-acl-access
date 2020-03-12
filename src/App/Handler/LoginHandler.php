@@ -14,21 +14,21 @@ use ErrorException;
 use Exception;
 use Geo6\Zend\Log\Log;
 use GuzzleHttp\Client;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\TextResponse;
+use Laminas\Log\Logger;
+use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Csrf\CsrfMiddleware;
+use Mezzio\Router\RouteResult;
+use Mezzio\Router\RouterInterface;
+use Mezzio\Session\SessionInterface;
+use Mezzio\Session\SessionMiddleware;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Diactoros\Response\TextResponse;
-use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Csrf\CsrfMiddleware;
-use Zend\Expressive\Router\RouteResult;
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Session\SessionInterface;
-use Zend\Expressive\Session\SessionMiddleware;
-use Zend\Expressive\Template\TemplateRendererInterface;
-use Zend\Log\Logger;
 
 /**
  * @see https://docs.zendframework.com/zend-expressive-authentication-session/v1/login-handler/

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use Laminas\Diactoros\Response\HtmlResponse;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Session\SessionMiddleware;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Session\SessionMiddleware;
-use Zend\Expressive\Template\TemplateRendererInterface;
 
 class ProfileHandler implements RequestHandlerInterface
 {

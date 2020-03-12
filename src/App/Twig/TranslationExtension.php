@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use Laminas\I18n\Translator\Translator;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Zend\I18n\Translator\Translator;
 
 class TranslationExtension extends AbstractExtension
 {
