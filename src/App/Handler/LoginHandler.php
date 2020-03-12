@@ -14,12 +14,10 @@ use ErrorException;
 use Exception;
 use Geo6\Zend\Log\Log;
 use GuzzleHttp\Client;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\Response\TextResponse;
+use Laminas\Log\Logger;
 use Mezzio\Authentication\Session\PhpSession;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfMiddleware;
@@ -28,7 +26,9 @@ use Mezzio\Router\RouterInterface;
 use Mezzio\Session\SessionInterface;
 use Mezzio\Session\SessionMiddleware;
 use Mezzio\Template\TemplateRendererInterface;
-use Laminas\Log\Logger;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * @see https://docs.zendframework.com/zend-expressive-authentication-session/v1/login-handler/

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App;
 
 use Exception;
-use PDO;
 use Mezzio\Authentication\DefaultUser;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Authentication\UserRepository\PdoDatabase;
+use PDO;
 
 class UserRepository extends PdoDatabase
 {

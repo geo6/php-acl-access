@@ -2,8 +2,8 @@
 
 namespace App\Twig;
 
-use Psr\Container\ContainerInterface;
 use Laminas\I18n\Translator\TranslatorInterface;
+use Psr\Container\ContainerInterface;
 
 class TranslationExtensionFactory
 {

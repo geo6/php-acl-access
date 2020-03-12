@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use Exception;
-use Psr\Container\ContainerInterface;
 use Mezzio\Authentication\Session\PhpSession;
 use Mezzio\Router\RouterInterface;
 use Mezzio\Template\TemplateRendererInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @see https://docs.zendframework.com/zend-expressive-authentication-session/v1/login-handler/

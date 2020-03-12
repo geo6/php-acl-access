@@ -7,19 +7,19 @@ namespace App\Handler;
 use App\RecoveryCode;
 use App\UserRepository;
 use Geo6\Zend\Log\Log;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Log\Logger;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Smtp as SmtpTransport;
+use Laminas\Mail\Transport\SmtpOptions;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RandomLib;
 use SecurityLib\Strength;
-use Laminas\Diactoros\Response\HtmlResponse;
-use Mezzio\Authentication\UserInterface;
-use Mezzio\Template\TemplateRendererInterface;
-use Laminas\Log\Logger;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Smtp as SmtpTransport;
-use Laminas\Mail\Transport\SmtpOptions;
 
 class RecoveryCodeHandler implements RequestHandlerInterface
 {
@@ -48,7 +48,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
             $email = $params['email'] ?? null;
             $code = $params['code'] ?? null;
 
-            $path = RecoveryCode::DIRECTORY . '/' . $uuid;
+            $path = RecoveryCode::DIRECTORY.'/'.$uuid;
 
             if (file_exists($path) && is_readable($path)) {
                 $content = parse_ini_file($path);
@@ -128,7 +128,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
     {
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody($user->getIdentity() . ' / ' . $password);
+        $mail->setBody($user->getIdentity().' / '.$password);
         $mail->setFrom($config['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - New password');

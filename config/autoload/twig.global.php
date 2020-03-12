@@ -8,7 +8,7 @@ return [
             Laminas\I18n\Translator\TranslatorInterface::class => Laminas\I18n\Translator\Translator::class,
         ],
         'factories'  => [
-            App\Twig\TranslationExtension::class   => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+            App\Twig\TranslationExtension::class      => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             Laminas\I18n\Translator\Translator::class => App\Twig\TranslatorFactory::class,
         ],
     ],
