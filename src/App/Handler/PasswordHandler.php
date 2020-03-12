@@ -10,15 +10,15 @@ use Geo6\Zend\Log\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
-use Zend\Log\Logger;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mail\Transport\SmtpOptions;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Router\RouterInterface;
+use Mezzio\Template\TemplateRendererInterface;
+use Laminas\Log\Logger;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Smtp as SmtpTransport;
+use Laminas\Mail\Transport\SmtpOptions;
 
 class PasswordHandler implements RequestHandlerInterface
 {
@@ -56,7 +56,7 @@ class PasswordHandler implements RequestHandlerInterface
                 $uuid = $code->store(['email' => $to]);
 
                 $redirect = $this->router->generateUri('password.code', ['uuid' => $uuid]);
-                $url = 'http'.(isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '').'://'.$server['HTTP_HOST'].$redirect;
+                $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
 
                 self::sendEmail($this->config['mail'], $to, $user, $code->getCode(), $url);
 
@@ -67,7 +67,7 @@ class PasswordHandler implements RequestHandlerInterface
                     Logger::NOTICE
                 );
 
-                return new RedirectResponse($redirect.'?'.http_build_query(['email' => $to]));
+                return new RedirectResponse($redirect . '?' . http_build_query(['email' => $to]));
             } else {
                 $error = true;
             }
@@ -85,7 +85,7 @@ class PasswordHandler implements RequestHandlerInterface
     {
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody('Code: '.$code.' ('.(date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)).')'.PHP_EOL.$url);
+        $mail->setBody('Code: ' . $code . ' (' . (date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)) . ')' . PHP_EOL . $url);
         $mail->setFrom($config['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - Verification code');

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Zend\Expressive\Authentication\AuthenticationInterface;
-use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Authentication\UserRepository\PdoDatabase;
-use Zend\Expressive\Authentication\UserRepositoryInterface;
+use Mezzio\Authentication\AuthenticationInterface;
+use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Authentication\UserRepository\PdoDatabase;
+use Mezzio\Authentication\UserRepositoryInterface;
 
 return [
 

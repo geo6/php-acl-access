@@ -6,9 +6,9 @@ namespace App\Handler;
 
 use Exception;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authentication\Session\PhpSession;
-use Zend\Expressive\Router\RouterInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
+use Mezzio\Authentication\Session\PhpSession;
+use Mezzio\Router\RouterInterface;
+use Mezzio\Template\TemplateRendererInterface;
 
 /**
  * @see https://docs.zendframework.com/zend-expressive-authentication-session/v1/login-handler/

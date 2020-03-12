@@ -5,11 +5,11 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'aliases' => [
-            Zend\I18n\Translator\TranslatorInterface::class => Zend\I18n\Translator\Translator::class,
+            Laminas\I18n\Translator\TranslatorInterface::class => Laminas\I18n\Translator\Translator::class,
         ],
         'factories'  => [
-            App\Twig\TranslationExtension::class   => Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
-            Zend\I18n\Translator\Translator::class => App\Twig\TranslatorFactory::class,
+            App\Twig\TranslationExtension::class   => Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+            Laminas\I18n\Translator\Translator::class => App\Twig\TranslatorFactory::class,
         ],
     ],
     'twig' => [

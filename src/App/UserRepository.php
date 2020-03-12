@@ -6,9 +6,9 @@ namespace App;
 
 use Exception;
 use PDO;
-use Zend\Expressive\Authentication\DefaultUser;
-use Zend\Expressive\Authentication\UserInterface;
-use Zend\Expressive\Authentication\UserRepository\PdoDatabase;
+use Mezzio\Authentication\DefaultUser;
+use Mezzio\Authentication\UserInterface;
+use Mezzio\Authentication\UserRepository\PdoDatabase;
 
 class UserRepository extends PdoDatabase
 {

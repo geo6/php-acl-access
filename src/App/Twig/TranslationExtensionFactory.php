@@ -3,7 +3,7 @@
 namespace App\Twig;
 
 use Psr\Container\ContainerInterface;
-use Zend\I18n\Translator\TranslatorInterface;
+use Laminas\I18n\Translator\TranslatorInterface;
 
 class TranslationExtensionFactory
 {
