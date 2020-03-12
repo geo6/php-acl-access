@@ -18,6 +18,7 @@ $aggregator = new ConfigAggregator([
 
     \Blast\BaseUrl\ConfigProvider::class,
     \Laminas\Db\ConfigProvider::class,
+    \Laminas\Hydrator\ConfigProvider::class,
     \Mezzio\Authentication\ConfigProvider::class,
     \Mezzio\Authentication\Session\ConfigProvider::class,
     \Mezzio\Csrf\ConfigProvider::class,

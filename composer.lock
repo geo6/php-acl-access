@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2938210cac3c314b1dec517e496e049a",
+    "content-hash": "eeb98197d584856e592efc702637da67",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1075,6 +1075,72 @@
                 "psr-7"
             ],
             "time": "2019-12-31T17:06:16+00:00"
+        },
+        {
+            "name": "laminas/laminas-hydrator",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laminas/laminas-hydrator.git",
+                "reference": "5c418d6e37ad363bef5ce1c8a72388243d6c7950"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/5c418d6e37ad363bef5ce1c8a72388243d6c7950",
+                "reference": "5c418d6e37ad363bef5ce1c8a72388243d6c7950",
+                "shasum": ""
+            },
+            "require": {
+                "laminas/laminas-stdlib": "^3.2.1",
+                "laminas/laminas-zendframework-bridge": "^1.0",
+                "php": "^7.2"
+            },
+            "replace": {
+                "zendframework/zend-hydrator": "self.version"
+            },
+            "require-dev": {
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-eventmanager": "^3.2.1",
+                "laminas/laminas-modulemanager": "^2.8",
+                "laminas/laminas-serializer": "^2.9",
+                "laminas/laminas-servicemanager": "^3.3.2",
+                "phpspec/prophecy": "^1.7.5",
+                "phpstan/phpstan": "^0.10.5",
+                "phpunit/phpunit": "^7.5"
+            },
+            "suggest": {
+                "laminas/laminas-eventmanager": "^3.2, to support aggregate hydrator usage",
+                "laminas/laminas-serializer": "^2.9, to use the SerializableStrategy",
+                "laminas/laminas-servicemanager": "^3.3, to support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-release-2.4": "2.4.x-dev",
+                    "dev-master": "3.0.x-dev",
+                    "dev-develop": "3.1.x-dev"
+                },
+                "laminas": {
+                    "component": "Laminas\\Hydrator",
+                    "config-provider": "Laminas\\Hydrator\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laminas\\Hydrator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Serialize objects to arrays, and vice versa",
+            "homepage": "https://laminas.dev",
+            "keywords": [
+                "hydrator",
+                "laminas"
+            ],
+            "time": "2019-12-31T17:06:44+00:00"
         },
         {
             "name": "laminas/laminas-i18n",
@@ -2638,16 +2704,16 @@
         },
         {
             "name": "mtymek/blast-base-url",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mtymek/blast-base-url.git",
-                "reference": "43c0cc0eb7ceff65909f8426521b590f3627149a"
+                "reference": "3d28633fa329fa7de9051b1419ec8c11908d2753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mtymek/blast-base-url/zipball/43c0cc0eb7ceff65909f8426521b590f3627149a",
-                "reference": "43c0cc0eb7ceff65909f8426521b590f3627149a",
+                "url": "https://api.github.com/repos/mtymek/blast-base-url/zipball/3d28633fa329fa7de9051b1419ec8c11908d2753",
+                "reference": "3d28633fa329fa7de9051b1419ec8c11908d2753",
                 "shasum": ""
             },
             "require": {
@@ -2661,6 +2727,7 @@
                 "squizlabs/php_codesniffer": "^2.3",
                 "zendframework/zend-diactoros": "^1.3",
                 "zendframework/zend-expressive-helpers": "^1.4 || ^2.0",
+                "zendframework/zend-expressive-twigrenderer": "^1.0",
                 "zendframework/zend-expressive-zendviewrenderer": "^1.0",
                 "zendframework/zend-servicemanager": "^2.6"
             },
@@ -2695,7 +2762,7 @@
                 "psr-7",
                 "psr7"
             ],
-            "time": "2018-05-15T14:41:46+00:00"
+            "time": "2019-10-08T19:05:33+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -5956,6 +6023,7 @@
     "stability-flags": {
         "geo6/zend-acl-postgresql": 20,
         "geo6/zend-log-filesystem": 20,
+        "mtymek/blast-base-url": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
