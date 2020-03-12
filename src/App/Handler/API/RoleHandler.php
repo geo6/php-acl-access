@@ -6,8 +6,8 @@ namespace App\Handler\API;
 
 use App\DataModel;
 use App\Model\Role;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\TableGateway\Feature\SequenceFeature;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class RoleHandler extends DefaultHandler
 {

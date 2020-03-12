@@ -12,7 +12,7 @@ use DateInterval;
 use DateTime;
 use ErrorException;
 use Exception;
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use GuzzleHttp\Client;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;

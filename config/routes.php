@@ -35,18 +35,18 @@ use Psr\Container\ContainerInterface;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->route('/access/api/resources[/{id:\d+}]', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\ResourceHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.resources');
     $app->route('/access/api/roles[/{id:\d+}]', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\RoleHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.roles');
     $app->route('/access/api/users[/{id:\d+}]', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\UserHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.users');
 
@@ -68,23 +68,23 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     ], 'profile');
 
     $app->get('/access/admin', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\HomeHandler::class,
     ], 'admin');
     $app->get('/access/admin/users', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\UsersHandler::class,
     ], 'admin.users');
     $app->get('/access/admin/roles', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\RolesHandler::class,
     ], 'admin.roles');
     $app->get('/access/admin/resources', [
-        Zend\Expressive\Session\SessionMiddleware::class,
-        Zend\Expressive\Authentication\AuthenticationMiddleware::class,
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\ResourcesHandler::class,
     ], 'admin.resources');
 

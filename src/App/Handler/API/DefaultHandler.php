@@ -9,12 +9,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use stdClass;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\RowGateway\RowGateway;
-use Zend\Db\TableGateway\Feature\SequenceFeature;
-use Zend\Db\TableGateway\TableGateway;
-use Zend\Diactoros\Response\JsonResponse;
-use Zend\Hydrator\ReflectionHydrator;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\RowGateway\RowGateway;
+use Laminas\Db\TableGateway\Feature\SequenceFeature;
+use Laminas\Db\TableGateway\TableGateway;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Hydrator\ReflectionHydrator;
 
 abstract class DefaultHandler implements RequestHandlerInterface
 {

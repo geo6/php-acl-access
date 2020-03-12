@@ -8,8 +8,8 @@ use App\DataModel;
 use App\Model\User;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\TableGateway\Feature\SequenceFeature;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class UserHandler extends DefaultHandler
 {

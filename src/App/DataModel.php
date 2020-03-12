@@ -7,10 +7,10 @@ namespace App;
 use App\Model\Resource;
 use App\Model\Role;
 use App\Model\User;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Predicate\Expression;
-use Zend\Db\Sql\Sql;
-use Zend\Hydrator\ReflectionHydrator;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Sql;
+use Laminas\Hydrator\ReflectionHydrator;
 
 class DataModel
 {

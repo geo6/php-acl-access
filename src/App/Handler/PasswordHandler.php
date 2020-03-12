@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\RecoveryCode;
 use App\UserRepository;
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Log\Logger;
