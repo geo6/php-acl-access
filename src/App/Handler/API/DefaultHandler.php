@@ -104,9 +104,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
             $this->sequenceFeature,
         ]);
 
-        $tableGateway->insert($data);
-
-        $id = $tableGateway->lastInsertValue;
+        $id = $tableGateway->insert($data);
 
         $result = $tableGateway->select(['id' => $id])->toArray();
 

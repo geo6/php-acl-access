@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\RecoveryCode;
 use App\UserRepository;
-use Geo6\Laminas\Log\Log;
+use Geo6\Zend\Log\Log;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Log\Logger;
 use Laminas\Mail\Message;
