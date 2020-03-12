@@ -9,7 +9,7 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 class HomeHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : HomeHandler
+    public function __invoke(ContainerInterface $container): HomeHandler
     {
         return new HomeHandler($container->get(TemplateRendererInterface::class));
     }

@@ -13,7 +13,7 @@ use Zend\Db\Adapter\Adapter;
 
 class DbMiddleware implements MiddlewareInterface
 {
-    /** @var array $connection */
+    /** @var array */
     private $connection;
 
     public function __construct(array $connection)
