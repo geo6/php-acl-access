@@ -67,26 +67,27 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         App\Handler\ProfileHandler::class,
     ], 'profile');
 
-    $app->get('/access/admin', [
+    $app->get('/admin/access', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\HomeHandler::class,
-    ], 'admin');
-    $app->get('/access/admin/users', [
+    ], 'admin.access');
+    $app->get('/admin/access/users', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\UsersHandler::class,
-    ], 'admin.users');
-    $app->get('/access/admin/roles', [
+    ], 'admin.access.users');
+    $app->get('/admin/access/roles', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\RolesHandler::class,
-    ], 'admin.roles');
-    $app->get('/access/admin/resources', [
+    ], 'admin.access.roles');
+    $app->get('/admin/access/resources', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\Admin\ResourcesHandler::class,
-    ], 'admin.resources');
+    ], 'admin.access.resources');
+
 
     $app->get('/logout', [
         Mezzio\Session\SessionMiddleware::class,

@@ -11,7 +11,7 @@
 <div class="row justify-content-md-center">
     <div class="col col-lg-4">
         <div class="list-group">
-            <a href="{{ path('admin.users') }}"
+            <a href="{{ path('admin.access.users') }}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <span>
                     <i class="fas fa-fw fa-user"></i>
@@ -19,7 +19,7 @@
                 </span>
                 <span class="badge badge-primary badge-pill">{{ users | length }}</span>
             </a>
-            <a href="{{ path('admin.roles') }}"
+            <a href="{{ path('admin.access.roles') }}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <span>
                     <i class="fas fa-fw fa-users"></i>
@@ -27,7 +27,7 @@
                 </span>
                 <span class="badge badge-primary badge-pill">{{ roles | length }}</span>
             </a>
-            <a href="{{ path('admin.resources') }}"
+            <a href="{{ path('admin.access.resources') }}"
                 class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                 <span>
                     <i class="fas fa-fw fa-cog"></i>
