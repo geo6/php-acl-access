@@ -20,6 +20,7 @@ return [
             App\Handler\PasswordHandler::class        => App\Handler\PasswordHandlerFactory::class,
             App\Handler\ProfileHandler::class         => App\Handler\ProfileHandlerFactory::class,
             App\Handler\RecoveryCodeHandler::class    => App\Handler\RecoveryCodeHandlerFactory::class,
+            App\Middleware\AccessMiddleware::class    => App\Middleware\AccessMiddlewareFactory::class,
             App\Middleware\DbMiddleware::class        => App\Middleware\DbMiddlewareFactory::class,
             App\Middleware\TemplateMiddleware::class  => App\Middleware\TemplateMiddlewareFactory::class,
         ],
