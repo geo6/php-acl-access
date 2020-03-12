@@ -11,7 +11,11 @@
 <script src="{{ asset('/resources.js') }}"></script>
 {% endblock %}
 
-{% block title %}Roles{% endblock %}
+{% block title %}Resources{% endblock %}
+
+{% block navbar %}
+{% include('@app/admin/navbar/access.html.twig') %}
+{% endblock %}
 
 {% block content %}
 

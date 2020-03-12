@@ -4,7 +4,11 @@
 <link rel="stylesheet" href="{{ asset('/admin.css') }}">
 {% endblock %}
 
-{% block title %}Admin{% endblock %}
+{% block title %}Access{% endblock %}
+
+{% block navbar %}
+{% include('@app/admin/navbar/access.html.twig') %}
+{% endblock %}
 
 {% block content %}
 
