@@ -7,6 +7,7 @@ return [
     'authorization' => [
         'resources' => [
             'admin.access',
+            'admin.log',
         ],
     ],
 

@@ -88,6 +88,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         App\Handler\Admin\ResourcesHandler::class,
     ], 'admin.access.resources');
 
+    $app->get('/admin/log/{year:[0-9]{4}}/{month:[0-9]{2}}', [
+        Mezzio\Session\SessionMiddleware::class,
+        App\Middleware\AccessMiddleware::class,
+        App\Handler\Admin\LogHandler::class,
+    ], 'admin.log');
 
     $app->get('/logout', [
         Mezzio\Session\SessionMiddleware::class,
