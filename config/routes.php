@@ -34,17 +34,17 @@ use Psr\Container\ContainerInterface;
  */
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
-    $app->route('/access/api/resources[/{id:\d+}]', [
+    $app->route('/api/access/resources[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\ResourceHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.resources');
-    $app->route('/access/api/roles[/{id:\d+}]', [
+    $app->route('/api/access/roles[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\RoleHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.roles');
-    $app->route('/access/api/users[/{id:\d+}]', [
+    $app->route('/api/access/users[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\UserHandler::class,
