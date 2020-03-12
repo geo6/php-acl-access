@@ -9,7 +9,7 @@ use Mezzio\Template\TemplateRendererInterface;
 
 class TemplateMiddlewareFactory
 {
-    public function __invoke(ContainerInterface $container) : TemplateMiddleware
+    public function __invoke(ContainerInterface $container): TemplateMiddleware
     {
         $config = $container->get('config');
 
