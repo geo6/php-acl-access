@@ -9,7 +9,7 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 class RolesHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : RolesHandler
+    public function __invoke(ContainerInterface $container): RolesHandler
     {
         return new RolesHandler($container->get(TemplateRendererInterface::class));
     }
