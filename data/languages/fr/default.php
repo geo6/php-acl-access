@@ -16,8 +16,10 @@ return [
     'If your email address is registered in our system we will send you an email to reset your password.'         => 'Si votre adresse est enregistrée dans notre système nous vous enverrons un e-mail pour réinitialiser votre mot de passe.',
     'Next'                                                                                                        => 'Suivant',
     // Profile
-    'Profile' => 'Profil utilisateur',
-    'Data'    => 'Vos données',
-    'Roles'   => 'Vos rôles',
-    'Log out' => 'Se déconnecter',
+    'Profile'  => 'Profil utilisateur',
+    'Data'     => 'Vos données',
+    'Fullname' => 'Nom complet',
+    'Email'    => 'Adresse e-mail',
+    'Roles'    => 'Vos rôles',
+    'Log out'  => 'Se déconnecter',
 ];

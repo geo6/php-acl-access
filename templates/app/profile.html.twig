@@ -22,11 +22,19 @@
                 {{ 'Data' | trans }}
             </h2>
 
-            <table class="table mb-0">
+            <table class="table table-sm mb-0">
                 <tbody>
                     <tr>
                         <th>{{ 'Login' | trans }}</th>
-                        <td>{{ user.username }}</td>
+                        <td>{{ login }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'Fullname' | trans }}</th>
+                        <td>{{ details.fullname }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'Email' | trans }}</th>
+                        <td>{{ details.email }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -37,7 +45,7 @@
                 {{ 'Roles' | trans }}
             </h2>
             <ul class="list-unstyled">
-                {% for role in user.roles %}
+                {% for role in roles %}
                 <li>
                     <i class="fas fa-users"></i>
                     {{ role }}
