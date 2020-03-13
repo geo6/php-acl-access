@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Session\SessionMiddleware;
 use Mezzio\Template\TemplateRendererInterface;
@@ -26,13 +27,16 @@ class ProfileHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
-        $user = $session->get(UserInterface::class);
+        $user = $request->getAttribute(UserInterface::class);
+        $acl = $request->getAttribute(AclInterface::class);
+
 
         return new HtmlResponse($this->renderer->render(
             'app::profile',
             [
-                'user' => $user,
+                'login'     => $user->getIdentity(),
+                'details'   => $user->getDetails(),
+                'roles'     => $user->getRoles(),
             ]
         ));
     }
