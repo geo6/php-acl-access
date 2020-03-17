@@ -52,7 +52,7 @@ class UserHandler extends DefaultHandler
         $user = parent::insert($adapter, $data['user']);
 
         if (isset($data['roles'])) {
-            self::updateRoles($adapter, $user->id, $data['roles']);
+            self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
 
             // To-Do: Update $user with roles!
         }
@@ -65,7 +65,7 @@ class UserHandler extends DefaultHandler
         $user = parent::update($adapter, $user, $data['user']);
 
         if (isset($data['roles'])) {
-            self::updateRoles($adapter, $user->id, $data['roles']);
+            self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
 
             // To-Do: Update $user with roles!
         }
@@ -88,13 +88,13 @@ class UserHandler extends DefaultHandler
         return $generator->generatePassword();
     }
 
-    private static function updateRoles(Adapter $adapter, int $id, array $roles): void
+    private static function updateRoles(Adapter $adapter, string $table, int $id, array $roles): void
     {
-        $adapter->query(sprintf('DELETE FROM %s WHERE id_user = ?', DataModel::TABLE_USER_ROLE), [$id]);
+        $adapter->query(sprintf('DELETE FROM %s WHERE id_user = ?', $table), [$id]);
 
         foreach ($roles as $roleId) {
             $adapter->query(
-                sprintf('INSERT INTO %s (id_user, id_role) VALUES (?, ?)', DataModel::TABLE_USER_ROLE),
+                sprintf('INSERT INTO %s (id_user, id_role) VALUES (?, ?)', $table),
                 [$id, $roleId]
             );
         }
