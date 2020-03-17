@@ -11,10 +11,10 @@ use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class ResourceHandler extends DefaultHandler
 {
-    public function __construct()
+    public function __construct(string $table)
     {
         $this->init(
-            DataModel::TABLE_RESOURCE,
+            $table,
             new SequenceFeature('id', 'resources_id_seq'),
             Resource::class
         );
@@ -22,6 +22,6 @@ class ResourceHandler extends DefaultHandler
 
     protected function getObjects(Adapter $adapter): array
     {
-        return DataModel::getResources($adapter);
+        return DataModel::getResources($adapter, $this->table);
     }
 }

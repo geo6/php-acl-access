@@ -8,22 +8,17 @@ use App\Model\Resource;
 use App\Model\Role;
 use App\Model\User;
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
 use Laminas\Hydrator\ReflectionHydrator;
 
 class DataModel
 {
-    const TABLE_RESOURCE = 'resources';
-    const TABLE_ROLE = 'roles';
-    const TABLE_USER = 'users';
-    const TABLE_USER_ROLE = 'user_role';
-
-    public static function getResources(Adapter $adapter): array
+    public static function getResources(Adapter $adapter, string $table): array
     {
         $sql = new Sql($adapter);
 
-        $select = $sql->select(['r' => self::TABLE_RESOURCE]);
+        $select = $sql->select(['r' => $table]);
         $select->columns([
             'id',
             'name',
@@ -41,11 +36,11 @@ class DataModel
         return $resources;
     }
 
-    public static function getRoles(Adapter $adapter): array
+    public static function getRoles(Adapter $adapter, string $table): array
     {
         $sql = new Sql($adapter);
 
-        $select = $sql->select(['r' => self::TABLE_ROLE]);
+        $select = $sql->select(['r' => $table]);
         $select->columns([
             'id',
             'name',
@@ -65,17 +60,17 @@ class DataModel
 
     public static function getUsers(Adapter $adapter): array
     {
-        $roles = self::getRoles($adapter);
+        $roles = self::getRoles($adapter, $tableRole);
 
         $sql = new Sql($adapter);
 
-        $select = $sql->select(['u' => self::TABLE_USER]);
+        $select = $sql->select(['u' => $table]);
         $select->columns([
             'id',
             'login',
             'fullname',
             'email',
-            '_roles' => $sql->select(['ur' => self::TABLE_USER_ROLE])->columns([new Expression('to_json(array_agg(id_role))')])->where('ur.id_user = u.id'),
+            '_roles' => $sql->select(['ur' => $tableUserRole])->columns([new Expression('to_json(array_agg(id_role))')])->where('ur.id_user = u.id'),
         ]);
         $select->order('login');
 

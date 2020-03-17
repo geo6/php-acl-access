@@ -11,10 +11,10 @@ use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class RoleHandler extends DefaultHandler
 {
-    public function __construct()
+    public function __construct(string $table)
     {
         $this->init(
-            DataModel::TABLE_ROLE,
+            $table,
             new SequenceFeature('id', 'roles_id_seq'),
             Role::class
         );
@@ -22,6 +22,6 @@ class RoleHandler extends DefaultHandler
 
     protected function getObjects(Adapter $adapter): array
     {
-        return DataModel::getRoles($adapter);
+        return DataModel::getRoles($adapter, $this->table);
     }
 }

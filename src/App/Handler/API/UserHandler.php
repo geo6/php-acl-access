@@ -13,13 +13,22 @@ use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class UserHandler extends DefaultHandler
 {
-    public function __construct()
+    /** @var string */
+    private $tableRole;
+
+    /** @var string */
+    private $tableUserRole;
+
+    public function __construct(string $table, string $tableRole, string $tableUserRole)
     {
         $this->init(
-            DataModel::TABLE_USER,
+            $table,
             new SequenceFeature('id', 'users_id_seq'),
             User::class
         );
+
+        $this->tableRole = $tableRole;
+        $this->tableUserRole = $tableUserRole;
     }
 
     protected static function toArray($object): array
@@ -33,7 +42,7 @@ class UserHandler extends DefaultHandler
 
     protected function getObjects(Adapter $adapter): array
     {
-        return DataModel::getUsers($adapter);
+        return DataModel::getUsers($adapter, $this->table, $this->tableRole, $this->tableUserRole);
     }
 
     protected function insert(Adapter $adapter, array $data): User

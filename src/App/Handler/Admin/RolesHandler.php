@@ -6,6 +6,7 @@ namespace App\Handler\Admin;
 
 use App\DataModel;
 use App\Middleware\DbMiddleware;
+use ArrayObject;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
@@ -19,9 +20,13 @@ class RolesHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    public function __construct(TemplateRendererInterface $renderer)
+    /** @var ArrayObject */
+    private $tables;
+
+    public function __construct(TemplateRendererInterface $renderer, ArrayObject $tables)
     {
         $this->renderer = $renderer;
+        $this->tables = $tables;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -39,7 +44,8 @@ class RolesHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/roles',
             [
-                'roles' => DataModel::getRoles($adapter),
+                'roles'     => DataModel::getRoles($adapter, $this->tables->role),
+                'resources' => DataModel::getResources($adapter, $this->tables->resource),
             ]
         ));
     }
