@@ -10,6 +10,8 @@ import deleteResource from "./api/delete";
 import { load as loadResourceInModal } from "./resources/modal";
 import { Resource } from "../model/Resource";
 import { submit as submitForm } from "./resources/form";
+import { load as loadPermInModal } from "./resources/permissions/modal";
+import { submit as submitPermForm } from "./resources/permissions/form";
 
 ((): void => {
   let currentResourceId: number = null;
@@ -82,6 +84,43 @@ import { submit as submitForm } from "./resources/form";
         currentResourceId = null;
 
         document.location.reload();
+      });
+    });
+
+  /**
+   * Show permissions
+   */
+  document
+    .querySelectorAll("a[href='#permissions']")
+    .forEach((element: HTMLLinkElement) => {
+      element.addEventListener("click", (event: Event) => {
+        const target = event.currentTarget as HTMLLinkElement;
+        const { id, name } = target.closest("tr").dataset;
+
+        event.preventDefault();
+
+        currentResourceId = parseInt(id);
+
+        (document.querySelector(
+          "#modal-permission-role .modal-header > .modal-title > span"
+        ) as HTMLSpanElement).innerText = name;
+
+        loadPermInModal(apiAccessURL, currentResourceId);
+      });
+    });
+
+  /** Apply permissions */
+  document
+    .querySelector("#modal-permission-role form")
+    .addEventListener("submit", (event: Event) => {
+      const target = event.currentTarget as HTMLFormElement;
+
+      event.preventDefault();
+
+      submitPermForm(target, currentResourceId).then(() => {
+        currentResourceId = null;
+
+        $("#modal-permission-role").modal("hide");
       });
     });
 })();

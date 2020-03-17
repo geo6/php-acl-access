@@ -7,6 +7,7 @@
 {% block scripts %}
 <script>
     const apiURL = "{{ path('api.roles') }}";
+    const apiAccessURL = "{{ path('api.access') }}";
 </script>
 <script src="{{ asset('/roles.js') }}"></script>
 {% endblock %}
@@ -35,7 +36,7 @@
 <table class="table table-striped table-sm">
     <thead>
         <tr>
-            <th class="text-right">#</th class="text-right">
+            <th class="text-right">#</th>
             <th>Name</th>
             <th>Priority</th>
             <th colspan="2">Actions</th>
@@ -43,7 +44,7 @@
     </thead>
     <tbody>
         {% for role in roles %}
-        <tr data-id="{{ role.id }}">
+        <tr data-id="{{ role.id }}" data-name="{{ role.name }}">
             <td class="text-right text-secondary">{{ role.id }}</td>
             <td>
                 <i class="fas fa-users"></i>
@@ -57,7 +58,7 @@
                 </a>
             </td>
             <td class="action">
-                <a role="button" href="#" title="Permissions">
+                <a role="button" href="#permissions" title="Permissions">
                     <i class="fas fa-key"></i>
                     <span class="sr-only">Permissions</span>
                 </a>
@@ -68,5 +69,6 @@
 </table>
 
 {% include '@app/admin/modal/role.html.twig' %}
+{% include '@app/admin/modal/permission/resource.html.twig' %}
 
 {% endblock %}

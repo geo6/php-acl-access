@@ -58,7 +58,33 @@ class DataModel
         return $roles;
     }
 
-    public static function getUsers(Adapter $adapter): array
+    public static function getRolesResources(Adapter $adapter, string $table, string $tableResource, string $tableRole): array
+    {
+        $sql = new Sql($adapter);
+
+        $select = $sql->select(['rr' => $table]);
+        $select->columns([]);
+        $select->join(['re' => $tableResource], 're.id = rr.id_resource', [
+            'resource' => new Expression('row_to_json(re.*)'),
+        ]);
+        $select->join(['ro' => $tableRole], 'ro.id = rr.id_role', [
+            'role' => new Expression('row_to_json(ro.*)'),
+        ]);
+
+        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+
+        $rr = [];
+        foreach ($result as $record) {
+            $rr[] = [
+                'resource' => (new ReflectionHydrator())->hydrate(json_decode($record['resource'], true), new Resource()),
+                'role'     => (new ReflectionHydrator())->hydrate(json_decode($record['role'], true), new Role()),
+            ];
+        }
+
+        return $rr;
+    }
+
+    public static function getUsers(Adapter $adapter, string $table, string $tableRole, string $tableUserRole): array
     {
         $roles = self::getRoles($adapter, $tableRole);
 

@@ -49,6 +49,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         Mezzio\Authentication\AuthenticationMiddleware::class,
         App\Handler\API\UserHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.users');
+    $app->route('/api/access/access[/{type:resource|role}/{id:\d+}]', [
+        Mezzio\Session\SessionMiddleware::class,
+        Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Handler\API\AccessHandler::class,
+    ], ['GET', 'PUT'], 'api.access');
 
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
 

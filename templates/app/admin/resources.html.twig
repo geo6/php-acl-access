@@ -7,6 +7,7 @@
 {% block scripts %}
 <script>
     const apiURL = "{{ path('api.resources') }}";
+    const apiAccessURL = "{{ path('api.access') }}";
 </script>
 <script src="{{ asset('/resources.js') }}"></script>
 {% endblock %}
@@ -43,7 +44,7 @@
     </thead>
     <tbody>
         {% for resource in resources %}
-        <tr data-id="{{ resource.id }}">
+        <tr data-id="{{ resource.id }}" data-name="{{ resource.name }}">
             <td class="text-right text-secondary">{{ resource.id }}</td>
             <td>
                 <i class="fas fa-cog"></i>
@@ -68,7 +69,7 @@
                 </a> -->
             </td>
             <td class="action">
-                <a role="button" href="#" title="Permissions">
+                <a role="button" href="#permissions" title="Permissions">
                     <i class="fas fa-key"></i>
                     <span class="sr-only">Permissions</span>
                 </a>
@@ -79,5 +80,6 @@
 </table>
 
 {% include '@app/admin/modal/resource.html.twig' %}
+{% include '@app/admin/modal/permission/role.html.twig' %}
 
 {% endblock %}

@@ -12,6 +12,8 @@ import { load as loadRoleInModal } from "./roles/modal";
 import { Role } from "../model/Role";
 import { submit as submitForm } from "./roles/form";
 import rangeOnChange from "./roles/range";
+import { load as loadPermInModal } from "./roles/permissions/modal";
+import { submit as submitPermForm } from "./roles/permissions/form";
 
 ((): void => {
   let currentRoleId: number = null;
@@ -95,6 +97,41 @@ import rangeOnChange from "./roles/range";
         currentRoleId = null;
 
         document.location.reload();
+      });
+    });
+
+  /** Show permissions */
+  document
+    .querySelectorAll("a[href='#permissions']")
+    .forEach((element: HTMLLinkElement) => {
+      element.addEventListener("click", (event: Event) => {
+        const target = event.currentTarget as HTMLLinkElement;
+        const { id, name } = target.closest("tr").dataset;
+
+        event.preventDefault();
+
+        currentRoleId = parseInt(id);
+
+        (document.querySelector(
+          "#modal-permission-resource .modal-header > .modal-title > span"
+        ) as HTMLSpanElement).innerText = name;
+
+        loadPermInModal(apiAccessURL, currentRoleId);
+      });
+    });
+
+  /** Apply permissions */
+  document
+    .querySelector("#modal-permission-resource form")
+    .addEventListener("submit", (event: Event) => {
+      const target = event.currentTarget as HTMLFormElement;
+
+      event.preventDefault();
+
+      submitPermForm(target, currentRoleId).then(() => {
+        currentRoleId = null;
+
+        $("#modal-permission-resource").modal("hide");
       });
     });
 })();
