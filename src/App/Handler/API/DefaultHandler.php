@@ -57,8 +57,6 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         switch ($request->getMethod()) {
             case 'GET':
-                $id = $request->getAttribute('id');
-
                 if (is_null($id)) {
                     return new JsonResponse($objects);
                 } elseif (isset($object)) {
