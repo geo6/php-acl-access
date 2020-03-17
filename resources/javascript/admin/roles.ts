@@ -3,6 +3,7 @@
 import $ from "jquery";
 
 import "bootstrap/js/dist/modal";
+import "bootstrap/js/dist/popover";
 import "bootstrap/js/dist/tab";
 import "bootstrap/js/dist/util";
 
@@ -17,6 +18,15 @@ import { submit as submitPermForm } from "./roles/permissions/form";
 
 ((): void => {
   let currentRoleId: number = null;
+
+  /**
+   * Initialize popover
+   */
+  document
+    .querySelectorAll("[data-toggle='popover']")
+    .forEach((element: HTMLLinkElement) => {
+      $(element).popover();
+    });
 
   /**
    * Range input
