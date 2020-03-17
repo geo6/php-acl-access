@@ -7,7 +7,6 @@ namespace App\Handler;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
-use Mezzio\Session\SessionMiddleware;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +28,6 @@ class ProfileHandler implements RequestHandlerInterface
     {
         $user = $request->getAttribute(UserInterface::class);
         $acl = $request->getAttribute(AclInterface::class);
-
 
         return new HtmlResponse($this->renderer->render(
             'app::profile',

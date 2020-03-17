@@ -118,7 +118,7 @@ class AccessHandler implements RequestHandlerInterface
             } elseif ($type === 'role' && preg_match('/^resource\[(\d+)\]$/', $key, $matches) === 1) {
                 $insert->values([
                     'id_resource' => intval($matches[1]),
-                    'id_role'     => $id
+                    'id_role'     => $id,
                 ]);
                 $adapter->query($sql->buildSqlString($insert), $adapter::QUERY_MODE_EXECUTE);
             }
