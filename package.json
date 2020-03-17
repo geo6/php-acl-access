@@ -7,7 +7,7 @@
     "watch:style": "npm run fa && sass --no-source-map --watch resources/sass:public",
     "build:style": "npm run fa && sass --no-source-map --style=compressed resources/sass:public",
     "watch:admin": "parcel watch --out-dir=public/ resources/javascript/admin/*.ts --no-hmr",
-    "build:admin": "parcel --out-dir=public/ resources/javascript/admin/*.ts --no-source-maps"
+    "build:admin": "parcel build --out-dir=public/ resources/javascript/admin/*.ts --no-source-maps"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
