@@ -35,6 +35,7 @@ class ProfileHandler implements RequestHandlerInterface
                 'login'     => $user->getIdentity(),
                 'details'   => $user->getDetails(),
                 'roles'     => $user->getRoles(),
+                'acl'       => $acl,
             ]
         ));
     }
