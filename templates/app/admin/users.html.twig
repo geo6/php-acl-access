@@ -14,7 +14,7 @@
 {% block title %}Users{% endblock %}
 
 {% block navbar %}
-{% include('@app/admin/navbar/access.html.twig') %}
+{% include('@app/admin/navbar/access.html.twig') with {page: 'users'} only %}
 {% endblock %}
 
 {% block content %}

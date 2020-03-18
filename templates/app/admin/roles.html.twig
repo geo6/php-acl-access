@@ -15,7 +15,7 @@
 {% block title %}Roles{% endblock %}
 
 {% block navbar %}
-{% include('@app/admin/navbar/access.html.twig') %}
+{% include('@app/admin/navbar/access.html.twig') with {page: 'roles'} only %}
 {% endblock %}
 
 {% block content %}

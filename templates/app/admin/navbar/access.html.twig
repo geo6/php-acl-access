@@ -1,19 +1,22 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link text-decoration-none" href="{{ path('admin.access.users') }}">
+            <a class="nav-link text-decoration-none {{ page is defined and page == 'users' ? 'active' }}"
+                href="{{ path('admin.access.users') }}">
                 <i class="fas fa-user"></i>
                 Users
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-decoration-none" href="{{ path('admin.access.roles') }}">
+            <a class="nav-link text-decoration-none {{ page is defined and page == 'roles' ? 'active' }}"
+                href="{{ path('admin.access.roles') }}">
                 <i class="fas fa-users"></i>
                 Roles
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-decoration-none" href="{{ path('admin.access.resources') }}">
+            <a class="nav-link text-decoration-none {{ page is defined and page == 'resources' ? 'active' }}"
+                href="{{ path('admin.access.resources') }}">
                 <i class="fas fa-cog"></i>
                 Resources
             </a>

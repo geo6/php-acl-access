@@ -15,7 +15,7 @@
 {% block title %}Resources{% endblock %}
 
 {% block navbar %}
-{% include('@app/admin/navbar/access.html.twig') %}
+{% include('@app/admin/navbar/access.html.twig') with {page: 'resources'} only %}
 {% endblock %}
 
 {% block content %}
