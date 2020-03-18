@@ -31,9 +31,7 @@ class ProfileHandler implements RequestHandlerInterface
 
         return new HtmlResponse($this->renderer->render(
             'app::profile',
-            [
-                'acl' => $acl,
-            ]
+            []
         ));
     }
 }
