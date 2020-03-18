@@ -32,10 +32,7 @@ class ProfileHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::profile',
             [
-                'login'     => $user->getIdentity(),
-                'details'   => $user->getDetails(),
-                'roles'     => $user->getRoles(),
-                'acl'       => $acl,
+                'acl' => $acl,
             ]
         ));
     }
