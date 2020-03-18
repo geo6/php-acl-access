@@ -56,6 +56,7 @@ class AccessMiddleware implements MiddlewareInterface
             }
         }
 
+        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'acl', $this->acl);
         $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'user', $user);
 
         return $handler->handle($request);
