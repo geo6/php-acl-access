@@ -9,6 +9,7 @@ use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\UserInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -28,11 +29,15 @@ class AccessMiddleware implements MiddlewareInterface
     /** @var string */
     protected $redirect;
 
-    public function __construct(?AuthenticationInterface $auth, string $redirect, AclInterface $acl)
+    /** @var TemplateRendererInterface */
+    private $renderer;
+
+    public function __construct(?AuthenticationInterface $auth, string $redirect, AclInterface $acl, TemplateRendererInterface $renderer)
     {
         $this->acl = $acl;
         $this->auth = $auth;
         $this->redirect = $redirect;
+        $this->renderer = $renderer;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -47,9 +52,11 @@ class AccessMiddleware implements MiddlewareInterface
             } else {
                 // return $this->auth->unauthorizedResponse($request);
 
-                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
             }
         }
+
+        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'user', $user);
 
         return $handler->handle($request);
     }

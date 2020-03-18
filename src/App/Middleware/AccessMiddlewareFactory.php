@@ -8,6 +8,7 @@ use App\Permissions;
 use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Exception\InvalidConfigException;
 use Mezzio\Router\RouterInterface;
+use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -33,6 +34,11 @@ class AccessMiddlewareFactory
 
         $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization']);
 
-        return new AccessMiddleware($authentication, $redirect, $acl);
+        return new AccessMiddleware(
+            $authentication,
+            $redirect,
+            $acl,
+            $container->get(TemplateRendererInterface::class)
+        );
     }
 }
