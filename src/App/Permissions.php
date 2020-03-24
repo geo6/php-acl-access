@@ -14,18 +14,20 @@ class Permissions extends Acl
 {
     private $pdo;
 
-    public function __construct(?array $pdo, array $config)
+    public function __construct(?array $pdo, array $configAuth, ?array $configTables = null)
     {
         if (!is_null($pdo)) {
             $this->pdo = self::connect($pdo);
 
             $this->injectUsersRoles($pdo);
+            $this->injectResources($configTables);
+            $this->injectPermissions($configTables);
         }
 
-        $this->injectConfigRoles($config['roles'] ?? []);
-        $this->injectConfigResources($config['resources'] ?? []);
-        $this->injectConfigPermissions($config['allow'] ?? [], 'allow');
-        $this->injectConfigPermissions($config['deny'] ?? [], 'deny');
+        $this->injectConfigRoles($configAuth['roles'] ?? []);
+        $this->injectConfigResources($configAuth['resources'] ?? []);
+        $this->injectConfigPermissions($configAuth['allow'] ?? [], 'allow');
+        $this->injectConfigPermissions($configAuth['deny'] ?? [], 'deny');
     }
 
     /**
@@ -75,7 +77,7 @@ class Permissions extends Acl
 
         if (false === $stmtUser) {
             throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch user details from '.
+                'An error occurred when preparing to fetch user details from ' .
                     'the repository; please verify your configuration'
             );
         }
@@ -123,6 +125,58 @@ class Permissions extends Acl
 
                 $this->addRole($user[0], $roles);
             }
+        }
+    }
+
+    /**
+     * Add Resources from database.
+     */
+    private function injectResources(array $tables): void
+    {
+        $sqlResource = sprintf(
+            'SELECT "name" FROM %s',
+            $tables['resource']
+        );
+        $stmtResource = $this->pdo->prepare($sqlResource);
+
+        if (false === $stmtResource) {
+            throw new AuthenticationException\RuntimeException(
+                'An error occurred when preparing to fetch resources details from ' .
+                    'the repository; please verify your configuration'
+            );
+        }
+
+        $stmtResource->execute();
+
+        foreach ($stmtResource->fetchAll(PDO::FETCH_NUM) as $resource) {
+            $this->addResource($resource[0]);
+        }
+    }
+
+    /**
+     * Add Allow/Deny permission from database.
+     */
+    private function injectPermissions(array $tables): void
+    {
+        $sql = sprintf(
+            'SELECT ro."name", re."name" FROM %s rr JOIN %s ro ON rr."id_role" = ro."id" JOIN %s re ON rr."id_resource" = re."id"',
+            $tables['role_resource'],
+            $tables['role'],
+            $tables['resource']
+        );
+        $stmt = $this->pdo->prepare($sql);
+
+        if (false === $stmt) {
+            throw new AuthenticationException\RuntimeException(
+                'An error occurred when preparing to fetch roles/resources details from ' .
+                    'the repository; please verify your configuration'
+            );
+        }
+
+        $stmt->execute();
+
+        foreach ($stmt->fetchAll(PDO::FETCH_NUM) as $rr) {
+            $this->allow($rr[0], $rr[1]);
         }
     }
 
