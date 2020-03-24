@@ -77,7 +77,7 @@ class Permissions extends Acl
 
         if (false === $stmtUser) {
             throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch user details from ' .
+                'An error occurred when preparing to fetch user details from '.
                     'the repository; please verify your configuration'
             );
         }
@@ -141,7 +141,7 @@ class Permissions extends Acl
 
         if (false === $stmtResource) {
             throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch resources details from ' .
+                'An error occurred when preparing to fetch resources details from '.
                     'the repository; please verify your configuration'
             );
         }
@@ -168,7 +168,7 @@ class Permissions extends Acl
 
         if (false === $stmt) {
             throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch roles/resources details from ' .
+                'An error occurred when preparing to fetch roles/resources details from '.
                     'the repository; please verify your configuration'
             );
         }
