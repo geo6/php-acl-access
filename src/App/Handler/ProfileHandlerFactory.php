@@ -11,6 +11,11 @@ class ProfileHandlerFactory
 {
     public function __invoke(ContainerInterface $container): ProfileHandler
     {
-        return new ProfileHandler($container->get(TemplateRendererInterface::class));
+        $config = $container->get('config');
+
+        return new ProfileHandler(
+            $container->get(TemplateRendererInterface::class),
+            $config['tables']
+        );
     }
 }

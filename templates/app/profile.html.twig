@@ -57,6 +57,34 @@
 
     <hr>
 
+    <div>
+        <h2>
+            <i class="fas fa-home"></i>
+            {{ 'Homepages' | trans }}
+        </h2>
+        <div class="list-group mb-3">
+            {% for homepage in homepages %}
+            <a class="list-group-item list-group-item-action" target="_blank" href="{{ homepage.path }}"
+                style="text-transform: uppercase;">
+                {{ homepage.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <h2>
+            <i class="fas fa-rocket"></i>
+            {{ 'Applications' | trans }}
+        </h2>
+        <div class="list-group mb-3">
+            {% for application in applications %}
+            <a class="list-group-item list-group-item-action" target="_blank" href="{{ application.path }}"
+                style="text-transform: uppercase;">
+                {{ application.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="d-flex justify-content-end">
         <ul class="list-inline">
             {% if acl.isAllowed(user.identity, 'admin.access') %}
