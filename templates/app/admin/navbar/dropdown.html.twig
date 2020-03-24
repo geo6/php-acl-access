@@ -1,0 +1,60 @@
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="user-dropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle"></i>
+            {{ user.details.fullname }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="user-dropdown">
+            <a class="dropdown-item" href="{{ path('profile') }}">
+                <i class="fas fa-user-circle"></i>
+                {{ 'Profile' | trans }}
+            </a>
+
+            <div class="dropdown-divider"></div>
+            {% if homepages | length == 1 %}
+            <a class="dropdown-item" href="{{ homepages[0].path }}">
+                <i class="fas fa-home"></i>
+                {{ 'Homepage' | trans }}
+            </a>
+            {% else %}
+            <h6 class="dropdown-header">
+                <i class="fas fa-home"></i>
+                {{ 'Homepages' | trans }}
+            </h6>
+            {% for homepage in homepages %}
+            <a class="dropdown-item" href="{{ homepage.path }}"
+                style="text-transform: uppercase;">{{ homepage.name }}</a>
+            {% endfor %}
+            {% endif %}
+
+            <div class="dropdown-divider"></div>
+            {% if acl.isAllowed(user.identity, 'admin.access') or acl.isAllowed(user.identity, 'admin.log') %}
+            <h6 class="dropdown-header">
+                <i class="fas fa-tools"></i>
+                ADMIN
+            </h6>
+            {% if acl.isAllowed(user.identity, 'admin.access') %}
+            <a class="dropdown-item" href="{{ path('admin.access') }}">
+                <i class="fas fa-lock"></i>
+                {{ 'Access management' | trans }}
+            </a>
+            {% endif %}
+            {% if acl.isAllowed(user.identity, 'admin.log') %}
+            {% set year = date()|date('Y') %}
+            {% set month = date()|date('m') %}
+            <a class="dropdown-item" href="{{ path('admin.log', { year: year, month: month }) }}">
+                <i class="far fa-file-alt"></i>
+                {{ 'Log' | trans }}
+            </a>
+            {% endif %}
+
+            <div class="dropdown-divider"></div>
+            {% endif %}
+            <a class="dropdown-item" href="{{ path('logout') }}">
+                <i class="fas fa-sign-out-alt"></i>
+                {{ 'Log out' | trans }}
+            </a>
+        </div>
+    </li>
+</ul>
