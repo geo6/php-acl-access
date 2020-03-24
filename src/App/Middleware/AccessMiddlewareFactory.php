@@ -32,12 +32,13 @@ class AccessMiddlewareFactory
         $router = $container->get(RouterInterface::class);
         $redirect = $router->generateUri($config['authentication']['redirect']);
 
-        $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization']);
+        $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization'], $config['tables']);
 
         return new AccessMiddleware(
             $authentication,
             $redirect,
             $acl,
+            $config['tables'],
             $container->get(TemplateRendererInterface::class)
         );
     }

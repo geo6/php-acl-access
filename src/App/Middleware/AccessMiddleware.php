@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\DataModel;
+use App\Model\Resource;
 use Blast\BaseUrl\BaseUrlMiddleware;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Permissions\Acl\AclInterface;
@@ -32,16 +34,26 @@ class AccessMiddleware implements MiddlewareInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    public function __construct(?AuthenticationInterface $auth, string $redirect, AclInterface $acl, TemplateRendererInterface $renderer)
-    {
+    /** @var string[] */
+    private $tables;
+
+    public function __construct(
+        ?AuthenticationInterface $auth,
+        string $redirect,
+        AclInterface $acl,
+        array $tables,
+        TemplateRendererInterface $renderer
+    ) {
         $this->acl = $acl;
         $this->auth = $auth;
         $this->redirect = $redirect;
         $this->renderer = $renderer;
+        $this->tables = $tables;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $adapter = $request->getAttribute(DbMiddleware::class);
         $basePath = $request->getAttribute(BaseUrlMiddleware::BASE_PATH);
 
         if (null !== $this->auth) {
@@ -56,8 +68,15 @@ class AccessMiddleware implements MiddlewareInterface
             }
         }
 
+        $resources = DataModel::getResources($adapter, $this->tables['resource']);
+        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($user) {
+            return preg_match('/^home-.+$/', $resource->name) === 1
+                && $this->acl->isAllowed($user->getIdentity(), $resource->name);
+        }));
+
         $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'acl', $this->acl);
         $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'user', $user);
+        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'homepages', $homepages);
 
         return $handler->handle($request);
     }
