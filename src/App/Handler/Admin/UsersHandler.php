@@ -7,6 +7,7 @@ namespace App\Handler\Admin;
 use App\DataModel;
 use App\Middleware\DbMiddleware;
 use ArrayObject;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
@@ -20,13 +21,25 @@ class UsersHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    /** @var ArrayObject */
-    private $tables;
+    /** @var TableIdentifier */
+    private $tableRole;
 
-    public function __construct(TemplateRendererInterface $renderer, ArrayObject $tables)
-    {
+    /** @var TableIdentifier */
+    private $tableUser;
+
+    /** @var TableIdentifier */
+    private $tableUserRole;
+
+    public function __construct(
+        TemplateRendererInterface $renderer,
+        TableIdentifier $tableRole,
+        TableIdentifier $tableUser,
+        TableIdentifier $tableUserRole
+    ) {
         $this->renderer = $renderer;
-        $this->tables = $tables;
+        $this->tableRole = $tableRole;
+        $this->tableUser = $tableUser;
+        $this->tableUserRole = $tableUserRole;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -44,8 +57,8 @@ class UsersHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/users',
             [
-                'users' => DataModel::getUsers($adapter, $this->tables->user, $this->tables->role, $this->tables->user_role),
-                'roles' => DataModel::getRoles($adapter, $this->tables->role),
+                'users' => DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole),
+                'roles' => DataModel::getRoles($adapter, $this->tableRole),
             ]
         ));
     }

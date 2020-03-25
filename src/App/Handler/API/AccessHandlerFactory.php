@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\API;
 
+use Laminas\Db\Sql\TableIdentifier;
 use Psr\Container\ContainerInterface;
 
 class AccessHandlerFactory
@@ -12,6 +13,10 @@ class AccessHandlerFactory
     {
         $config = $container->get('config');
 
-        return new AccessHandler($config['tables']['role_resource'], $config['tables']['resource'], $config['tables']['role']);
+        return new AccessHandler(
+            new TableIdentifier($config['database']['tables']['resource'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['role'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['role_resource'], $config['database']['schema'])
+        );
     }
 }

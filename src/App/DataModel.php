@@ -10,11 +10,12 @@ use App\Model\User;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Hydrator\ReflectionHydrator;
 
 class DataModel
 {
-    public static function getResources(Adapter $adapter, string $table): array
+    public static function getResources(Adapter $adapter, TableIdentifier $table): array
     {
         $sql = new Sql($adapter);
 
@@ -36,7 +37,7 @@ class DataModel
         return $resources;
     }
 
-    public static function getRoles(Adapter $adapter, string $table): array
+    public static function getRoles(Adapter $adapter, TableIdentifier $table): array
     {
         $sql = new Sql($adapter);
 
@@ -58,7 +59,7 @@ class DataModel
         return $roles;
     }
 
-    public static function getRolesResources(Adapter $adapter, string $table, string $tableResource, string $tableRole): array
+    public static function getRolesResources(Adapter $adapter, TableIdentifier $table, TableIdentifier $tableResource, TableIdentifier $tableRole): array
     {
         $sql = new Sql($adapter);
 
@@ -84,7 +85,7 @@ class DataModel
         return $rr;
     }
 
-    public static function getUsers(Adapter $adapter, string $table, string $tableRole, string $tableUserRole): array
+    public static function getUsers(Adapter $adapter, TableIdentifier $table, TableIdentifier $tableRole, TableIdentifier $tableUserRole): array
     {
         $roles = self::getRoles($adapter, $tableRole);
 

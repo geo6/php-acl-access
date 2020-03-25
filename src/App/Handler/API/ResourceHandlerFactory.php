@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\API;
 
+use Laminas\Db\Sql\TableIdentifier;
 use Psr\Container\ContainerInterface;
 
 class ResourceHandlerFactory
@@ -12,6 +13,8 @@ class ResourceHandlerFactory
     {
         $config = $container->get('config');
 
-        return new ResourceHandler($config['tables']['resource']);
+        return new ResourceHandler(
+            new TableIdentifier($config['database']['tables']['resource'], $config['database']['schema'])
+        );
     }
 }

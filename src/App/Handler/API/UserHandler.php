@@ -9,20 +9,21 @@ use App\Model\User;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class UserHandler extends DefaultHandler
 {
-    /** @var string */
+    /** @var TableIdentifier */
     private $tableRole;
 
-    /** @var string */
+    /** @var TableIdentifier */
     private $tableUserRole;
 
-    public function __construct(string $table, string $tableRole, string $tableUserRole)
+    public function __construct(TableIdentifier $tableUser, TableIdentifier $tableRole, TableIdentifier $tableUserRole)
     {
         $this->init(
-            $table,
+            $tableUser,
             new SequenceFeature('id', 'users_id_seq'),
             User::class
         );
@@ -88,7 +89,7 @@ class UserHandler extends DefaultHandler
         return $generator->generatePassword();
     }
 
-    private static function updateRoles(Adapter $adapter, string $table, int $id, array $roles): void
+    private static function updateRoles(Adapter $adapter, TableIdentifier $table, int $id, array $roles): void
     {
         $adapter->query(sprintf('DELETE FROM %s WHERE id_user = ?', $table), [$id]);
 

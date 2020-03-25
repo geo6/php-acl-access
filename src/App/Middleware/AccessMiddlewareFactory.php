@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Permissions;
+use Laminas\Db\Sql\TableIdentifier;
 use Mezzio\Authentication\AuthenticationInterface;
 use Mezzio\Authentication\Exception\InvalidConfigException;
 use Mezzio\Router\RouterInterface;
@@ -32,13 +33,13 @@ class AccessMiddlewareFactory
         $router = $container->get(RouterInterface::class);
         $redirect = $router->generateUri($config['authentication']['redirect']);
 
-        $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization'], $config['tables']);
+        $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization'], $config['database']['tables']);
 
         return new AccessMiddleware(
             $authentication,
             $redirect,
             $acl,
-            $config['tables'],
+            new TableIdentifier($config['database']['tables']['resource'], $config['database']['schema']),
             $container->get(TemplateRendererInterface::class)
         );
     }

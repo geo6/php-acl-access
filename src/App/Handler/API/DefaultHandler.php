@@ -7,6 +7,7 @@ namespace App\Handler\API;
 use App\Middleware\DbMiddleware;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\RowGateway\RowGateway;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -18,11 +19,16 @@ use stdClass;
 
 abstract class DefaultHandler implements RequestHandlerInterface
 {
+    /** @var TableIdentifier */
     protected $table;
+
+    /** @var SequenceFeature */
     protected $sequenceFeature;
+
+    /** @var string */
     protected $class;
 
-    public function init(string $table, SequenceFeature $sequenceFeature, string $class)
+    public function init(TableIdentifier $table, SequenceFeature $sequenceFeature, string $class)
     {
         $this->table = $table;
         $this->sequenceFeature = $sequenceFeature;

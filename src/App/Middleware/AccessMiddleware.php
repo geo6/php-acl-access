@@ -7,6 +7,7 @@ namespace App\Middleware;
 use App\DataModel;
 use App\Model\Resource;
 use Blast\BaseUrl\BaseUrlMiddleware;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\AuthenticationInterface;
@@ -34,21 +35,21 @@ class AccessMiddleware implements MiddlewareInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    /** @var string[] */
-    private $tables;
+    /** @var TableIdentifier */
+    private $tableResource;
 
     public function __construct(
         ?AuthenticationInterface $auth,
         string $redirect,
         AclInterface $acl,
-        array $tables,
+        TableIdentifier $tableResource,
         TemplateRendererInterface $renderer
     ) {
         $this->acl = $acl;
         $this->auth = $auth;
         $this->redirect = $redirect;
         $this->renderer = $renderer;
-        $this->tables = $tables;
+        $this->tableResource = $tableResource;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -64,11 +65,11 @@ class AccessMiddleware implements MiddlewareInterface
             } else {
                 // return $this->auth->unauthorizedResponse($request);
 
-                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
             }
         }
 
-        $resources = DataModel::getResources($adapter, $this->tables['resource']);
+        $resources = DataModel::getResources($adapter, $this->tableResource);
         $homepages = array_values(array_filter($resources, function (Resource $resource) use ($user) {
             return preg_match('/^home-.+$/', $resource->name) === 1
                 && $this->acl->isAllowed($user->getIdentity(), $resource->name);

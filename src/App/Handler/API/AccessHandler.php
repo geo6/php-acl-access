@@ -9,6 +9,7 @@ use App\Middleware\DbMiddleware;
 use ErrorException;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,20 +17,23 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class AccessHandler implements RequestHandlerInterface
 {
-    /** @var string */
-    private $table;
-
-    /** @var string */
+    /** @var TableIdentifier */
     private $tableResource;
 
-    /** @var string */
+    /** @var TableIdentifier */
     private $tableRole;
 
-    public function __construct(string $table, string $tableResource, string $tableRole)
-    {
-        $this->table = $table;
+    /** @var TableIdentifier */
+    private $tableRoleResource;
+
+    public function __construct(
+        TableIdentifier $tableResource,
+        TableIdentifier $tableRole,
+        TableIdentifier $tableRoleResource
+    ) {
         $this->tableResource = $tableResource;
         $this->tableRole = $tableRole;
+        $this->tableRoleResource = $tableRoleResource;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -62,7 +66,7 @@ class AccessHandler implements RequestHandlerInterface
 
     private function get(Adapter $adapter, ?string $type, ?int $id): array
     {
-        $objects = DataModel::getRolesResources($adapter, $this->table, $this->tableResource, $this->tableRole);
+        $objects = DataModel::getRolesResources($adapter, $this->tableRoleResource, $this->tableResource, $this->tableRole);
 
         if (!is_null($type) && !is_null($id)) {
             $objects = array_filter($objects, function ($object) use ($type, $id) {
@@ -85,7 +89,7 @@ class AccessHandler implements RequestHandlerInterface
     {
         $sql = new Sql($adapter);
 
-        $delete = $sql->delete($this->table);
+        $delete = $sql->delete($this->tableRoleResource);
 
         if ($type === 'resource') {
             $delete->where->equalTo('id_resource', $id);
@@ -107,7 +111,7 @@ class AccessHandler implements RequestHandlerInterface
         });
 
         foreach ($allow as $key => $value) {
-            $insert = $sql->insert($this->table);
+            $insert = $sql->insert($this->tableRoleResource);
 
             if ($type === 'resource' && preg_match('/^role\[(\d+)\]$/', $key, $matches) === 1) {
                 $insert->values([

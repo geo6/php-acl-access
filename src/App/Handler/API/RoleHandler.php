@@ -7,11 +7,12 @@ namespace App\Handler\API;
 use App\DataModel;
 use App\Model\Role;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
 class RoleHandler extends DefaultHandler
 {
-    public function __construct(string $table)
+    public function __construct(TableIdentifier $table)
     {
         $this->init(
             $table,

@@ -10,6 +10,7 @@ use ArrayObject;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
@@ -23,13 +24,30 @@ class RolesHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    /** @var ArrayObject */
-    private $tables;
+    /** @var TableIdentifier */
+    private $tableResource;
 
-    public function __construct(TemplateRendererInterface $renderer, ArrayObject $tables)
-    {
+    /** @var TableIdentifier */
+    private $tableRole;
+
+    /** @var TableIdentifier */
+    private $tableUser;
+
+    /** @var TableIdentifier */
+    private $tableUserRole;
+
+    public function __construct(
+        TemplateRendererInterface $renderer,
+        TableIdentifier $tableResource,
+        TableIdentifier $tableRole,
+        TableIdentifier $tableUser,
+        TableIdentifier $tableUserRole
+    ) {
         $this->renderer = $renderer;
-        $this->tables = $tables;
+        $this->tableResource = $tableResource;
+        $this->tableRole = $tableRole;
+        $this->tableUser = $tableUser;
+        $this->tableUserRole = $tableUserRole;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -47,14 +65,14 @@ class RolesHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/roles',
             [
-                'roles'     => DataModel::getRoles($adapter, $this->tables->role),
-                'resources' => DataModel::getResources($adapter, $this->tables->resource),
-                'users'     => self::getUsersByRole($adapter, $this->tables->user_role, $this->tables->user),
+                'roles'     => DataModel::getRoles($adapter, $this->tableRole),
+                'resources' => DataModel::getResources($adapter, $this->tableResource),
+                'users'     => self::getUsersByRole($adapter, $this->tableUserRole, $this->tableUser),
             ]
         ));
     }
 
-    private static function getUsersByRole(Adapter $adapter, string $tableUserRole, string $tableUser): array
+    private static function getUsersByRole(Adapter $adapter, TableIdentifier $tableUserRole, TableIdentifier $tableUser): array
     {
         $sql = new Sql($adapter);
 

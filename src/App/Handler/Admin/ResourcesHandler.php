@@ -7,6 +7,7 @@ namespace App\Handler\Admin;
 use App\DataModel;
 use App\Middleware\DbMiddleware;
 use ArrayObject;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
@@ -20,13 +21,17 @@ class ResourcesHandler implements RequestHandlerInterface
     /** @var TemplateRendererInterface */
     private $renderer;
 
-    /** @var ArrayObject */
-    private $tables;
+    /** @var TableIdentifier */
+    private $tableResource;
 
-    public function __construct(TemplateRendererInterface $renderer, ArrayObject $tables)
+    /** @var TableIdentifier */
+    private $tableRole;
+
+    public function __construct(TemplateRendererInterface $renderer, TableIdentifier $tableResource, TableIdentifier $tableRole)
     {
         $this->renderer = $renderer;
-        $this->tables = $tables;
+        $this->tableResource = $tableResource;
+        $this->tableRole = $tableRole;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -44,8 +49,8 @@ class ResourcesHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/resources',
             [
-                'resources' => DataModel::getResources($adapter, $this->tables->resource),
-                'roles'     => DataModel::getRoles($adapter, $this->tables->role),
+                'resources' => DataModel::getResources($adapter, $this->tableResource),
+                'roles'     => DataModel::getRoles($adapter, $this->tableRole),
             ]
         ));
     }

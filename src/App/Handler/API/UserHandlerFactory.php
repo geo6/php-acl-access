@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\API;
 
+use Laminas\Db\Sql\TableIdentifier;
 use Psr\Container\ContainerInterface;
 
 class UserHandlerFactory
@@ -12,6 +13,10 @@ class UserHandlerFactory
     {
         $config = $container->get('config');
 
-        return new UserHandler($config['tables']['user'], $config['tables']['role'], $config['tables']['user_role']);
+        return new UserHandler(
+            new TableIdentifier($config['database']['tables']['user'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['role'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['user_role'], $config['database']['schema'])
+        );
     }
 }
