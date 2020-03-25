@@ -24,22 +24,18 @@ class AccessMiddlewareFactory
         $authentication = $container->has(AuthenticationInterface::class) ?
             $container->get(AuthenticationInterface::class) : null;
 
-        if (isset($config['authentication']['pdo']) && null === $authentication) {
-            throw new InvalidConfigException(
-                'AuthenticationInterface service is missing'
-            );
-        }
-
         $router = $container->get(RouterInterface::class);
         $redirect = $router->generateUri($config['authentication']['redirect']);
-
-        $acl = new Permissions($config['authentication']['pdo'] ?? null, $config['authorization'], $config['database']['tables']);
 
         return new AccessMiddleware(
             $authentication,
             $redirect,
-            $acl,
+            $config['authorization'],
             new TableIdentifier($config['database']['tables']['resource'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['role'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['user'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['role_resource'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['user_role'], $config['database']['schema']),
             $container->get(TemplateRendererInterface::class)
         );
     }

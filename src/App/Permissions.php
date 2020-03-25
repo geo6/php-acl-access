@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App;
 
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Exception\ExceptionInterface as AclExceptionInterface;
 use Mezzio\Authentication\Exception as AuthenticationException;
@@ -12,171 +16,112 @@ use PDOException;
 
 class Permissions extends Acl
 {
-    private $pdo;
+    /** @var Adapter */
+    private $adapter;
 
-    public function __construct(?array $pdo, array $configAuth, ?array $configTables = null)
-    {
-        if (!is_null($pdo)) {
-            $this->pdo = self::connect($pdo);
+    /** @var TableIdentifier */
+    private $tableResource;
 
-            $this->injectUsersRoles($pdo);
-            $this->injectResources($configTables);
-            $this->injectPermissions($configTables);
-        }
+    /** @var TableIdentifier */
+    private $tableRole;
 
-        $this->injectConfigRoles($configAuth['roles'] ?? []);
-        $this->injectConfigResources($configAuth['resources'] ?? []);
-        $this->injectConfigPermissions($configAuth['allow'] ?? [], 'allow');
-        $this->injectConfigPermissions($configAuth['deny'] ?? [], 'deny');
-    }
+    /** @var TableIdentifier */
+    private $tableUser;
 
-    /**
-     * Create PDO connection.
-     */
-    private static function connect(array $config): PDO
-    {
-        if (!isset($config['dsn'])) {
-            throw new AuthenticationException\InvalidConfigException(
-                'The PDO DSN value is missing in the configuration'
-            );
-        }
-        if (!isset($config['table'])) {
-            throw new AuthenticationException\InvalidConfigException(
-                'The PDO table name is missing in the configuration'
-            );
-        }
-        if (!isset($config['field']['identity'])) {
-            throw new AuthenticationException\InvalidConfigException(
-                'The PDO identity field is missing in the configuration'
-            );
-        }
-        if (!isset($config['field']['password'])) {
-            throw new AuthenticationException\InvalidConfigException(
-                'The PDO password field is missing in the configuration'
-            );
-        }
+    /** @var TableIdentifier */
+    private $tableRoleResource;
 
-        return new PDO(
-            $config['dsn'],
-            $config['username'] ?? null,
-            $config['password'] ?? null
-        );
+    /** @var TableIdentifier */
+    private $tableUserRole;
+
+    public function __construct(
+        array $configAuthorization,
+        Adapter $adapter,
+        TableIdentifier $tableResource,
+        TableIdentifier $tableRole,
+        TableIdentifier $tableUser,
+        TableIdentifier $tableRoleResource,
+        TableIdentifier $tableUserRole
+    ) {
+        $this->adapter = $adapter;
+
+        $this->tableResource = $tableResource;
+        $this->tableRole = $tableRole;
+        $this->tableUser = $tableUser;
+        $this->tableRoleResource = $tableRoleResource;
+        $this->tableUserRole = $tableUserRole;
+
+        $this->injectUsersRoles();
+        $this->injectResources();
+        $this->injectPermissions();
+
+        $this->injectConfigRoles($configAuthorization['roles'] ?? []);
+        $this->injectConfigResources($configAuthorization['resources'] ?? []);
+        $this->injectConfigPermissions($configAuthorization['allow'] ?? [], 'allow');
+        $this->injectConfigPermissions($configAuthorization['deny'] ?? [], 'deny');
     }
 
     /**
      * Add User and Role from database.
      */
-    private function injectUsersRoles(array $config): void
+    private function injectUsersRoles(): void
     {
-        $sqlUser = sprintf(
-            'SELECT %s FROM %s',
-            $config['field']['identity'],
-            $config['table']
-        );
-        $stmtUser = $this->pdo->prepare($sqlUser);
+        $sql = new Sql($this->adapter);
 
-        if (false === $stmtUser) {
-            throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch user details from '.
-                    'the repository; please verify your configuration'
-            );
-        }
+        $select = $sql->select(['ur' => $this->tableUserRole]);
+        $select->columns([]);
+        $select->join(['u' => $this->tableUser], 'u.id = ur.id_user', ['login']);
+        $select->join(['r' => $this->tableRole], 'r.id = ur.id_role', ['roles' => new Expression('to_json(array_agg(name))')]);
+        $select->group('u.login');
 
-        $stmtUser->execute();
+        $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
-        foreach ($stmtUser->fetchAll(PDO::FETCH_NUM) as $user) {
-            if (!isset($config['sql_get_roles'])) {
-                $this->addRole($user);
-            } else {
-                if (false === strpos($config['sql_get_roles'], ':identity')) {
-                    throw new AuthenticationException\InvalidConfigException(
-                        'The sql_get_roles configuration setting must include an :identity parameter'
-                    );
+        foreach ($result as $r) {
+            $roles = json_decode($r->roles);
+
+            foreach ($roles as $role) {
+                if (!$this->hasRole($role)) {
+                    $this->addRole($role);
                 }
-
-                try {
-                    $stmtRoles = $this->pdo->prepare($config['sql_get_roles']);
-                } catch (PDOException $e) {
-                    throw new AuthenticationException\RuntimeException(sprintf(
-                        'Error preparing retrieval of user roles: %s',
-                        $e->getMessage()
-                    ));
-                }
-
-                if (false === $stmtRoles) {
-                    throw new AuthenticationException\RuntimeException(sprintf(
-                        'Error preparing retrieval of user roles: unknown error'
-                    ));
-                }
-
-                $stmtRoles->bindParam(':identity', $user[0]);
-
-                if (!$stmtRoles->execute()) {
-                    $this->addRole($user[0], []);
-                }
-
-                $roles = [];
-                foreach ($stmtRoles->fetchAll(PDO::FETCH_NUM) as $role) {
-                    $roles[] = $role[0];
-                    if (!$this->hasRole($role[0])) {
-                        $this->addRole($role[0]);
-                    }
-                }
-
-                $this->addRole($user[0], $roles);
             }
+
+            $this->addRole($r->login, $roles);
         }
     }
 
     /**
      * Add Resources from database.
      */
-    private function injectResources(array $tables): void
+    private function injectResources(): void
     {
-        $sqlResource = sprintf(
-            'SELECT "name" FROM %s',
-            $tables['resource']
-        );
-        $stmtResource = $this->pdo->prepare($sqlResource);
+        $sql = new Sql($this->adapter);
 
-        if (false === $stmtResource) {
-            throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch resources details from '.
-                    'the repository; please verify your configuration'
-            );
-        }
+        $select = $sql->select(['r' => $this->tableResource]);
+        $select->columns(['name']);
 
-        $stmtResource->execute();
+        $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
-        foreach ($stmtResource->fetchAll(PDO::FETCH_NUM) as $resource) {
-            $this->addResource($resource[0]);
+        foreach ($result as $r) {
+            $this->addResource($r->name);
         }
     }
 
     /**
      * Add Allow/Deny permission from database.
      */
-    private function injectPermissions(array $tables): void
+    private function injectPermissions(): void
     {
-        $sql = sprintf(
-            'SELECT ro."name", re."name" FROM %s rr JOIN %s ro ON rr."id_role" = ro."id" JOIN %s re ON rr."id_resource" = re."id"',
-            $tables['role_resource'],
-            $tables['role'],
-            $tables['resource']
-        );
-        $stmt = $this->pdo->prepare($sql);
+        $sql = new Sql($this->adapter);
 
-        if (false === $stmt) {
-            throw new AuthenticationException\RuntimeException(
-                'An error occurred when preparing to fetch roles/resources details from '.
-                    'the repository; please verify your configuration'
-            );
-        }
+        $select = $sql->select(['rr' => $this->tableRoleResource]);
+        $select->columns([]);
+        $select->join(['re' => $this->tableResource], 're.id = rr.id_resource', ['resource' => 'name']);
+        $select->join(['ro' => $this->tableRole], 'ro.id = rr.id_role', ['role' => 'name']);
 
-        $stmt->execute();
+        $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
-        foreach ($stmt->fetchAll(PDO::FETCH_NUM) as $rr) {
-            $this->allow($rr[0], $rr[1]);
+        foreach ($result as $r) {
+            $this->allow($r->role, $r->resource);
         }
     }
 
