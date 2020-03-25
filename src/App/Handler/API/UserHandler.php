@@ -9,6 +9,7 @@ use App\Model\User;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 
@@ -91,13 +92,19 @@ class UserHandler extends DefaultHandler
 
     private static function updateRoles(Adapter $adapter, TableIdentifier $table, int $id, array $roles): void
     {
-        $adapter->query(sprintf('DELETE FROM %s WHERE id_user = ?', $table), [$id]);
+        $sql = new Sql($adapter);
+
+        $delete = $sql->delete($table);
+        $delete->where->equalTo('id_user', $id);
+
+        $adapter->query($sql->buildSqlString($delete), $adapter::QUERY_MODE_EXECUTE);
 
         foreach ($roles as $roleId) {
-            $adapter->query(
-                sprintf('INSERT INTO %s (id_user, id_role) VALUES (?, ?)', $table),
-                [$id, $roleId]
-            );
+            $insert = $sql->insert($table);
+            $insert->columns(['id_user', 'id_role']);
+            $insert->values([$id, $roleId]);
+
+            $adapter->query($sql->buildSqlString($insert), $adapter::QUERY_MODE_EXECUTE);
         }
     }
 }
