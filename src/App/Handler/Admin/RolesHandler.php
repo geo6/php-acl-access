@@ -6,7 +6,6 @@ namespace App\Handler\Admin;
 
 use App\DataModel;
 use App\Middleware\DbMiddleware;
-use ArrayObject;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;

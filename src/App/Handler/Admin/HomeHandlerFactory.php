@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Handler\Admin;
 
-use ArrayObject;
 use Laminas\Db\Sql\TableIdentifier;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;

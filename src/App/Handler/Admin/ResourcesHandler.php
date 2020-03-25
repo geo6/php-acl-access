@@ -6,7 +6,6 @@ namespace App\Handler\Admin;
 
 use App\DataModel;
 use App\Middleware\DbMiddleware;
-use ArrayObject;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;

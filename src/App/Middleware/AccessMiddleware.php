@@ -65,7 +65,7 @@ class AccessMiddleware implements MiddlewareInterface
             } else {
                 // return $this->auth->unauthorizedResponse($request);
 
-                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
             }
         }
 
