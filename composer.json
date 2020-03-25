@@ -5,8 +5,7 @@
     "license": "",
     "require": {
         "php": "^7.1",
-        "geo6/zend-acl-postgresql": "dev-master",
-        "geo6/zend-log-filesystem": "dev-master",
+        "geo6/laminas-log-filesystem": "^2.0",
         "hackzilla/password-generator": "^1.4",
         "ircmaxell/random-lib": "^1.2",
         "laminas/laminas-component-installer": "^2.1.1",
@@ -18,6 +17,7 @@
         "laminas/laminas-hydrator": "^3.0",
         "laminas/laminas-i18n": "^2.9",
         "laminas/laminas-mail": "^2.10",
+        "laminas/laminas-permissions-acl": "^2.7",
         "laminas/laminas-servicemanager": "^3.3",
         "laminas/laminas-stdlib": "^3.1",
         "mezzio/mezzio": "^3.0.1",

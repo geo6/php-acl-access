@@ -6,7 +6,7 @@ namespace App\Handler\API;
 
 use App\DataModel;
 use App\Model\Role;
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
@@ -31,7 +31,8 @@ class RoleHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'New role "{role}" created.',
             ['role' => $role->name],
-            Logger::NOTICE
+            Logger::NOTICE,
+            $this->request
         );
 
         return $role;
@@ -45,7 +46,8 @@ class RoleHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'Role "{role}" deleted.',
             ['role' => $role->name],
-            Logger::WARN
+            Logger::WARN,
+            $this->request
         );
 
         return $role;

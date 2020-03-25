@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\Exception;
 
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Laminas\Log\Logger;
 
 abstract class AbstractException extends \Exception

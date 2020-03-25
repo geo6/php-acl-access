@@ -65,9 +65,9 @@
                 {{ record.message }}
             </td>
             <td class="align-middle text-nowrap">
-                {% if record.extra.username is defined %}
+                {% if record.extra._identity is defined %}
                 <i class="fas fa-user"></i>
-                {{ record.extra.username }}
+                {{ record.extra._identity }}
                 {% endif %}
             </td>
             <td class="align-middle text-nowrap text-info">

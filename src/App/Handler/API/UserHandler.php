@@ -6,7 +6,7 @@ namespace App\Handler\API;
 
 use App\DataModel;
 use App\Model\User;
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
 use Laminas\Db\Adapter\Adapter;
@@ -65,7 +65,8 @@ class UserHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'New user "{username}" created.',
             ['username' => $user->login],
-            Logger::NOTICE
+            Logger::NOTICE,
+            $this->request
         );
 
         return $user;
@@ -92,7 +93,8 @@ class UserHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'User "{username}" deleted.',
             ['username' => $user->login],
-            Logger::WARN
+            Logger::WARN,
+            $this->request
         );
 
         return $user;

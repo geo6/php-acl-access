@@ -6,7 +6,7 @@ namespace App\Handler\API;
 
 use App\DataModel;
 use App\Model\Resource;
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
@@ -31,7 +31,8 @@ class ResourceHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'New resource "{resource}" created.',
             ['resource' => $resource->name],
-            Logger::NOTICE
+            Logger::NOTICE,
+            $this->request
         );
 
         return $resource;
@@ -45,7 +46,8 @@ class ResourceHandler extends DefaultHandler
             sprintf('data/log/%s.log', date('Ym')),
             'Resource "{resource}" deleted.',
             ['resource' => $resource->name],
-            Logger::WARN
+            Logger::WARN,
+            $this->request
         );
 
         return $resource;

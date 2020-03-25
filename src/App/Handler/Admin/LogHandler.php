@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler\Admin;
 
-use Geo6\Zend\Log\Log;
+use Geo6\Laminas\Log\Log;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;

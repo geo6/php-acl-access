@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff82d286c8019115fffcdb683567f927",
+    "content-hash": "7d3490fad9a40e39c5f692005f7e210b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -145,54 +145,17 @@
             "time": "2020-02-05T20:36:27+00:00"
         },
         {
-            "name": "geo6/zend-acl-postgresql",
-            "version": "dev-master",
+            "name": "geo6/laminas-log-filesystem",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/geo6/zend-acl-postgresql.git",
-                "reference": "3c36a9e3595d1bd2afe3932986b371ecf1e7b031"
+                "url": "https://github.com/geo6/laminas-log-filesystem.git",
+                "reference": "26c5ee007823fc2061c3b854293bcc4e49060171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geo6/zend-acl-postgresql/zipball/3c36a9e3595d1bd2afe3932986b371ecf1e7b031",
-                "reference": "3c36a9e3595d1bd2afe3932986b371ecf1e7b031",
-                "shasum": ""
-            },
-            "require": {
-                "geo6/zend-log-filesystem": "dev-master",
-                "zendframework/zend-authentication": "^2.5",
-                "zendframework/zend-db": "^2.9",
-                "zendframework/zend-permissions-acl": "^2.6",
-                "zendframework/zend-session": "^2.8"
-            },
-            "require-dev": {
-                "squizlabs/php_codesniffer": "^3.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Geo6\\Zend\\Permissions\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "description": "Zend Permissions ACL with PostgreSQL",
-            "time": "2019-10-18T08:49:36+00:00"
-        },
-        {
-            "name": "geo6/zend-log-filesystem",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/geo6/zend-log-filesystem.git",
-                "reference": "9aa0be0bcf8d75da39667fa1ef93875a5f624ad9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/geo6/zend-log-filesystem/zipball/9aa0be0bcf8d75da39667fa1ef93875a5f624ad9",
-                "reference": "9aa0be0bcf8d75da39667fa1ef93875a5f624ad9",
+                "url": "https://api.github.com/repos/geo6/laminas-log-filesystem/zipball/26c5ee007823fc2061c3b854293bcc4e49060171",
+                "reference": "26c5ee007823fc2061c3b854293bcc4e49060171",
                 "shasum": ""
             },
             "require": {
@@ -200,20 +163,24 @@
                 "laminas/laminas-authentication": "^2.5",
                 "laminas/laminas-dependency-plugin": "^1.0",
                 "laminas/laminas-log": "^2.9",
-                "laminas/laminas-session": "^2.8"
+                "laminas/laminas-session": "^2.8",
+                "psr/http-message": "^1.0"
+            },
+            "replace": {
+                "geo6/zend-log-filesystem": "self.version"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Geo6\\Zend\\Log\\": "src/"
+                    "Geo6\\Laminas\\Log\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0-or-later"
             ],
-            "description": "Zend Log stored in a file",
-            "time": "2020-03-05T09:18:54+00:00"
+            "description": "Laminas Log stored in a file",
+            "time": "2020-03-25T16:52:45+00:00"
         },
         {
             "name": "hackzilla/password-generator",
@@ -6071,8 +6038,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "geo6/zend-acl-postgresql": 20,
-        "geo6/zend-log-filesystem": 20,
         "mtymek/blast-base-url": 20,
         "roave/security-advisories": 20
     },

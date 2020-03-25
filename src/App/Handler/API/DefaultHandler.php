@@ -29,6 +29,9 @@ abstract class DefaultHandler implements RequestHandlerInterface
     /** @var string */
     protected $class;
 
+    /** @var ServerRequestInterface */
+    protected $request;
+
     public function init(TableIdentifier $table, SequenceFeature $sequenceFeature, string $class)
     {
         $this->table = $table;
@@ -46,6 +49,8 @@ abstract class DefaultHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $adapter = $request->getAttribute(DbMiddleware::class);
+
+        $this->request = $request;
 
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
