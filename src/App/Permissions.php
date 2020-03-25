@@ -11,8 +11,6 @@ use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Exception\ExceptionInterface as AclExceptionInterface;
 use Mezzio\Authentication\Exception as AuthenticationException;
-use PDO;
-use PDOException;
 
 class Permissions extends Acl
 {

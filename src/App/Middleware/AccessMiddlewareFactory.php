@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Permissions;
 use Laminas\Db\Sql\TableIdentifier;
 use Mezzio\Authentication\AuthenticationInterface;
-use Mezzio\Authentication\Exception\InvalidConfigException;
 use Mezzio\Router\RouterInterface;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
