@@ -53,10 +53,12 @@
             </td>
             <td>{{ role.priority }}</td>
             <td>
+                {% if users[role.id] | length > 0 %}
                 <a href="#" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="auto"
                     data-content="{{ users[role.id] | join(', ') }}" class="badge badge-pill badge-info">
                     {{ users[role.id] | length }}
                 </a>
+                {% endif %}
             </td>
             <td class="action">
                 <a role="button" href="#edit" title="Edit">
