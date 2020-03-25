@@ -66,21 +66,19 @@ class RolesHandler implements RequestHandlerInterface
             [
                 'roles'     => DataModel::getRoles($adapter, $this->tableRole),
                 'resources' => DataModel::getResources($adapter, $this->tableResource),
-                'users'     => self::getUsersByRole($adapter, $this->tableUserRole, $this->tableUser),
+                'users'     => $this->getUsersByRole($adapter),
             ]
         ));
     }
 
-    private static function getUsersByRole(Adapter $adapter, TableIdentifier $tableUserRole, TableIdentifier $tableUser): array
+    private function getUsersByRole(Adapter $adapter): array
     {
         $sql = new Sql($adapter);
 
-        $select = $sql->select(['ur' => $tableUserRole]);
-        $select->columns([
-            'id_role',
-        ]);
+        $select = $sql->select(['ur' => $this->tableUserRole]);
+        $select->columns(['id_role']);
         $select->join(
-            ['u' => $tableUser],
+            ['u' => $this->tableUser],
             'ur.id_user = u.id',
             [
                 '_users' => new Expression('to_json(array_agg(u.login ORDER BY login))'),
@@ -92,11 +90,18 @@ class RolesHandler implements RequestHandlerInterface
 
         $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
 
-        $roles = [];
+        $usersByRole = [];
         foreach ($result as $record) {
-            $roles[$record['id_role']] = json_decode($record['_users'], true);
+            $usersByRole[$record['id_role']] = json_decode($record['_users'], true);
         }
 
-        return $roles;
+        $roles = DataModel::getRoles($adapter, $this->tableRole);
+        foreach ($roles as $role) {
+            if (!isset($usersByRole[$role->id])) {
+                $usersByRole[$role->id] = [];
+            }
+        }
+
+        return $usersByRole;
     }
 }
