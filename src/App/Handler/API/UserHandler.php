@@ -6,12 +6,14 @@ namespace App\Handler\API;
 
 use App\DataModel;
 use App\Model\User;
+use Geo6\Zend\Log\Log;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
+use Laminas\Log\Logger;
 
 class UserHandler extends DefaultHandler
 {
@@ -59,6 +61,13 @@ class UserHandler extends DefaultHandler
             // To-Do: Update $user with roles!
         }
 
+        Log::write(
+            sprintf('data/log/%s.log', date('Ym')),
+            'New user "{username}" created.',
+            ['username' => $user->login],
+            Logger::NOTICE
+        );
+
         return $user;
     }
 
@@ -71,6 +80,20 @@ class UserHandler extends DefaultHandler
 
             // To-Do: Update $user with roles!
         }
+
+        return $user;
+    }
+
+    protected function delete(Adapter $adapter, $user): User
+    {
+        $user = parent::delete($adapter, $user);
+
+        Log::write(
+            sprintf('data/log/%s.log', date('Ym')),
+            'User "{username}" deleted.',
+            ['username' => $user->login],
+            Logger::WARN
+        );
 
         return $user;
     }
