@@ -8,6 +8,7 @@ use App\Middleware\DbMiddleware;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\RowGateway\RowGateway;
 use Laminas\Db\Sql\TableIdentifier;
+use Laminas\Db\TableGateway\Feature\FeatureSet;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -104,11 +105,17 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
     protected function insert(Adapter $adapter, array $data)
     {
-        $tableGateway = new TableGateway($this->table, $adapter, [
-            $this->sequenceFeature,
-        ]);
+        $tableGateway = new TableGateway(
+            $this->table,
+            $adapter,
+            new FeatureSet([
+                $this->sequenceFeature,
+            ])
+        );
 
-        $id = $tableGateway->insert($data);
+        $tableGateway->insert($data);
+
+        $id = $tableGateway->getLastInsertValue();
 
         $result = $tableGateway->select(['id' => $id])->toArray();
 
