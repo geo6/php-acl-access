@@ -29,12 +29,12 @@
             {% endif %}
 
             <div class="dropdown-divider"></div>
-            {% if acl.isAllowed(user.identity, 'admin.access') or acl.isAllowed(user.identity, 'admin.log') %}
+            {% if acl.isAllowed(user.identity, 'admin.access', 'read') or acl.isAllowed(user.identity, 'admin.log') %}
             <h6 class="dropdown-header">
                 <i class="fas fa-tools"></i>
                 ADMIN
             </h6>
-            {% if acl.isAllowed(user.identity, 'admin.access') %}
+            {% if acl.isAllowed(user.identity, 'admin.access', 'read') %}
             <a class="dropdown-item" href="{{ path('admin.access') }}">
                 <i class="fas fa-lock"></i>
                 {{ 'Access management' | trans }}
