@@ -28,7 +28,7 @@ class RoleHandler extends DefaultHandler
         $role = parent::insert($adapter, $data);
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'New role "{role}" created.',
             ['role' => $role->name],
             Logger::NOTICE,
@@ -43,7 +43,7 @@ class RoleHandler extends DefaultHandler
         $role = parent::delete($adapter, $role);
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'Role "{role}" deleted.',
             ['role' => $role->name],
             Logger::WARN,

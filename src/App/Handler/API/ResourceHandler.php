@@ -28,7 +28,7 @@ class ResourceHandler extends DefaultHandler
         $resource = parent::insert($adapter, $data);
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'New resource "{resource}" created.',
             ['resource' => $resource->name],
             Logger::NOTICE,
@@ -43,7 +43,7 @@ class ResourceHandler extends DefaultHandler
         $resource = parent::delete($adapter, $resource);
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'Resource "{resource}" deleted.',
             ['resource' => $resource->name],
             Logger::WARN,

@@ -62,7 +62,7 @@ class UserHandler extends DefaultHandler
         }
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'New user "{username}" created.',
             ['username' => $user->login],
             Logger::NOTICE,
@@ -90,7 +90,7 @@ class UserHandler extends DefaultHandler
         $user = parent::delete($adapter, $user);
 
         Log::write(
-            sprintf('data/log/%s.log', date('Ym')),
+            sprintf('data/log/%s-admin.log', date('Ym')),
             'User "{username}" deleted.',
             ['username' => $user->login],
             Logger::WARN,

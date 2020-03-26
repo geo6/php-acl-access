@@ -34,8 +34,11 @@ class LogHandler implements RequestHandlerInterface
         $year = $request->getAttribute('year');
         $month = $request->getAttribute('month');
 
-        $path = sprintf('data/log/%s%s.log', $year, $month);
-        $log = file_exists($path) && is_readable($path) ? Log::read($path) : null;
+        $path = sprintf('data/log/%s%s-login.log', $year, $month);
+        $logLogin = file_exists($path) && is_readable($path) ? Log::read($path) : null;
+
+        $path = sprintf('data/log/%s%s-admin.log', $year, $month);
+        $logAdmin = file_exists($path) && is_readable($path) ? Log::read($path) : null;
 
         $previous = self::getPrevious(intval($year), intval($month));
         while (!file_exists(self::getPath($previous['year'], $previous['month']))) {
@@ -61,7 +64,10 @@ class LogHandler implements RequestHandlerInterface
             'app::admin/log',
             [
                 'title'    => date('F Y', mktime(12, 0, 0, intval($month), 1, intval($year))),
-                'log'      => $log,
+                'log'      => [
+                    'admin' => $logAdmin,
+                    'login' => $logLogin,
+                ],
                 'previous' => $previous,
                 'next'     => $next,
             ]
@@ -96,6 +102,6 @@ class LogHandler implements RequestHandlerInterface
 
     private static function getPath(int $year, string $month): string
     {
-        return sprintf('data/log/%s%s.log', $year, $month);
+        return sprintf('data/log/%s%s-login.log', $year, $month);
     }
 }

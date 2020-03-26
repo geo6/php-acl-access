@@ -90,7 +90,7 @@ class LoginHandler implements RequestHandlerInterface
                 $user = $this->handleLoginAttempt($request, $reCAPTCHA !== false);
 
                 Log::write(
-                    sprintf('data/log/%s.log', date('Ym')),
+                    sprintf('data/log/%s-login.log', date('Ym')),
                     'Login successful ({username}).',
                     ['username' => $user->getIdentity()],
                     Logger::INFO,
@@ -178,7 +178,7 @@ class LoginHandler implements RequestHandlerInterface
         // Check CSRF
         $token = $query['__csrf'] ?? '';
         if (strlen($token) === 0 || !$guard->validateToken($token)) {
-            throw new CSRFException($query[$usernameField] ?? null);
+            throw new CSRFException($query[$usernameField] ?? null, 0, null, $request);
         }
 
         // Check reCAPTCHA
@@ -188,7 +188,7 @@ class LoginHandler implements RequestHandlerInterface
             $threshold = $this->config['reCAPTCHA']['threshold'] ?? 0.5;
 
             if ($response['success'] !== true || $response['score'] < $threshold) {
-                throw new ReCAPTCHAException($query[$usernameField] ?? null, $response['score'], $threshold);
+                throw new ReCAPTCHAException($query[$usernameField] ?? null, $response['score'], $threshold, 0, null, $request);
             }
         }
 
@@ -196,7 +196,7 @@ class LoginHandler implements RequestHandlerInterface
 
         // Login failed
         if (is_null($user)) {
-            throw new LoginException($query[$usernameField] ?? null);
+            throw new LoginException($query[$usernameField] ?? null, 0, null, $request);
         }
 
         $session->unset(self::REDIRECT_ATTRIBUTE);
@@ -224,27 +224,27 @@ class LoginHandler implements RequestHandlerInterface
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
-            $message = 'Issue(s) with reCAPTCHA request:'.PHP_EOL;
+            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
 
             foreach ($json['error-codes'] as $code) {
                 switch ($code) {
                     case 'missing-input-secret':
-                        $message .= 'The secret parameter is missing.'.PHP_EOL;
+                        $message .= 'The secret parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-secret':
-                        $message .= 'The secret parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'missing-input-response':
-                        $message .= 'The response parameter is missing.'.PHP_EOL;
+                        $message .= 'The response parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-response':
-                        $message .= 'The response parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'bad-request':
-                        $message .= 'The request is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'timeout-or-duplicate':
-                        $message .= 'The response is no longer valid: either is too old or has been used previously.'.PHP_EOL;
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
                         break;
                 }
             }
