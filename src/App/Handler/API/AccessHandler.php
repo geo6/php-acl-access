@@ -11,6 +11,8 @@ use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Permissions\Acl\AclInterface;
+use Mezzio\Authentication\UserInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -38,6 +40,14 @@ class AccessHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // Check access
+        $user = $request->getAttribute(UserInterface::class);
+        $acl = $request->getAttribute(AclInterface::class);
+        if ($acl->isAllowed($user->getIdentity(), 'admin.access', 'read') !== true) {
+            return new JsonResponse([], 403);
+        }
+
+        //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
         $type = $request->getAttribute('type');
@@ -50,7 +60,10 @@ class AccessHandler implements RequestHandlerInterface
 
                 return new JsonResponse($objects);
             case 'PUT':
-                if (!is_null($type) && !is_null($id)) {
+                if ($acl->isAllowed($user->getIdentity(), 'admin.access', 'write') !== true) {
+                    return new JsonResponse([], 403);
+                } elseif (!is_null($type) && !is_null($id)) {
+
                     $this->delete($adapter, $type, intval($id));
                     $this->insert($adapter, $type, intval($id), $data);
 

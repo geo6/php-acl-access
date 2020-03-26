@@ -36,22 +36,22 @@ use Psr\Container\ContainerInterface;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->route('/api/access/resources[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
-        Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Middleware\AccessMiddleware::class,
         App\Handler\API\ResourceHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.resources');
     $app->route('/api/access/roles[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
-        Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Middleware\AccessMiddleware::class,
         App\Handler\API\RoleHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.roles');
     $app->route('/api/access/users[/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
-        Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Middleware\AccessMiddleware::class,
         App\Handler\API\UserHandler::class,
     ], ['GET', 'POST', 'PUT', 'DELETE'], 'api.users');
     $app->route('/api/access/access[/{type:resource|role}/{id:\d+}]', [
         Mezzio\Session\SessionMiddleware::class,
-        Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Middleware\AccessMiddleware::class,
         App\Handler\API\AccessHandler::class,
     ], ['GET', 'PUT'], 'api.access');
 

@@ -20,26 +20,31 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% set disabled = not acl.isAllowed(user.identity, 'admin.access', 'write') %}
                         {% for resource in resources %}
                         <tr>
                             <td>{{ resource.name }}</td>
                             <td class="text-center">
-                                <input type="radio" name="resource[{{ resource.id }}]" value="1">
+                                <input type="radio" name="resource[{{ resource.id }}]" value="1"
+                                    {{ disabled ? 'disabled' }}>
                             </td>
                             <td class="text-center">
-                                <input type="radio" name="resource[{{ resource.id }}]" value="0" checked>
+                                <input type="radio" name="resource[{{ resource.id }}]" value="0"
+                                    {{ disabled ? 'disabled' }} checked>
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% if acl.isAllowed(user.identity, 'admin.access', 'write') %}
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="btn-update">
                     <i class="fas fa-save"></i>
                     Save
                 </button>
             </div>
+            {% endif %}
         </form>
     </div>
 </div>

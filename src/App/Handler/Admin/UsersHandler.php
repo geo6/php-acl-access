@@ -46,7 +46,7 @@ class UsersHandler implements RequestHandlerInterface
         // Check access
         $user = $request->getAttribute(UserInterface::class);
         $acl = $request->getAttribute(AclInterface::class);
-        if ($acl->isAllowed($user->getIdentity(), 'admin.access') !== true) {
+        if ($acl->isAllowed($user->getIdentity(), 'admin.access', 'read') !== true) {
             return new HtmlResponse($this->renderer->render('error::403'), 403);
         }
 

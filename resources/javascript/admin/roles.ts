@@ -30,30 +30,36 @@ import { submit as submitPermForm } from "./roles/permissions/form";
     });
 
   /**
-   * Range input
-   */
-  document
-    .querySelector("#inputPriority")
-    .addEventListener("change", (event: InputEvent) => {
-      const target = event.currentTarget as HTMLInputElement;
-
-      rangeOnChange(target);
-    });
-
-  /**
    * Create a new role
    */
-  document.getElementById("btn-create").addEventListener("click", () => {
-    const form = document.querySelector("#modal-role form") as HTMLFormElement;
+  if (document.getElementById("btn-create") !== null) {
+    document.getElementById("btn-create").addEventListener("click", () => {
+      const form = document.querySelector(
+        "#modal-role form"
+      ) as HTMLFormElement;
 
-    form.reset();
+      form.reset();
 
-    rangeOnChange(form.querySelector("input[name=priority]"));
+      rangeOnChange(form.querySelector("input[name=priority]"));
 
-    document.getElementById("btn-delete").setAttribute("hidden", "");
+      document.getElementById("btn-delete").setAttribute("hidden", "");
 
-    $("#modal-role").modal("show");
-  });
+      $("#modal-role").modal("show");
+    });
+  }
+
+  /**
+   * Range input
+   */
+  if (document.querySelector("#inputPriority") !== null) {
+    document
+      .querySelector("#inputPriority")
+      .addEventListener("change", (event: InputEvent) => {
+        const target = event.currentTarget as HTMLInputElement;
+
+        rangeOnChange(target);
+      });
+  }
 
   /**
    * Update a role
@@ -82,34 +88,38 @@ import { submit as submitPermForm } from "./roles/permissions/form";
   /**
    * Delete a role
    */
-  document.getElementById("btn-delete").addEventListener("click", () => {
-    if (
-      window.confirm("Are you sure you want to delete this role ?") === true
-    ) {
-      deleteRole(currentRoleId).then(() => {
-        currentRoleId = null;
+  if (document.getElementById("btn-delete") !== null) {
+    document.getElementById("btn-delete").addEventListener("click", () => {
+      if (
+        window.confirm("Are you sure you want to delete this role ?") === true
+      ) {
+        deleteRole(currentRoleId).then(() => {
+          currentRoleId = null;
 
-        document.location.reload();
-      });
-    }
-  });
+          document.location.reload();
+        });
+      }
+    });
+  }
 
   /**
    * Submit form
    */
-  document
-    .querySelector("#modal-role form")
-    .addEventListener("submit", (event: Event) => {
-      const target = event.currentTarget as HTMLFormElement;
+  if (document.querySelector("#modal-role form") !== null) {
+    document
+      .querySelector("#modal-role form")
+      .addEventListener("submit", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
 
-      event.preventDefault();
+        event.preventDefault();
 
-      submitForm(target, currentRoleId).then(() => {
-        currentRoleId = null;
+        submitForm(target, currentRoleId).then(() => {
+          currentRoleId = null;
 
-        document.location.reload();
+          document.location.reload();
+        });
       });
-    });
+  }
 
   /** Show permissions */
   document

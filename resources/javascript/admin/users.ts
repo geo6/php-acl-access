@@ -31,16 +31,20 @@ import { reset as resetForm, submit as submitForm } from "./users/form";
   /**
    * Create a new user
    */
-  document.getElementById("btn-create").addEventListener("click", () => {
-    const form = document.querySelector("#modal-user form") as HTMLFormElement;
+  if (document.getElementById("btn-create") !== null) {
+    document.getElementById("btn-create").addEventListener("click", () => {
+      const form = document.querySelector(
+        "#modal-user form"
+      ) as HTMLFormElement;
 
-    form.reset();
+      form.reset();
 
-    document.getElementById("btn-password").setAttribute("hidden", "");
-    document.getElementById("btn-delete").setAttribute("hidden", "");
+      document.getElementById("btn-password").setAttribute("hidden", "");
+      document.getElementById("btn-delete").setAttribute("hidden", "");
 
-    $("#modal-user").modal("show");
-  });
+      $("#modal-user").modal("show");
+    });
+  }
 
   /**
    * Update a user
@@ -72,43 +76,47 @@ import { reset as resetForm, submit as submitForm } from "./users/form";
   /**
    * Delete a user
    */
-  document.getElementById("btn-delete").addEventListener("click", () => {
-    if (
-      window.confirm("Are you sure you want to delete this user ?") === true
-    ) {
-      deleteUser(currentUserId).then(() => {
-        currentUserId = null;
+  if (document.getElementById("btn-delete") !== null) {
+    document.getElementById("btn-delete").addEventListener("click", () => {
+      if (
+        window.confirm("Are you sure you want to delete this user ?") === true
+      ) {
+        deleteUser(currentUserId).then(() => {
+          currentUserId = null;
 
-        document.location.reload();
-      });
-    }
-  });
-
-  /**
-   * Submit form
-   */
-  document
-    .querySelector("#modal-user form")
-    .addEventListener("submit", (event: Event) => {
-      const target = event.currentTarget as HTMLFormElement;
-
-      event.preventDefault();
-
-      submitForm(target, currentUserId).then(() => {
-        currentUserId = null;
-
-        document.location.reload();
-      });
+          document.location.reload();
+        });
+      }
     });
+  }
 
-  /**
-   * Reset form
-   */
-  document
-    .querySelector("#modal-user form")
-    .addEventListener("reset", (event: Event) => {
-      const target = event.currentTarget as HTMLFormElement;
+  if (document.querySelector("#modal-user form") !== null) {
+    /**
+     * Submit form
+     */
+    document
+      .querySelector("#modal-user form")
+      .addEventListener("submit", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
 
-      resetForm(target);
-    });
+        event.preventDefault();
+
+        submitForm(target, currentUserId).then(() => {
+          currentUserId = null;
+
+          document.location.reload();
+        });
+      });
+
+    /**
+     * Reset form
+     */
+    document
+      .querySelector("#modal-user form")
+      .addEventListener("reset", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
+
+        resetForm(target);
+      });
+  }
 })();

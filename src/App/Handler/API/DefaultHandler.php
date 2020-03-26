@@ -11,8 +11,11 @@ use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\FeatureSet;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
+use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Permissions\Acl\AclInterface;
+use Mezzio\Authentication\UserInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -48,6 +51,14 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // Check access
+        $user = $request->getAttribute(UserInterface::class);
+        $acl = $request->getAttribute(AclInterface::class);
+        if ($acl->isAllowed($user->getIdentity(), 'admin.access', 'write') !== true) {
+            return new JsonResponse(new stdClass(), 403);
+        }
+
+        //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
         $this->request = $request;

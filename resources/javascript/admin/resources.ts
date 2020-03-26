@@ -20,17 +20,19 @@ import { submit as submitPermForm } from "./resources/permissions/form";
   /**
    * Create a new resource
    */
-  document.getElementById("btn-create").addEventListener("click", () => {
-    const form = document.querySelector(
-      "#modal-resource form"
-    ) as HTMLFormElement;
+  if (document.getElementById("btn-create") !== null) {
+    document.getElementById("btn-create").addEventListener("click", () => {
+      const form = document.querySelector(
+        "#modal-resource form"
+      ) as HTMLFormElement;
 
-    form.reset();
+      form.reset();
 
-    document.getElementById("btn-delete").setAttribute("hidden", "");
+      document.getElementById("btn-delete").setAttribute("hidden", "");
 
-    $("#modal-resource").modal("show");
-  });
+      $("#modal-resource").modal("show");
+    });
+  }
 
   /**
    * Update a resource
@@ -59,34 +61,39 @@ import { submit as submitPermForm } from "./resources/permissions/form";
   /**
    * Delete a resource
    */
-  document.getElementById("btn-delete").addEventListener("click", () => {
-    if (
-      window.confirm("Are you sure you want to delete this resource ?") === true
-    ) {
-      deleteResource(currentResourceId).then(() => {
-        currentResourceId = null;
+  if (document.getElementById("btn-delete") !== null) {
+    document.getElementById("btn-delete").addEventListener("click", () => {
+      if (
+        window.confirm("Are you sure you want to delete this resource ?") ===
+        true
+      ) {
+        deleteResource(currentResourceId).then(() => {
+          currentResourceId = null;
 
-        document.location.reload();
-      });
-    }
-  });
+          document.location.reload();
+        });
+      }
+    });
+  }
 
   /**
    * Submit form
    */
-  document
-    .querySelector("#modal-resource form")
-    .addEventListener("submit", (event: Event) => {
-      const target = event.currentTarget as HTMLFormElement;
+  if (document.querySelector("#modal-resource form") !== null) {
+    document
+      .querySelector("#modal-resource form")
+      .addEventListener("submit", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
 
-      event.preventDefault();
+        event.preventDefault();
 
-      submitForm(target, currentResourceId).then(() => {
-        currentResourceId = null;
+        submitForm(target, currentResourceId).then(() => {
+          currentResourceId = null;
 
-        document.location.reload();
+          document.location.reload();
+        });
       });
-    });
+  }
 
   /**
    * Show permissions
