@@ -11,7 +11,6 @@ use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\FeatureSet;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
-use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Permissions\Acl\AclInterface;

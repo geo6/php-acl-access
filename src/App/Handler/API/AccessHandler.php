@@ -63,7 +63,6 @@ class AccessHandler implements RequestHandlerInterface
                 if ($acl->isAllowed($user->getIdentity(), 'admin.access', 'write') !== true) {
                     return new JsonResponse([], 403);
                 } elseif (!is_null($type) && !is_null($id)) {
-
                     $this->delete($adapter, $type, intval($id));
                     $this->insert($adapter, $type, intval($id), $data);
 
