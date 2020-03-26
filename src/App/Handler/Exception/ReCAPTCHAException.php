@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Handler\Exception;
 
 use Laminas\Log\Logger;
+use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class ReCAPTCHAException extends AbstractException
 {
@@ -22,7 +24,8 @@ class ReCAPTCHAException extends AbstractException
         ?float $score,
         float $threshold = 0.5,
         int $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null,
+        ?ServerRequestInterface $request = null
     ) {
         $this->username = $username;
         $this->score = $score;
@@ -30,7 +33,7 @@ class ReCAPTCHAException extends AbstractException
 
         parent::__construct('reCAPTCHA failed.', $code, $previous);
 
-        $this->log('Failed reCAPTCHA with a score of {score} ({username}).', Logger::CRIT);
+        $this->log('Failed reCAPTCHA with a score of {score} ({username}).', Logger::CRIT, $request);
     }
 
     public function getData(): array
