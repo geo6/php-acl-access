@@ -47,6 +47,7 @@ class ConfigProvider
                 'error'    => ['templates/error'],
                 'includes' => ['templates/includes'],
                 'layout'   => ['templates/layout'],
+                'mail'     => ['templates/mail'],
             ],
         ];
     }
