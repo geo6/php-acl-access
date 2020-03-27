@@ -13,6 +13,7 @@ use Laminas\Log\Logger;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Smtp as SmtpTransport;
 use Laminas\Mail\Transport\SmtpOptions;
+use Laminas\Mime;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Router\RouterInterface;
 use Mezzio\Template\TemplateRendererInterface;
@@ -56,9 +57,9 @@ class PasswordHandler implements RequestHandlerInterface
                 $uuid = $code->store(['email' => $to]);
 
                 $redirect = $this->router->generateUri('password.code', ['uuid' => $uuid]);
-                $url = 'http'.(isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '').'://'.$server['HTTP_HOST'].$redirect;
+                $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
 
-                self::sendEmail($this->config['mail'], $to, $user, $code->getCode(), $url);
+                $this->sendEmail($to, $user, $code->getCode(), $url);
 
                 Log::write(
                     sprintf('data/log/%s-login.log', date('Ym')),
@@ -68,7 +69,7 @@ class PasswordHandler implements RequestHandlerInterface
                     $request
                 );
 
-                return new RedirectResponse($redirect.'?'.http_build_query(['email' => $to]));
+                return new RedirectResponse($redirect . '?' . http_build_query(['email' => $to]));
             } else {
                 $error = true;
             }
@@ -82,17 +83,35 @@ class PasswordHandler implements RequestHandlerInterface
         ));
     }
 
-    private static function sendEmail(array $config, string $to, UserInterface $user, string $code, string $url): void
+    private function sendEmail(string $to, UserInterface $user, string $code, string $url): void
     {
+        $html = $this->renderer->render(
+            '@mail/password/code.html.twig',
+            [
+                'fullname' => $user->getDetail('fullname'),
+                'code' => $code,
+                'timeout' => (date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)),
+                'url' => $url,
+            ]
+        );
+
+        $bodyHtml = new Mime\Part($html);
+        $bodyHtml->setEncoding(Mime\Mime::ENCODING_QUOTEDPRINTABLE);
+        $bodyHtml->setType(Mime\Mime::TYPE_HTML);
+        $bodyHtml->setCharset('UTF-8');
+
+        $body = new Mime\Message();
+        $body->addPart($bodyHtml);
+
         $mail = new Message();
         $mail->setEncoding('UTF-8');
-        $mail->setBody('Code: '.$code.' ('.(date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)).')'.PHP_EOL.$url);
-        $mail->setFrom($config['from']);
+        $mail->setBody($body);
+        $mail->setFrom($this->config['mail']['from']);
         $mail->addTo($to, $user->getDetail('fullname'));
         $mail->setSubject('Account recovery - Verification code');
 
         $transport = new SmtpTransport();
-        $transport->setOptions(new SmtpOptions($config['smtp']));
+        $transport->setOptions(new SmtpOptions($this->config['mail']['smtp']));
         $transport->send($mail);
     }
 }
