@@ -12,6 +12,15 @@ return [
             Laminas\I18n\Translator\Translator::class => App\Twig\TranslatorFactory::class,
         ],
     ],
+    'templates' => [
+        'paths' => [
+            'app'      => ['templates/app'],
+            'error'    => ['templates/error'],
+            'includes' => ['templates/includes'],
+            'layout'   => ['templates/layout'],
+            'mail'     => ['templates/mail'],
+        ],
+    ],
     'twig' => [
         'extensions' => [
             App\Twig\TranslationExtension::class,
