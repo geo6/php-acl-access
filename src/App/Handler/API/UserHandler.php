@@ -89,7 +89,7 @@ class UserHandler extends DefaultHandler
             '@mail/account/create.html.twig',
             [
                 'fullname' => $user->fullname,
-                'login' => $user->login,
+                'login'    => $user->login,
                 'password' => $password,
             ]
         );

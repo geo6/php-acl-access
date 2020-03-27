@@ -45,7 +45,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
             $email = $params['email'] ?? null;
             $code = $params['code'] ?? null;
 
-            $path = RecoveryCode::DIRECTORY . '/' . $uuid;
+            $path = RecoveryCode::DIRECTORY.'/'.$uuid;
 
             if (file_exists($path) && is_readable($path)) {
                 $content = parse_ini_file($path);
