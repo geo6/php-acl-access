@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\API;
 
 use App\DataModel;
+use App\Mail;
 use App\Model\User;
 use Geo6\Laminas\Log\Log;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
@@ -14,17 +15,29 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Log\Logger;
+use Mezzio\Template\TemplateRendererInterface;
 
 class UserHandler extends DefaultHandler
 {
+    /** @var array */
+    private $configMail;
+
+    /** @var TemplateRendererInterface */
+    private $renderer;
+
     /** @var TableIdentifier */
     private $tableRole;
 
     /** @var TableIdentifier */
     private $tableUserRole;
 
-    public function __construct(TableIdentifier $tableUser, TableIdentifier $tableRole, TableIdentifier $tableUserRole)
-    {
+    public function __construct(
+        TableIdentifier $tableUser,
+        TableIdentifier $tableRole,
+        TableIdentifier $tableUserRole,
+        TemplateRendererInterface $renderer,
+        array $configMail
+    ) {
         $this->init(
             $tableUser,
             new SequenceFeature('id', 'users_id_seq'),
@@ -33,6 +46,9 @@ class UserHandler extends DefaultHandler
 
         $this->tableRole = $tableRole;
         $this->tableUserRole = $tableUserRole;
+
+        $this->configMail = $configMail;
+        $this->renderer = $renderer;
     }
 
     protected static function toArray($object): array
@@ -51,7 +67,11 @@ class UserHandler extends DefaultHandler
 
     protected function insert(Adapter $adapter, array $data): User
     {
-        $data['user']['password'] = password_hash(self::generatePassword(), PASSWORD_DEFAULT);
+        $server = $this->request->getServerParams();
+
+        $password = self::generatePassword();
+
+        $data['user']['password'] = password_hash($password, PASSWORD_DEFAULT);
 
         $user = parent::insert($adapter, $data['user']);
 
@@ -60,6 +80,19 @@ class UserHandler extends DefaultHandler
 
             // To-Do: Update $user with roles!
         }
+
+        Mail::send(
+            $this->configMail,
+            $this->renderer,
+            $user->email,
+            'Account created',
+            '@mail/account/create.html.twig',
+            [
+                'fullname' => $user->fullname,
+                'login' => $user->login,
+                'password' => $password,
+            ]
+        );
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
@@ -88,6 +121,17 @@ class UserHandler extends DefaultHandler
     protected function delete(Adapter $adapter, $user): User
     {
         $user = parent::delete($adapter, $user);
+
+        Mail::send(
+            $this->configMail,
+            $this->renderer,
+            $user->email,
+            'Account deleted',
+            '@mail/account/delete.html.twig',
+            [
+                'fullname' => $user->fullname,
+            ]
+        );
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
