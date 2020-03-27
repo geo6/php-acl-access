@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Mail;
 use App\RecoveryCode;
 use App\UserRepository;
 use Geo6\Laminas\Log\Log;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Log\Logger;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Smtp as SmtpTransport;
-use Laminas\Mail\Transport\SmtpOptions;
-use Laminas\Mime;
-use Mezzio\Authentication\UserInterface;
 use Mezzio\Template\TemplateRendererInterface;
 use PDO;
 use Psr\Http\Message\ResponseInterface;
@@ -65,7 +61,17 @@ class RecoveryCodeHandler implements RequestHandlerInterface
 
                         $to = (string) $user->getDetail($this->config['authentication']['pdo']['field']['email']);
 
-                        $this->sendEmail($to, $user, $password);
+                        Mail::send(
+                            $this->config['mail'],
+                            $this->renderer,
+                            $to,
+                            'Account recovery - New password',
+                            '@mail/password/reset.html.twig',
+                            [
+                                'fullname' => $user->getDetail('fullname'),
+                                'password' => $password,
+                            ]
+                        );
 
                         Log::write(
                             sprintf('data/log/%s-login.log', date('Ym')),
@@ -124,35 +130,5 @@ class RecoveryCodeHandler implements RequestHandlerInterface
         $stmt->execute();
 
         return $password;
-    }
-
-    private function sendEmail(string $to, UserInterface $user, string $password): void
-    {
-        $html = $this->renderer->render(
-            '@mail/password/reset.html.twig',
-            [
-                'fullname' => $user->getDetail('fullname'),
-                'password' => $password,
-            ]
-        );
-
-        $bodyHtml = new Mime\Part($html);
-        $bodyHtml->setEncoding(Mime\Mime::ENCODING_QUOTEDPRINTABLE);
-        $bodyHtml->setType(Mime\Mime::TYPE_HTML);
-        $bodyHtml->setCharset('UTF-8');
-
-        $body = new Mime\Message();
-        $body->addPart($bodyHtml);
-
-        $mail = new Message();
-        $mail->setEncoding('UTF-8');
-        $mail->setBody($body);
-        $mail->setFrom($this->config['mail']['from']);
-        $mail->addTo($to, $user->getDetail('fullname'));
-        $mail->setSubject('Account recovery - New password');
-
-        $transport = new SmtpTransport();
-        $transport->setOptions(new SmtpOptions($this->config['mail']['smtp']));
-        $transport->send($mail);
     }
 }

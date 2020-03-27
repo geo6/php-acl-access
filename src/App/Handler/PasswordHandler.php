@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Mail;
 use App\RecoveryCode;
 use App\UserRepository;
 use Geo6\Laminas\Log\Log;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Log\Logger;
-use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Smtp as SmtpTransport;
-use Laminas\Mail\Transport\SmtpOptions;
-use Laminas\Mime;
-use Mezzio\Authentication\UserInterface;
 use Mezzio\Router\RouterInterface;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -59,7 +55,19 @@ class PasswordHandler implements RequestHandlerInterface
                 $redirect = $this->router->generateUri('password.code', ['uuid' => $uuid]);
                 $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
 
-                $this->sendEmail($to, $user, $code->getCode(), $url);
+                Mail::send(
+                    $this->config['mail'],
+                    $this->renderer,
+                    $to,
+                    'Account recovery - Verification code',
+                    '@mail/password/code.html.twig',
+                    [
+                        'fullname' => $user->getDetail('fullname'),
+                        'code' => $code->getCode(),
+                        'timeout' => (date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)),
+                        'url' => $url,
+                    ]
+                );
 
                 Log::write(
                     sprintf('data/log/%s-login.log', date('Ym')),
@@ -81,37 +89,5 @@ class PasswordHandler implements RequestHandlerInterface
                 'error' => $error ?? false,
             ]
         ));
-    }
-
-    private function sendEmail(string $to, UserInterface $user, string $code, string $url): void
-    {
-        $html = $this->renderer->render(
-            '@mail/password/code.html.twig',
-            [
-                'fullname' => $user->getDetail('fullname'),
-                'code' => $code,
-                'timeout' => (date('d.m.Y H:i', time() + RecoveryCode::TIMEOUT)),
-                'url' => $url,
-            ]
-        );
-
-        $bodyHtml = new Mime\Part($html);
-        $bodyHtml->setEncoding(Mime\Mime::ENCODING_QUOTEDPRINTABLE);
-        $bodyHtml->setType(Mime\Mime::TYPE_HTML);
-        $bodyHtml->setCharset('UTF-8');
-
-        $body = new Mime\Message();
-        $body->addPart($bodyHtml);
-
-        $mail = new Message();
-        $mail->setEncoding('UTF-8');
-        $mail->setBody($body);
-        $mail->setFrom($this->config['mail']['from']);
-        $mail->addTo($to, $user->getDetail('fullname'));
-        $mail->setSubject('Account recovery - Verification code');
-
-        $transport = new SmtpTransport();
-        $transport->setOptions(new SmtpOptions($this->config['mail']['smtp']));
-        $transport->send($mail);
     }
 }
