@@ -28,7 +28,7 @@
         "mezzio/mezzio-session-ext": "^1.6",
         "mezzio/mezzio-twigrenderer": "^2.0",
         "mtymek/blast-base-url": "dev-master",
-        "ramsey/uuid": "^3.8"
+        "ramsey/uuid": "^4.0"
     },
     "require-dev": {
         "filp/whoops": "^2.1.12",
