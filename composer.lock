@@ -629,16 +629,16 @@
         },
         {
             "name": "laminas/laminas-config-aggregator",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-config-aggregator.git",
-                "reference": "ac742facfa367091c823ae44b2eed80d6d613d7a"
+                "reference": "20b9d5d801372ab4c7f5b3f7fbda8e447fdc2438"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/ac742facfa367091c823ae44b2eed80d6d613d7a",
-                "reference": "ac742facfa367091c823ae44b2eed80d6d613d7a",
+                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/20b9d5d801372ab4c7f5b3f7fbda8e447fdc2438",
+                "reference": "20b9d5d801372ab4c7f5b3f7fbda8e447fdc2438",
                 "shasum": ""
             },
             "require": {
@@ -648,7 +648,7 @@
                 "webimpress/safe-writer": "^1.0.2 || ^2.0.1"
             },
             "replace": {
-                "zendframework/zend-config-aggregator": "self.version"
+                "zendframework/zend-config-aggregator": "^1.2.0"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -684,7 +684,7 @@
                 "config-aggregator",
                 "laminas"
             ],
-            "time": "2020-03-21T19:01:21+00:00"
+            "time": "2020-03-29T12:04:04+00:00"
         },
         {
             "name": "laminas/laminas-db",
