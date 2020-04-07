@@ -85,10 +85,10 @@ class UsersHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render(
             'app::admin/users',
             [
-                'users' => $users,
-                'roles' => DataModel::getRoles($adapter, $this->tableRole),
+                'users'     => $users,
+                'roles'     => DataModel::getRoles($adapter, $this->tableRole),
                 'resources' => [
-                    'homepages' => $homepages,
+                    'homepages'    => $homepages,
                     'applications' => $applications,
                 ],
             ]
