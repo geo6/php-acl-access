@@ -97,6 +97,7 @@ class DataModel
             'login',
             'fullname',
             'email',
+            'redirect',
             '_roles' => $sql->select(['ur' => $tableUserRole])->columns([new Expression('to_json(array_agg(id_role))')])->where('ur.id_user = u.id'),
         ]);
         $select->order('login');

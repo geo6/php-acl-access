@@ -42,6 +42,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Role(s)</th>
+            <th>Redirect</th>
             <th colspan="2">Actions</th>
         </tr>
     </thead>
@@ -73,6 +74,14 @@
                 {% else %}
                 {{ role.name }}
                 {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                {% if u.redirect != null %}
+                <a target="_blank" href="{{ u.redirect.path }}" class="text-decoration-none">
+                    <i class="fas fa-cog"></i>
+                    {{ u.redirect.name }}
+                </a>
                 {% endif %}
             </td>
             <td class="action">

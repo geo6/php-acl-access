@@ -6,6 +6,8 @@ namespace App\Handler\Admin;
 
 use App\DataModel;
 use App\Middleware\DbMiddleware;
+use App\Model\Resource;
+use App\Model\User;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Permissions\Acl\AclInterface;
@@ -21,6 +23,9 @@ class UsersHandler implements RequestHandlerInterface
     private $renderer;
 
     /** @var TableIdentifier */
+    private $tableResource;
+
+    /** @var TableIdentifier */
     private $tableRole;
 
     /** @var TableIdentifier */
@@ -33,12 +38,14 @@ class UsersHandler implements RequestHandlerInterface
         TemplateRendererInterface $renderer,
         TableIdentifier $tableRole,
         TableIdentifier $tableUser,
-        TableIdentifier $tableUserRole
+        TableIdentifier $tableUserRole,
+        TableIdentifier $tableResource
     ) {
         $this->renderer = $renderer;
         $this->tableRole = $tableRole;
         $this->tableUser = $tableUser;
         $this->tableUserRole = $tableUserRole;
+        $this->tableResource = $tableResource;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -53,11 +60,37 @@ class UsersHandler implements RequestHandlerInterface
         //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
+        $resources = DataModel::getResources($adapter, $this->tableResource);
+        $homepages = array_filter($resources, function ($resource) {
+            return preg_match('/^home-.+$/', $resource->name) === 1;
+        });
+        $applications = array_filter($resources, function ($resource) {
+            return preg_match('/^home-.+$/', $resource->name) !== 1;
+        });
+
+        $users = DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole);
+        $users = array_map(
+            function (User $user) use ($resources) {
+                if (!is_null($user->redirect)) {
+                    $user->redirect = current(array_filter($resources, function (Resource $resource) use ($user) {
+                        return $user->redirect === $resource->id;
+                    }));
+                }
+
+                return $user;
+            },
+            $users
+        );
+
         return new HtmlResponse($this->renderer->render(
             'app::admin/users',
             [
-                'users' => DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole),
+                'users' => $users,
                 'roles' => DataModel::getRoles($adapter, $this->tableRole),
+                'resources' => [
+                    'homepages' => $homepages,
+                    'applications' => $applications,
+                ],
             ]
         ));
     }

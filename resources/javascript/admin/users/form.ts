@@ -21,6 +21,7 @@ export async function submit(form: HTMLFormElement, id: number): Promise<User> {
   user.email = data.get("email").toString();
   user.fullname = data.get("fullname").toString();
   user.login = data.get("login").toString();
+  user.redirect = parseInt(data.get("redirect").toString());
 
   const roles = [];
   data.getAll("roles[]").forEach((value: FormDataEntryValue) => {

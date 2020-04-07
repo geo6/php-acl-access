@@ -41,6 +41,22 @@
                             <label for="inputFullname">Fullname</label>
                             <input type="text" class="form-control" required id="inputFullname" name="fullname">
                         </div>
+                        <div class="form-group">
+                            <label for="selectRedirect">Redirect when logged in</label>
+                            <select class="form-control" required id="selectRedirect" name="redirect">
+                                <option>Default: Profile page</option>
+                                <optgroup label="Homepages">
+                                    {% for homepage in resources.homepages %}
+                                    <option value="{{ homepage.id }}">{{ homepage.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                                <optgroup label="Applications">
+                                    {% for application in resources.applications %}
+                                    <option value="{{ application.id }}">{{ application.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                         <ul class="list-group">

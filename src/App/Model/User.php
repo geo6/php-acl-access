@@ -12,6 +12,7 @@ class User implements JsonSerializable
     public $login;
     public $fullname;
     public $email;
+    public $redirect;
 
     protected $roles = [];
 
@@ -32,6 +33,7 @@ class User implements JsonSerializable
             'login'    => $this->login,
             'fullname' => $this->fullname,
             'email'    => $this->email,
+            'redirect' => $this->redirect,
             'roles'    => $this->getRoles(),
         ];
     }

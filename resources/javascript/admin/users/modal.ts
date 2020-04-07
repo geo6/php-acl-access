@@ -39,6 +39,12 @@ export function load(user: User): void {
   (form.querySelector("input[name='fullname']") as HTMLInputElement).value =
     user.fullname;
 
+  if (user.redirect !== null) {
+    (form.querySelector(
+      "select[name='redirect']"
+    ) as HTMLSelectElement).value = user.redirect.toString();
+  }
+
   user.roles.forEach((role: Role) => {
     const input = form.querySelector(
       `input[name='roles[]'][value='${role.id}']`

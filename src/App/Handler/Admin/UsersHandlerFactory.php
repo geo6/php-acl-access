@@ -19,6 +19,7 @@ class UsersHandlerFactory
             new TableIdentifier($config['database']['tables']['role'], $config['database']['schema']),
             new TableIdentifier($config['database']['tables']['user'], $config['database']['schema']),
             new TableIdentifier($config['database']['tables']['user_role'], $config['database']['schema']),
+            new TableIdentifier($config['database']['tables']['resource'], $config['database']['schema']),
         );
     }
 }
