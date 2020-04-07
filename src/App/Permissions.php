@@ -66,6 +66,7 @@ class Permissions extends Acl
     {
         $sql = new Sql($this->adapter);
 
+        // Add user(s) with role(s)
         $select = $sql->select(['ur' => $this->tableUserRole]);
         $select->columns([]);
         $select->join(['u' => $this->tableUser], 'u.id = ur.id_user', ['login']);
@@ -84,6 +85,19 @@ class Permissions extends Acl
             }
 
             $this->addRole($r->login, $roles);
+        }
+
+        // Add user(s) without role
+        $select = $sql->select(['u' => $this->tableUser]);
+        $select->columns(['login']);
+        $select->where->notIn('id', $sql->select(['ur' => $this->tableUserRole])->columns(['id_user']));
+
+        $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+
+        foreach ($result as $r) {
+            if (!$this->hasRole($r->login)) {
+                $this->addRole($r->login);
+            }
         }
     }
 
