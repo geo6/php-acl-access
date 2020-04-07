@@ -78,10 +78,18 @@
             </td>
             <td>
                 {% if u.redirect != null %}
+                {% if acl.isAllowed(u.login, u.redirect.name) %}
                 <a target="_blank" href="{{ u.redirect.path }}" class="text-decoration-none">
                     <i class="fas fa-cog"></i>
                     {{ u.redirect.name }}
                 </a>
+                {% else %}
+                <span class="text-danger" style="cursor: help;"
+                    title="Access denied to '{{ u.redirect.name }}' for user '{{ u.login }}'.">
+                    <i class="fas fa-lock"></i>
+                    {{ u.redirect.name }}
+                </span>
+                {% endif %}
                 {% endif %}
             </td>
             <td class="action">
