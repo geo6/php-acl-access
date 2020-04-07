@@ -8,6 +8,7 @@ use App\BruteForceProtection;
 use App\Handler\Exception\CSRFException;
 use App\Handler\Exception\LoginException;
 use App\Handler\Exception\ReCAPTCHAException;
+use App\Permissions;
 use DateInterval;
 use DateTime;
 use ErrorException;
@@ -78,8 +79,6 @@ class LoginHandler implements RequestHandlerInterface
             return new RedirectResponse($this->router->generateUri('login'));
         }
 
-        $redirect = $this->getRedirect($request, $session);
-
         $protection = new BruteForceProtection($request);
 
         $reCAPTCHA = ($protection->getCount() >= self::ENABLE_RECAPTCHA && !is_null($this->config['reCAPTCHA']) ? $this->config['reCAPTCHA']['key'] : false);
@@ -98,6 +97,8 @@ class LoginHandler implements RequestHandlerInterface
                 );
 
                 $protection->clear();
+
+                $redirect = $user->getDetail('redirect') ?? $this->router->generateUri('profile');
 
                 return new RedirectResponse($redirect);
             } catch (CSRFException $e) {
@@ -132,8 +133,8 @@ class LoginHandler implements RequestHandlerInterface
             }
         }
 
-        // Display initial login form
-        $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
+        // $redirect = $this->getRedirect($request, $session);
+        // $session->set(self::REDIRECT_ATTRIBUTE, $redirect);
 
         return new HtmlResponse($this->renderer->render('app::login', [
             '__csrf'    => $guard->generateToken(),
@@ -142,22 +143,22 @@ class LoginHandler implements RequestHandlerInterface
         ]));
     }
 
-    private function getRedirect(
-        ServerRequestInterface $request,
-        SessionInterface $session
-    ): string {
-        $redirect = $session->get(self::REDIRECT_ATTRIBUTE);
-        $user = $session->get(UserInterface::class);
+    // private function getRedirect(
+    //     ServerRequestInterface $request,
+    //     SessionInterface $session
+    // ): string {
+    //     $redirect = $session->get(self::REDIRECT_ATTRIBUTE);
+    //     $user = $session->get(UserInterface::class);
 
-        if (!$redirect) {
-            $redirect = $request->getHeaderLine('Referer');
-            if (in_array($redirect, ['', '/login'], true)) {
-                $redirect = $user['details']['redirect'] ?? $this->router->generateUri('profile');
-            }
-        }
+    //     if (!$redirect) {
+    //         $redirect = $request->getHeaderLine('Referer');
+    //         if (in_array($redirect, ['', '/login'], true)) {
+    //             $redirect = $user['details']['redirect'] ?? $this->router->generateUri('profile');
+    //         }
+    //     }
 
-        return $redirect;
-    }
+    //     return $redirect;
+    // }
 
     private function handleLoginAttempt(
         ServerRequestInterface $request,
@@ -224,27 +225,27 @@ class LoginHandler implements RequestHandlerInterface
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
-            $message = 'Issue(s) with reCAPTCHA request:'.PHP_EOL;
+            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
 
             foreach ($json['error-codes'] as $code) {
                 switch ($code) {
                     case 'missing-input-secret':
-                        $message .= 'The secret parameter is missing.'.PHP_EOL;
+                        $message .= 'The secret parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-secret':
-                        $message .= 'The secret parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'missing-input-response':
-                        $message .= 'The response parameter is missing.'.PHP_EOL;
+                        $message .= 'The response parameter is missing.' . PHP_EOL;
                         break;
                     case 'invalid-input-response':
-                        $message .= 'The response parameter is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'bad-request':
-                        $message .= 'The request is invalid or malformed.'.PHP_EOL;
+                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
                         break;
                     case 'timeout-or-duplicate':
-                        $message .= 'The response is no longer valid: either is too old or has been used previously.'.PHP_EOL;
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
                         break;
                 }
             }
