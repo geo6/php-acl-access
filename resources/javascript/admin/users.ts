@@ -17,7 +17,13 @@ import { reset as resetForm, submit as submitForm } from "./users/form";
 ((): void => {
   let currentUserId: number = null;
 
+  /**
+   * Initialize modal
+   */
   initModal();
+  $("#modal-user").on("hide.bs.modal", () => {
+    currentUserId = null;
+  });
 
   /**
    * Initialize popover

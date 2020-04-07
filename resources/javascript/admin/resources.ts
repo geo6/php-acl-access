@@ -18,6 +18,13 @@ import { submit as submitPermForm } from "./resources/permissions/form";
   let currentResourceId: number = null;
 
   /**
+   * Initialize modal
+   */
+  $("#modal-resource").on("hide.bs.modal", () => {
+    currentResourceId = null;
+  });
+
+  /**
    * Create a new resource
    */
   if (document.getElementById("btn-create") !== null) {

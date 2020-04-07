@@ -21,6 +21,13 @@ import { submit as submitPermForm } from "./roles/permissions/form";
   let currentRoleId: number = null;
 
   /**
+   * Initialize modal
+   */
+  $("#modal-role").on("hide.bs.modal", () => {
+    currentRoleId = null;
+  });
+
+  /**
    * Initialize popover
    */
   document
