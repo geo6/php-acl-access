@@ -8,7 +8,6 @@ use App\BruteForceProtection;
 use App\Handler\Exception\CSRFException;
 use App\Handler\Exception\LoginException;
 use App\Handler\Exception\ReCAPTCHAException;
-use App\Permissions;
 use DateInterval;
 use DateTime;
 use ErrorException;
@@ -225,27 +224,27 @@ class LoginHandler implements RequestHandlerInterface
         $json = json_decode((string) $response->getBody(), true);
 
         if (isset($json['error-codes']) && count($json['error-codes']) > 0) {
-            $message = 'Issue(s) with reCAPTCHA request:' . PHP_EOL;
+            $message = 'Issue(s) with reCAPTCHA request:'.PHP_EOL;
 
             foreach ($json['error-codes'] as $code) {
                 switch ($code) {
                     case 'missing-input-secret':
-                        $message .= 'The secret parameter is missing.' . PHP_EOL;
+                        $message .= 'The secret parameter is missing.'.PHP_EOL;
                         break;
                     case 'invalid-input-secret':
-                        $message .= 'The secret parameter is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The secret parameter is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'missing-input-response':
-                        $message .= 'The response parameter is missing.' . PHP_EOL;
+                        $message .= 'The response parameter is missing.'.PHP_EOL;
                         break;
                     case 'invalid-input-response':
-                        $message .= 'The response parameter is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The response parameter is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'bad-request':
-                        $message .= 'The request is invalid or malformed.' . PHP_EOL;
+                        $message .= 'The request is invalid or malformed.'.PHP_EOL;
                         break;
                     case 'timeout-or-duplicate':
-                        $message .= 'The response is no longer valid: either is too old or has been used previously.' . PHP_EOL;
+                        $message .= 'The response is no longer valid: either is too old or has been used previously.'.PHP_EOL;
                         break;
                 }
             }
