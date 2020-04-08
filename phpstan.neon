@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+parameters:
+    fileExtensions:
+        # Standard php files and .dist config files
+        - php
+        - dist
+    reportUnmatchedIgnoredErrors: true
+    ignoreErrors:
+        - '#Class Mezzio\\Swoole\\ConfigProvider not found#'
