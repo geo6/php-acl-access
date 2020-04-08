@@ -1,7 +1,5 @@
 "use strict";
 
-import $ from "jquery";
-
 import request from "../../../fetch";
 
 export async function submit(form: HTMLFormElement, id: number): Promise<void> {
