@@ -6,5 +6,6 @@ parameters:
         - php
         - dist
     reportUnmatchedIgnoredErrors: true
+    checkMissingIterableValueType: false
     ignoreErrors:
         - '#Class Mezzio\\Swoole\\ConfigProvider not found#'
