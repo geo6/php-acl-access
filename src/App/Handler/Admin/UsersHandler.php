@@ -60,6 +60,8 @@ class UsersHandler implements RequestHandlerInterface
         //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
+        $query = $request->getQueryParams();
+
         $resources = DataModel::getResources($adapter, $this->tableResource);
         $homepages = array_filter($resources, function ($resource) {
             return preg_match('/^home-.+$/', $resource->name) === 1;
@@ -69,6 +71,11 @@ class UsersHandler implements RequestHandlerInterface
         });
 
         $users = DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole);
+        if (isset($query['role']) && strlen(trim($query['role']))) {
+            $users = array_filter($users, function (User $user) use ($query) {
+                return in_array($query['role'], $user->getRoles()) === true;
+            });
+        }
         $users = array_map(
             function (User $user) use ($resources) {
                 if (!is_null($user->redirect)) {
@@ -90,6 +97,9 @@ class UsersHandler implements RequestHandlerInterface
                 'resources' => [
                     'homepages'    => $homepages,
                     'applications' => $applications,
+                ],
+                'filter'    => [
+                    'role' => $query['role'] ?? null,
                 ],
             ]
         ));
