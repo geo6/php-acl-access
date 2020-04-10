@@ -62,6 +62,7 @@
     <hr>
 
     <div>
+        {% if access.homepages | length > 0%}
         <h2>
             <i class="fas fa-home"></i>
             {{ 'Homepages' | trans }}
@@ -74,7 +75,9 @@
             </a>
             {% endfor %}
         </div>
+        {% endif %}
 
+        {% if access.applications | length > 0%}
         <h2>
             <i class="fas fa-rocket"></i>
             {{ 'Applications' | trans }}
@@ -87,6 +90,7 @@
             </a>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
