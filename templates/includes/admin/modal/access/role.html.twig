@@ -23,7 +23,10 @@
                         {% set disabled = not acl.isAllowed(user.identity, 'admin.access', 'write') %}
                         {% for role in roles %}
                         <tr>
-                            <td>{{ role.name }}</td>
+                            <td>
+                                <i class="fas fa-users"></i>
+                                {{ role.name }}
+                            </td>
                             <td class="text-center">
                                 <input type="radio" name="role[{{ role.id }}]" value="1" {{ disabled ? 'disabled' }}>
                             </td>
