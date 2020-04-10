@@ -1,13 +1,17 @@
-{% extends '@layout/default.html.twig' %}
+{% extends '@layout/with-header.html.twig' %}
 
 {% block stylesheets %}
 <link rel="stylesheet" href="{{ asset('/profile.css') }}">
 {% endblock %}
 
+{% block scripts %}
+<script src="{{ asset('/profile.js') }}"></script>
+{% endblock %}
+
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<div class="mt-5">
+<div>
     <h1>
         <i class="fas fa-user-circle"></i>
         {{ 'Profile' | trans }}
@@ -83,36 +87,6 @@
             </a>
             {% endfor %}
         </div>
-    </div>
-
-    <div class="d-flex justify-content-end">
-        <ul class="list-inline">
-            {% if acl.isAllowed(user.identity, 'admin.access', 'read') %}
-            <li class="list-inline-item">
-                <a class="text-decoration-none text-secondary" href="{{ path('admin.access') }}">
-                    <i class="fas fa-lock"></i>
-                    {{ 'Access management' | trans }}
-                </a>
-            </li>
-            {% endif %}
-            {% if acl.isAllowed(user.identity, 'admin.log') %}
-            <li class="list-inline-item">
-                {% set year = date()|date('Y') %}
-                {% set month = date()|date('m') %}
-                <a class="text-decoration-none text-secondary"
-                    href="{{ path('admin.log', { year: year, month: month }) }}">
-                    <i class="far fa-file-alt"></i>
-                    {{ 'Log' | trans }}
-                </a>
-            </li>
-            {% endif %}
-            <li class="list-inline-item">
-                <a class="text-decoration-none" href="{{ path('logout') }}">
-                    <i class="fas fa-sign-out-alt"></i>
-                    {{ 'Log out' | trans }}
-                </a>
-            </li>
-        </ul>
     </div>
 </div>
 {% endblock %}

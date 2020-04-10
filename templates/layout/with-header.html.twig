@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="{{ lang }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    {% block stylesheets %}{% endblock %}
+    <title>{% block title %}{% endblock %} - {{ global.title }}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('profile') }}">
+                {{ global.title }}
+            </a>
+            {% block navbar %}{% endblock %}
+            {% include '@includes/navbar/dropdown.html.twig' %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

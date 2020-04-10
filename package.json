@@ -6,7 +6,9 @@
     "watch:style": "sass --no-source-map --watch resources/sass:public",
     "build:style": "sass --no-source-map --style=compressed resources/sass:public",
     "watch:admin": "parcel watch --out-dir=public/ resources/javascript/admin/*.ts --no-hmr",
-    "build:admin": "parcel build --out-dir=public/ resources/javascript/admin/*.ts --no-source-maps"
+    "build:admin": "parcel build --out-dir=public/ resources/javascript/admin/*.ts --no-source-maps",
+    "watch:profile": "parcel watch --out-dir=public/ resources/javascript/profile.ts --no-hmr",
+    "build:profile": "parcel build --out-dir=public/ resources/javascript/profile.ts --no-source-maps"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
