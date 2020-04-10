@@ -6,7 +6,7 @@
             {{ user.details.fullname }}
         </a>
         <div class="dropdown-menu" aria-labelledby="user-dropdown">
-            <a class="dropdown-item" href="{{ path('profile') }}">
+            <a class="dropdown-item" href="{{ path('profile', {login: null}) }}">
                 <i class="fas fa-user-circle"></i>
                 {{ 'Profile' | trans }}
             </a>

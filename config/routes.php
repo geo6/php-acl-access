@@ -66,7 +66,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->route('/password', App\Handler\PasswordHandler::class, ['GET', 'POST'], 'password');
     $app->route('/password/recovery-code/{uuid}', App\Handler\RecoveryCodeHandler::class, ['GET', 'POST'], 'password.code');
 
-    $app->get('/profile', [
+    $app->get('/profile[/{login}]', [
         Mezzio\Session\SessionMiddleware::class,
         App\Middleware\AccessMiddleware::class,
         App\Handler\ProfileHandler::class,

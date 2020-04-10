@@ -30,15 +30,15 @@
                 <tbody>
                     <tr>
                         <th>{{ 'Login' | trans }}</th>
-                        <td>{{ user.identity }}</td>
+                        <td>{{ profile.identity }}</td>
                     </tr>
                     <tr>
                         <th>{{ 'Fullname' | trans }}</th>
-                        <td>{{ user.details.fullname }}</td>
+                        <td>{{ profile.details.fullname }}</td>
                     </tr>
                     <tr>
                         <th>{{ 'Email' | trans }}</th>
-                        <td>{{ user.details.email }}</td>
+                        <td>{{ profile.details.email }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -49,7 +49,7 @@
                 {{ 'Roles' | trans }}
             </h2>
             <ul class="list-unstyled">
-                {% for role in user.roles %}
+                {% for role in profile.roles %}
                 <li>
                     <i class="fas fa-users"></i>
                     {{ role }}
@@ -67,7 +67,7 @@
             {{ 'Homepages' | trans }}
         </h2>
         <div class="list-group mb-3">
-            {% for homepage in homepages %}
+            {% for homepage in access.homepages %}
             <a class="list-group-item list-group-item-action" target="_blank" href="{{ homepage.path }}"
                 style="text-transform: uppercase;">
                 {{ homepage.name }}
@@ -80,7 +80,7 @@
             {{ 'Applications' | trans }}
         </h2>
         <div class="list-group mb-3">
-            {% for application in applications %}
+            {% for application in access.applications %}
             <a class="list-group-item list-group-item-action" target="_blank" href="{{ application.path }}"
                 style="text-transform: uppercase;">
                 {{ application.name }}

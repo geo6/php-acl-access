@@ -8,6 +8,7 @@ return [
         'resources' => [
             'admin.access',
             'admin.log',
+            'profile',
         ],
     ],
 
