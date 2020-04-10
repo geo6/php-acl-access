@@ -74,8 +74,15 @@
         <tr data-id="{{ u.id }}">
             <td class="text-right text-secondary">{{ u.id }}</td>
             <td>
+                {% if acl.isAllowed(user.identity, 'profile') %}
+                <a target="_blank" class="text-decoration-none" href="{{ path('profile', {login: u.login}) }}">
+                    <i class="fas fa-user-circle"></i>
+                    {{ u.login }}
+                </a>
+                {% else %}
                 <i class="fas fa-user"></i>
                 {{ u.login }}
+                {% endif %}
             </td>
             <td>{{ u.fullname }}</td>
             <td>
