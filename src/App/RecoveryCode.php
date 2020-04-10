@@ -15,7 +15,7 @@ class RecoveryCode
     const LENGTH = 6;
 
     /** @var int */
-    const TIMEOUT = (12 * 60 * 60);
+    const TIMEOUT = (1 * 60 * 60);
 
     /** @var string */
     private $code;
