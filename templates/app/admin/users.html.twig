@@ -14,7 +14,7 @@
 {% block title %}Users{% endblock %}
 
 {% block navbar %}
-{% include('@app/admin/navbar/access.html.twig') with {page: 'users'} only %}
+{% include '@includes/admin/navbar/access.html.twig' with {page: 'users'} only %}
 {% endblock %}
 
 {% block content %}
@@ -135,7 +135,7 @@
 </table>
 
 {% if acl.isAllowed(user.identity, 'admin.access', 'write') %}
-{% include '@app/admin/modal/user.html.twig' %}
+{% include '@includes/admin/modal/user.html.twig' %}
 {% endif %}
 
 {% endblock %}

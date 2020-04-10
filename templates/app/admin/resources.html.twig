@@ -15,7 +15,7 @@
 {% block title %}Resources{% endblock %}
 
 {% block navbar %}
-{% include('@app/admin/navbar/access.html.twig') with {page: 'resources'} only %}
+{% include '@includes/admin/navbar/access.html.twig' with {page: 'resources'} only %}
 {% endblock %}
 
 {% block content %}
@@ -84,8 +84,8 @@
 </table>
 
 {% if acl.isAllowed(user.identity, 'admin.access', 'write') %}
-{% include '@app/admin/modal/resource.html.twig' %}
+{% include '@includes/admin/modal/resource.html.twig' %}
 {% endif %}
-{% include '@app/admin/modal/permission/role.html.twig' %}
+{% include '@includes/admin/modal/permission/role.html.twig' %}
 
 {% endblock %}
