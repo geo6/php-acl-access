@@ -1,0 +1,26 @@
+<table class="table table-sm table-bordered table-hover mb-0">
+    <thead>
+        <tr>
+            <th>Resource</th>
+            <th class="text-center text-success"><i class="fas fa-check"></i></th>
+            <th class="text-center text-danger"><i class="fas fa-times"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set disabled = not acl.isAllowed(user.identity, 'admin.access', 'write') %}
+        {% for resource in resources %}
+        <tr>
+            <td>
+                <i class="fas fa-{{ resource.name matches '/^home-.+$/' ? 'home' : 'rocket' }}"></i>
+                {{ resource.name }}
+            </td>
+            <td class="text-center">
+                <input type="radio" name="resource[{{ resource.id }}]" value="1" {{ disabled ? 'disabled' }}>
+            </td>
+            <td class="text-center">
+                <input type="radio" name="resource[{{ resource.id }}]" value="0" {{ disabled ? 'disabled' }} checked>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

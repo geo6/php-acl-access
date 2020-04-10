@@ -110,7 +110,7 @@
                 {% if u.redirect != null %}
                 {% if acl.isAllowed(u.login, u.redirect.name) %}
                 <a target="_blank" href="{{ u.redirect.path }}" class="text-decoration-none">
-                    <i class="fas fa-cog"></i>
+                    <i class="fas fa-{{ u.redirect.name matches '/^home-.+$/' ? 'home' : 'rocket' }}"></i>
                     {{ u.redirect.name }}
                 </a>
                 {% else %}
