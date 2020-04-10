@@ -53,7 +53,7 @@ class PasswordHandler implements RequestHandlerInterface
                 $uuid = $code->store(['email' => $to]);
 
                 $redirect = $this->router->generateUri('password.code', ['uuid' => $uuid]);
-                $url = 'http' . (isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '') . '://' . $server['HTTP_HOST'] . $redirect;
+                $url = 'http'.(isset($server['HTTPS']) && $server['HTTPS'] === 'on' ? 's' : '').'://'.$server['HTTP_HOST'].$redirect;
 
                 Mail::send(
                     $this->config['mail'],
@@ -77,7 +77,7 @@ class PasswordHandler implements RequestHandlerInterface
                     $request
                 );
 
-                return new RedirectResponse($redirect . '?' . http_build_query(['email' => $to]));
+                return new RedirectResponse($redirect.'?'.http_build_query(['email' => $to]));
             } else {
                 $error = true;
             }
