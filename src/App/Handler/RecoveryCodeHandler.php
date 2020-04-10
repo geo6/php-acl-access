@@ -45,7 +45,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
             $email = $params['email'] ?? null;
             $code = $params['code'] ?? null;
 
-            $path = RecoveryCode::DIRECTORY.'/'.$uuid;
+            $path = RecoveryCode::DIRECTORY . '/' . $uuid;
 
             if (file_exists($path) && is_readable($path)) {
                 $content = parse_ini_file($path);
@@ -54,7 +54,7 @@ class RecoveryCodeHandler implements RequestHandlerInterface
                     unlink($path);
 
                     $userRepository = new UserRepository($this->config['authentication']['pdo']);
-                    $user = $userRepository->search($content['email']);
+                    $user = $userRepository->search($this->config['authentication']['pdo']['field']['email'], $content['email']);
 
                     if (!is_null($user)) {
                         $password = self::resetPassword($this->config['authentication']['pdo'], $content['email']);
