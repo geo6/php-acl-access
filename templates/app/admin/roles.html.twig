@@ -1,7 +1,7 @@
 {% extends '@layout/admin.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('/admin.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin/roles.css') }}">
 {% endblock %}
 
 {% block scripts %}
@@ -9,7 +9,7 @@
     const apiURL = "{{ path('api.roles') }}";
     const apiAccessURL = "{{ path('api.access') }}";
 </script>
-<script src="{{ asset('/roles.js') }}"></script>
+<script src="{{ asset('/admin/roles.js') }}"></script>
 {% endblock %}
 
 {% block title %}Roles{% endblock %}

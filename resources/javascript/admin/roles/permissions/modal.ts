@@ -4,7 +4,7 @@ import $ from "jquery";
 
 import { Resource } from "../../../model/Resource";
 import { Role } from "../../../model/Role";
-import request from "../../../fetch";
+import request from "../../../global/fetch";
 
 export async function load(apiAccessURL: string, id: number): Promise<void> {
   return request("GET", `${apiAccessURL}/role/${id}`).then(

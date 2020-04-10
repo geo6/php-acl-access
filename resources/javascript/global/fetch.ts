@@ -1,7 +1,7 @@
 "use strict";
 
-import { User } from "./model/User";
-import { Role } from "./model/Role";
+import { User } from "../model/User";
+import { Role } from "../model/Role";
 
 export default async function(
   method: string,

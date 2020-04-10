@@ -1,5 +1,7 @@
 "use strict";
 
+import "../../sass/admin.scss";
+
 import $ from "jquery";
 
 import "bootstrap/js/dist/dropdown";

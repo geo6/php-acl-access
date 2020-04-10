@@ -1,6 +1,6 @@
 "use strict";
 
-import request from "../../../fetch";
+import request from "../../../global/fetch";
 
 export async function submit(form: HTMLFormElement, id: number): Promise<void> {
   const data = new FormData(form);

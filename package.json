@@ -3,12 +3,10 @@
   "scripts": {
     "test": "eslint resources/javascript/ --ext .ts",
     "fix": "eslint resources/javascript/ --ext .ts --fix",
-    "watch:style": "sass --no-source-map --watch resources/sass:public",
-    "build:style": "sass --no-source-map --style=compressed resources/sass:public",
-    "watch:admin": "parcel watch --out-dir=public/ resources/javascript/admin/*.ts --no-hmr",
-    "build:admin": "parcel build --out-dir=public/ resources/javascript/admin/*.ts --no-source-maps",
-    "watch:profile": "parcel watch --out-dir=public/ resources/javascript/profile.ts --no-hmr",
-    "build:profile": "parcel build --out-dir=public/ resources/javascript/profile.ts --no-source-maps"
+    "watch:admin": "parcel watch --out-dir=public/admin/ resources/javascript/admin/*.ts --no-source-maps --no-hmr",
+    "build:admin": "parcel build --out-dir=public/admin/ resources/javascript/admin/*.ts --no-source-maps",
+    "watch:global": "parcel watch --out-dir=public/ resources/javascript/*.ts --no-source-maps --no-hmr",
+    "build:global": "parcel build --out-dir=public/ resources/javascript/*.ts --no-source-maps"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",

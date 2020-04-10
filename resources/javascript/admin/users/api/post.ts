@@ -2,7 +2,7 @@
 
 import { User } from "../../../model/User";
 
-import request from "../../../fetch";
+import request from "../../../global/fetch";
 
 export default async function(data: {
   user: User;

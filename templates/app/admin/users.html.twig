@@ -1,14 +1,14 @@
 {% extends '@layout/admin.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('/admin.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin/users.css') }}">
 {% endblock %}
 
 {% block scripts %}
 <script>
     const apiURL = "{{ path('api.users') }}";
 </script>
-<script src="{{ asset('/users.js') }}"></script>
+<script src="{{ asset('/admin/users.js') }}"></script>
 {% endblock %}
 
 {% block title %}Users{% endblock %}
