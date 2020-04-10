@@ -16,8 +16,8 @@ import { load as loadRoleInModal } from "./roles/modal";
 import { Role } from "../model/Role";
 import { submit as submitForm } from "./roles/form";
 import rangeOnChange from "./roles/range";
-import { load as loadPermInModal } from "./roles/permissions/modal";
-import { submit as submitPermForm } from "./roles/permissions/form";
+import { load as loadPermInModal } from "./roles/access/modal";
+import { submit as submitPermForm } from "./roles/access/form";
 
 ((): void => {
   let currentRoleId: number = null;
@@ -130,9 +130,9 @@ import { submit as submitPermForm } from "./roles/permissions/form";
       });
   }
 
-  /** Show permissions */
+  /** Show access */
   document
-    .querySelectorAll("a[href='#permissions']")
+    .querySelectorAll("a[href='#access']")
     .forEach((element: HTMLLinkElement) => {
       element.addEventListener("click", (event: Event) => {
         const target = event.currentTarget as HTMLLinkElement;
@@ -143,16 +143,16 @@ import { submit as submitPermForm } from "./roles/permissions/form";
         currentRoleId = parseInt(id);
 
         (document.querySelector(
-          "#modal-permission-resource .modal-header > .modal-title > span"
+          "#modal-access-resource .modal-header > .modal-title > span"
         ) as HTMLSpanElement).innerText = name;
 
         loadPermInModal(apiAccessURL, currentRoleId);
       });
     });
 
-  /** Apply permissions */
+  /** Apply access */
   document
-    .querySelector("#modal-permission-resource form")
+    .querySelector("#modal-access-resource form")
     .addEventListener("submit", (event: Event) => {
       const target = event.currentTarget as HTMLFormElement;
 
@@ -161,7 +161,7 @@ import { submit as submitPermForm } from "./roles/permissions/form";
       submitPermForm(target, currentRoleId).then(() => {
         currentRoleId = null;
 
-        $("#modal-permission-resource").modal("hide");
+        $("#modal-access-resource").modal("hide");
       });
     });
 })();

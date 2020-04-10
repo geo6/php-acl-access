@@ -11,7 +11,7 @@ export async function load(apiAccessURL: string, id: number): Promise<void> {
     (json: Array<{ role: Role; resource: Resource }>) => {
       document
         .querySelectorAll(
-          "#modal-permission-resource input[type='radio'][value='0']"
+          "#modal-access-resource input[type='radio'][value='0']"
         )
         .forEach((input: HTMLInputElement) => {
           input.checked = true;
@@ -19,13 +19,13 @@ export async function load(apiAccessURL: string, id: number): Promise<void> {
 
       json.forEach((rr: { role: Role; resource: Resource }) => {
         const input = document.querySelector(
-          `#modal-permission-resource input[type='radio'][name='resource[${rr.resource.id}]'][value='1']`
+          `#modal-access-resource input[type='radio'][name='resource[${rr.resource.id}]'][value='1']`
         ) as HTMLInputElement;
 
         input.checked = true;
       });
 
-      $("#modal-permission-resource").modal("show");
+      $("#modal-access-resource").modal("show");
     }
   );
 }

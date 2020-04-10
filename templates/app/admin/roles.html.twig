@@ -71,9 +71,9 @@
                 {% endif %}
             </td>
             <td class="action">
-                <a role="button" href="#permissions" title="Permissions">
+                <a role="button" href="#access" title="Access">
                     <i class="fas fa-key"></i>
-                    <span class="sr-only">Permissions</span>
+                    <span class="sr-only">Access</span>
                 </a>
             </td>
         </tr>
@@ -84,6 +84,6 @@
 {% if acl.isAllowed(user.identity, 'admin.access', 'write') %}
 {% include '@includes/admin/modal/role.html.twig' %}
 {% endif %}
-{% include '@includes/admin/modal/permission/resource.html.twig' %}
+{% include '@includes/admin/modal/access/resource.html.twig' %}
 
 {% endblock %}

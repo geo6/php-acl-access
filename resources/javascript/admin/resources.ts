@@ -13,8 +13,8 @@ import deleteResource from "./api/delete";
 import { load as loadResourceInModal } from "./resources/modal";
 import { Resource } from "../model/Resource";
 import { submit as submitForm } from "./resources/form";
-import { load as loadPermInModal } from "./resources/permissions/modal";
-import { submit as submitPermForm } from "./resources/permissions/form";
+import { load as loadPermInModal } from "./resources/access/modal";
+import { submit as submitPermForm } from "./resources/access/form";
 
 ((): void => {
   let currentResourceId: number = null;
@@ -105,10 +105,10 @@ import { submit as submitPermForm } from "./resources/permissions/form";
   }
 
   /**
-   * Show permissions
+   * Show access
    */
   document
-    .querySelectorAll("a[href='#permissions']")
+    .querySelectorAll("a[href='#access']")
     .forEach((element: HTMLLinkElement) => {
       element.addEventListener("click", (event: Event) => {
         const target = event.currentTarget as HTMLLinkElement;
@@ -119,16 +119,16 @@ import { submit as submitPermForm } from "./resources/permissions/form";
         currentResourceId = parseInt(id);
 
         (document.querySelector(
-          "#modal-permission-role .modal-header > .modal-title > span"
+          "#modal-access-role .modal-header > .modal-title > span"
         ) as HTMLSpanElement).innerText = name;
 
         loadPermInModal(apiAccessURL, currentResourceId);
       });
     });
 
-  /** Apply permissions */
+  /** Apply access */
   document
-    .querySelector("#modal-permission-role form")
+    .querySelector("#modal-access-role form")
     .addEventListener("submit", (event: Event) => {
       const target = event.currentTarget as HTMLFormElement;
 
@@ -137,7 +137,7 @@ import { submit as submitPermForm } from "./resources/permissions/form";
       submitPermForm(target, currentResourceId).then(() => {
         currentResourceId = null;
 
-        $("#modal-permission-role").modal("hide");
+        $("#modal-access-role").modal("hide");
       });
     });
 })();
