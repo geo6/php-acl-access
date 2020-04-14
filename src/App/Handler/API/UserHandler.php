@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\API;
 
 use App\DataModel;
+use App\Handler\Exception\FormException;
 use App\Mail;
 use App\Model\User;
 use Geo6\Laminas\Log\Log;
@@ -67,7 +68,23 @@ class UserHandler extends DefaultHandler
 
     protected function insert(Adapter $adapter, array $data): User
     {
-        $server = $this->request->getServerParams();
+        $users = DataModel::getUsers($adapter, $this->table, $this->tableRole, $this->tableUserRole);
+
+        $login = $data['user']['login'];
+        $checkLogin = array_filter($users, function (User $user) use ($login) {
+            return $user->login === $login;
+        });
+        if (count($checkLogin) > 0) {
+            throw new FormException('login', 'Login must be unique.');
+        }
+
+        $email = $data['user']['email'];
+        $checkEmail = array_filter($users, function (User $user) use ($email) {
+            return $user->email === $email;
+        });
+        if (count($checkEmail) > 0) {
+            throw new FormException('email', 'Email address must be unique.');
+        }
 
         $password = self::generatePassword();
 

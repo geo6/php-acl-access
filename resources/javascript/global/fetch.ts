@@ -2,6 +2,8 @@
 
 import { User } from "../model/User";
 import { Role } from "../model/Role";
+import { Resource } from "../model/Resource";
+import { FormError } from "./FormError";
 
 export default async function(
   method: string,
@@ -20,10 +22,15 @@ export default async function(
   }
 
   const response = await fetch(url, init);
+  const json = await response.json();
 
   if (!response.ok) {
-    throw new Error(response.statusText);
+    if (typeof json.field !== "undefined") {
+      throw new FormError(json.field, json.error || response.statusText);
+    } else {
+      throw new Error(json.error || response.statusText);
+    }
   }
 
-  return response.json();
+  return json;
 }

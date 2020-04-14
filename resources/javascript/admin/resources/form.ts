@@ -5,10 +5,16 @@ import { Resource } from "../../model/Resource";
 import createResource from "../api/post";
 import updateResource from "../api/put";
 
-export async function submit(
-  form: HTMLFormElement,
-  id: number
-): Promise<Resource> {
+export function resetWarning(form: HTMLFormElement): void {
+  (form.querySelector(".alert") as HTMLDivElement).hidden = true;
+
+  form.querySelectorAll(".form-control.is-invalid").forEach((element: HTMLInputElement|HTMLSelectElement) => element.classList.remove("is-invalid"));
+  form.querySelectorAll(".invalid-feedback").forEach((element: HTMLDivElement) => element.remove());
+}
+
+export async function submit(form: HTMLFormElement, id: number): Promise<Resource> {
+  resetWarning(form);
+
   const data = new FormData(form);
 
   const resource = new Resource();

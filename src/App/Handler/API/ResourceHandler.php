@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\API;
 
 use App\DataModel;
+use App\Handler\Exception\FormException;
 use App\Model\Resource;
 use Geo6\Laminas\Log\Log;
 use Laminas\Db\Adapter\Adapter;
@@ -25,6 +26,16 @@ class ResourceHandler extends DefaultHandler
 
     protected function insert(Adapter $adapter, array $data): Resource
     {
+        $resources = DataModel::getResources($adapter, $this->table);
+
+        $name = $data['name'];
+        $checkLogin = array_filter($resources, function (Resource $resource) use ($name) {
+            return $resource->name === $name;
+        });
+        if (count($checkLogin) > 0) {
+            throw new FormException('name', 'Name must be unique.');
+        }
+
         $resource = parent::insert($adapter, $data);
 
         Log::write(

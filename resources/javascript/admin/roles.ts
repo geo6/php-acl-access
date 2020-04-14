@@ -14,10 +14,11 @@ import getRole from "./api/get";
 import deleteRole from "./api/delete";
 import { load as loadRoleInModal } from "./roles/modal";
 import { Role } from "../model/Role";
-import { submit as submitForm } from "./roles/form";
+import { resetWarning, submit as submitForm } from "./roles/form";
 import rangeOnChange from "./roles/range";
 import { load as loadPermInModal } from "./roles/access/modal";
 import { submit as submitPermForm } from "./roles/access/form";
+import { FormError, display as displayFormError } from "../global/FormError";
 
 ((): void => {
   let currentRoleId: number = null;
@@ -111,10 +112,10 @@ import { submit as submitPermForm } from "./roles/access/form";
     });
   }
 
-  /**
-   * Submit form
-   */
   if (document.querySelector("#modal-role form") !== null) {
+    /**
+     * Submit form
+     */
     document
       .querySelector("#modal-role form")
       .addEventListener("submit", (event: Event) => {
@@ -126,7 +127,27 @@ import { submit as submitPermForm } from "./roles/access/form";
           currentRoleId = null;
 
           document.location.reload();
+        }).catch((error: FormError|Error) => {
+          if (error.name === "FormError") {
+            displayFormError(target, error as FormError);
+          } else {
+            const alert = target.querySelector(".alert") as HTMLDivElement;
+
+            alert.innerText = error.message;
+            alert.hidden = false;
+          }
         });
+      });
+
+    /**
+     * Reset form
+     */
+    document
+      .querySelector("#modal-role form")
+      .addEventListener("reset", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
+
+        resetWarning(target);
       });
   }
 

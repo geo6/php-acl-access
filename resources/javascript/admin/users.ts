@@ -15,6 +15,7 @@ import deleteUser from "./api/delete";
 import { init as initModal, load as loadUserInModal } from "./users/modal";
 import { User } from "../model/User";
 import { reset as resetForm, submit as submitForm } from "./users/form";
+import { FormError, display as displayFormError } from "../global/FormError";
 
 ((): void => {
   let currentUserId: number = null;
@@ -113,6 +114,15 @@ import { reset as resetForm, submit as submitForm } from "./users/form";
           currentUserId = null;
 
           document.location.reload();
+        }).catch((error: FormError|Error) => {
+          if (error.name === "FormError") {
+            displayFormError(target, error as FormError);
+          } else {
+            const alert = target.querySelector(".alert") as HTMLDivElement;
+
+            alert.innerText = error.message;
+            alert.hidden = false;
+          }
         });
       });
 

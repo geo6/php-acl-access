@@ -5,7 +5,16 @@ import { User } from "../../model/User";
 import createUser from "./api/post";
 import updateUser from "./api/put";
 
+function resetWarning(form: HTMLFormElement): void {
+  (form.querySelector(".alert") as HTMLDivElement).hidden = true;
+
+  form.querySelectorAll(".form-control.is-invalid").forEach((element: HTMLInputElement|HTMLSelectElement) => element.classList.remove("is-invalid"));
+  form.querySelectorAll(".invalid-feedback").forEach((element: HTMLDivElement) => element.remove());
+}
+
 export function reset(form: HTMLFormElement): void {
+  resetWarning(form);
+
   form
     .querySelectorAll("input[name='roles[]']")
     .forEach((input: HTMLInputElement) => {
@@ -14,6 +23,8 @@ export function reset(form: HTMLFormElement): void {
 }
 
 export async function submit(form: HTMLFormElement, id: number): Promise<User> {
+  resetWarning(form);
+
   const data = new FormData(form);
 
   const user = new User();

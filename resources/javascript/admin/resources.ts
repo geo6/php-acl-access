@@ -13,9 +13,10 @@ import getResource from "./api/get";
 import deleteResource from "./api/delete";
 import { load as loadResourceInModal } from "./resources/modal";
 import { Resource } from "../model/Resource";
-import { submit as submitForm } from "./resources/form";
+import { submit as submitForm, resetWarning } from "./resources/form";
 import { load as loadPermInModal } from "./resources/access/modal";
 import { submit as submitPermForm } from "./resources/access/form";
+import { FormError, display as displayFormError } from "../global/FormError";
 
 ((): void => {
   let currentResourceId: number = null;
@@ -86,10 +87,10 @@ import { submit as submitPermForm } from "./resources/access/form";
     });
   }
 
-  /**
-   * Submit form
-   */
   if (document.querySelector("#modal-resource form") !== null) {
+    /**
+     * Submit form
+     */
     document
       .querySelector("#modal-resource form")
       .addEventListener("submit", (event: Event) => {
@@ -101,7 +102,27 @@ import { submit as submitPermForm } from "./resources/access/form";
           currentResourceId = null;
 
           document.location.reload();
+        }).catch((error: FormError|Error) => {
+          if (error.name === "FormError") {
+            displayFormError(target, error as FormError);
+          } else {
+            const alert = target.querySelector(".alert") as HTMLDivElement;
+
+            alert.innerText = error.message;
+            alert.hidden = false;
+          }
         });
+      });
+
+    /**
+     * Reset form
+     */
+    document
+      .querySelector("#modal-resource form")
+      .addEventListener("reset", (event: Event) => {
+        const target = event.currentTarget as HTMLFormElement;
+
+        resetWarning(target);
       });
   }
 

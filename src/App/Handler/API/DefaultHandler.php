@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Handler\API;
 
+use App\Handler\Exception\FormException;
 use App\Middleware\DbMiddleware;
+use Exception;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\RowGateway\RowGateway;
 use Laminas\Db\Sql\TableIdentifier;
@@ -65,56 +67,67 @@ abstract class DefaultHandler implements RequestHandlerInterface
         $id = $request->getAttribute('id');
         $data = $request->getParsedBody();
 
-        $objects = $this->getObjects($adapter);
+        try {
+            $objects = $this->getObjects($adapter);
 
-        if (!is_null($id)) {
-            $filter = array_filter($objects, function ($object) use ($id) {
-                return $object->id === intval($id);
-            });
+            if (!is_null($id)) {
+                $filter = array_filter($objects, function ($object) use ($id) {
+                    return $object->id === intval($id);
+                });
 
-            if (count($filter) === 1) {
-                $object = current($filter);
+                if (count($filter) === 1) {
+                    $object = current($filter);
+                }
             }
-        }
 
-        switch ($request->getMethod()) {
-            case 'GET':
-                if (is_null($id)) {
-                    return new JsonResponse($objects);
-                } elseif (isset($object)) {
-                    return new JsonResponse($object);
-                } else {
-                    return new JsonResponse(new stdClass(), 404);
-                }
-                break;
-            case 'POST':
-                if (!is_null($data)) {
-                    $object = $this->insert($adapter, $data);
+            switch ($request->getMethod()) {
+                case 'GET':
+                    if (is_null($id)) {
+                        return new JsonResponse($objects);
+                    } elseif (isset($object)) {
+                        return new JsonResponse($object);
+                    } else {
+                        return new JsonResponse(new stdClass(), 404);
+                    }
+                    break;
+                case 'POST':
+                    if (!is_null($data)) {
+                        $object = $this->insert($adapter, $data);
 
-                    return new JsonResponse($object);
-                } else {
-                    return new JsonResponse(new stdClass(), 404);
-                }
-                break;
-            case 'PUT':
-                if (isset($object) && !is_null($data)) {
-                    $object = $this->update($adapter, $object, $data);
+                        return new JsonResponse($object);
+                    } else {
+                        return new JsonResponse(new stdClass(), 404);
+                    }
+                    break;
+                case 'PUT':
+                    if (isset($object) && !is_null($data)) {
+                        $object = $this->update($adapter, $object, $data);
 
-                    return new JsonResponse($object);
-                } else {
-                    return new JsonResponse(new stdClass(), 404);
-                }
-                break;
-            case 'DELETE':
-                if (isset($object)) {
-                    $object = $this->delete($adapter, $object);
+                        return new JsonResponse($object);
+                    } else {
+                        return new JsonResponse(new stdClass(), 404);
+                    }
+                    break;
+                case 'DELETE':
+                    if (isset($object)) {
+                        $object = $this->delete($adapter, $object);
 
-                    return new JsonResponse($object);
-                } else {
-                    return new JsonResponse(new stdClass(), 404);
-                }
+                        return new JsonResponse($object);
+                    } else {
+                        return new JsonResponse(new stdClass(), 404);
+                    }
 
-                break;
+                    break;
+            }
+        } catch (FormException $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage(),
+                'field' => $e->getField(),
+            ], 500);
+        } catch (Exception $e) {
+            return new JsonResponse([
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
