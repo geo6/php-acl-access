@@ -1355,16 +1355,16 @@
         },
         {
             "name": "laminas/laminas-mail",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-mail.git",
-                "reference": "019fb670c1dff6be7fc91d3b88942bd0a5f68792"
+                "reference": "cfe0711446c8d9c392e9fc664c9ccc180fa89005"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-mail/zipball/019fb670c1dff6be7fc91d3b88942bd0a5f68792",
-                "reference": "019fb670c1dff6be7fc91d3b88942bd0a5f68792",
+                "url": "https://api.github.com/repos/laminas/laminas-mail/zipball/cfe0711446c8d9c392e9fc664c9ccc180fa89005",
+                "reference": "cfe0711446c8d9c392e9fc664c9ccc180fa89005",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
                 "true/punycode": "^2.1"
             },
             "replace": {
-                "zendframework/zend-mail": "self.version"
+                "zendframework/zend-mail": "^2.10.0"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -1417,7 +1417,7 @@
                 "laminas",
                 "mail"
             ],
-            "time": "2019-12-31T17:21:22+00:00"
+            "time": "2020-04-21T16:42:19+00:00"
         },
         {
             "name": "laminas/laminas-mime",
