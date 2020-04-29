@@ -49,6 +49,7 @@ class Permissions extends Acl
         $this->tableRoleResource = $tableRoleResource;
         $this->tableUserRole = $tableUserRole;
 
+        $this->injectRoles();
         $this->injectUsersRoles();
         $this->injectResources();
         $this->injectPermissions();
@@ -57,6 +58,23 @@ class Permissions extends Acl
         $this->injectConfigResources($configAuthorization['resources'] ?? []);
         $this->injectConfigPermissions($configAuthorization['allow'] ?? [], 'allow');
         $this->injectConfigPermissions($configAuthorization['deny'] ?? [], 'deny');
+    }
+
+    /**
+     * Add Roles from database.
+     */
+    private function injectRoles(): void
+    {
+        $sql = new Sql($this->adapter);
+
+        $select = $sql->select(['r' => $this->tableRole]);
+        $select->columns(['name']);
+
+        $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+
+        foreach ($result as $r) {
+            $this->addRole($r->name);
+        }
     }
 
     /**
@@ -77,12 +95,6 @@ class Permissions extends Acl
 
         foreach ($result as $r) {
             $roles = json_decode($r->roles);
-
-            foreach ($roles as $role) {
-                if (!$this->hasRole($role)) {
-                    $this->addRole($role);
-                }
-            }
 
             $this->addRole($r->login, $roles);
         }
