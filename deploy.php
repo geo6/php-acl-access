@@ -46,6 +46,7 @@ set('allow_anonymous_stats', false);
 inventory('hosts.yml');
 
 // Tasks
+task('clear-config-cache', 'composer run clear-config-cache');
 task('debug:enable', 'composer run development-enable');
 task('debug:disable', 'composer run development-disable');
 
