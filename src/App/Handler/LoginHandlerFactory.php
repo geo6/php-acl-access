@@ -21,9 +21,6 @@ class LoginHandlerFactory
         $config = $container->get('config');
 
         if (isset($config['reCAPTCHA'])) {
-            if (!class_exists('GuzzleHttp\Client')) {
-                throw new ErrorException('You need to install Guzzle PHP HTTP client to enable reCAPTCHA.');
-            }
             if (!isset($config['reCAPTCHA']['key'])) {
                 throw new Exception('Missing parameter "key" for reCAPTCHA.');
             }
