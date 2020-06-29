@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.1",
         "geo6/laminas-log-filesystem": "^2.0",
-        "guzzlehttp/guzzle": "^6.5",
+        "guzzlehttp/guzzle": "^7.0",
         "hackzilla/password-generator": "^1.4",
         "ircmaxell/random-lib": "^1.2",
         "laminas/laminas-component-installer": "^2.1.1",
