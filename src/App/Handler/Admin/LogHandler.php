@@ -71,7 +71,7 @@ class LogHandler implements RequestHandlerInterface
             $directory = rtrim($directory, '/');
 
             $logs = array_filter(
-                glob($directory . '/*.log'),
+                glob($directory.'/*.log'),
                 function (string $path) {
                     return preg_match(self::FNAME_REGEX, basename($path)) === 1;
                 }
@@ -118,7 +118,7 @@ class LogHandler implements RequestHandlerInterface
         if (is_null($year) && is_null($month)) {
             $directory = rtrim(self::LOCAL_DIRECTORY, '/');
 
-            $logs = glob($directory . '/*-login.log');
+            $logs = glob($directory.'/*-login.log');
             $last = end($logs);
 
             preg_match('/^([0-9]{4})([0-9]{2})-login\.log$/', basename($last), $matches);
