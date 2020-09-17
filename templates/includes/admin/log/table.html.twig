@@ -23,6 +23,7 @@
             </td>
             <td class="align-middle text-nowrap text-info">
                 <div class="d-flex align-items-center">
+                    {% if record.extra._device is defined %}
                     <div>
                         {% if record.extra._device == 'desktop' %}
                         <i class="fas fa-fw fa-desktop" style="cursor: help;" title="{{ record.extra._device }}"></i>
@@ -34,10 +35,13 @@
                         <i class="fas fa-phone-laptop" style="cursor: help;" title="{{ record.extra._device }}"></i>
                         {% endif %}
                     </div>
+                    {% endif %}
+                    {% if record.extra._platform is defined and record.extra._browser is defined %}
                     <div class="ml-1 small">
                         {{ record.extra._platform }}<br>
                         {{ record.extra._browser }}
                     </div>
+                    {% endif %}
                 </div>
             </td>
         </tr>

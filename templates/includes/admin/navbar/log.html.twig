@@ -1,10 +1,24 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item {{ id == null ? 'active' }}">
             <a class="nav-link text-decoration-none" href="{{ path('admin.log') }}">
                 <i class="far fa-file-alt"></i>
                 Log
             </a>
         </li>
+        {% if external | length > 0 %}
+        <li class="nav-item dropdown {{ id != null ? 'active' }}">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-file-import"></i>
+                External logs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% for key in external | keys %}
+                <a class="dropdown-item {{ id != null and id == loop.index0 ? 'active' }}" href="{{ path('admin.log.external', { id: loop.index0, year: null, month: null }) }}">{{ key }}</a>
+                {% endfor %}
+            </div>
+        </li>
+        {% endif %}
     </ul>
 </div>

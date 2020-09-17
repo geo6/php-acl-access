@@ -29,7 +29,8 @@
             </li>
             {% else %}
             <li class="page-item">
-                <a class="page-link" href="{{ path('admin.log', previous)}}" aria-label="Previous">
+                {% set path = (id == null ? path('admin.log', previous) : path('admin.log.external', previous) ) %}
+                <a class="page-link" href="{{ path }}" aria-label="Previous">
                     <span aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
                 </a>
             </li>
@@ -42,7 +43,8 @@
             </li>
             {% else %}
             <li class="page-item">
-                <a class="page-link" href="{{ path('admin.log', next)}}" aria-label="Next">
+                {% set path = (id == null ? path('admin.log', next) : path('admin.log.external', next) ) %}
+                <a class="page-link" href="{{ path }}" aria-label="Next">
                     <span aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
                 </a>
             </li>
@@ -53,6 +55,7 @@
 </div>
 <hr>
 
+{% if log.login is defined and log.admin is defined %}
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login"
@@ -77,5 +80,8 @@
         {% include '@includes/admin/log/table.html.twig' with {log: log.admin} only %}
     </div>
 </div>
+{% else %}
+{% include '@includes/admin/log/table.html.twig' with {log: log} only %}
+{% endif %}
 
 {% endblock %}
