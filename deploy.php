@@ -41,6 +41,7 @@ set('clear_paths', [
 after('deploy:update_code', 'deploy:clear_paths');
 
 set('allow_anonymous_stats', false);
+set('cleanup_use_sudo', true);
 
 // Hosts
 inventory('hosts.yml');
