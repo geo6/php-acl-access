@@ -2355,6 +2355,12 @@
                 "psr-15",
                 "psr-7"
             ],
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
             "time": "2020-04-28T18:52:32+00:00"
         },
         {
