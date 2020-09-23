@@ -1,9 +1,9 @@
 @import "global";
 
-@import "../../node_modules/bootstrap/scss/dropdown";
-@import "../../node_modules/bootstrap/scss/list-group";
-@import "../../node_modules/bootstrap/scss/nav";
-@import "../../node_modules/bootstrap/scss/navbar";
+@import "~bootstrap/scss/_dropdown.scss";
+@import "~bootstrap/scss/_list-group.scss";
+@import "~bootstrap/scss/_nav.scss";
+@import "~bootstrap/scss/_navbar.scss";
 
 #user-roles {
   ul {
