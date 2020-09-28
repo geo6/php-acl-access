@@ -13,6 +13,9 @@
                 {% if record.extra._identity is defined %}
                 <i class="fas fa-user"></i>
                 {{ record.extra._identity }}
+                {% elseif record.extra.username is defined %}
+                <i class="fas fa-user"></i>
+                {{ record.extra.username }}
                 {% endif %}
             </td>
             <td class="align-middle text-nowrap text-info">
