@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "055a84831fd01fcc8356390f65f70255",
+    "content-hash": "db5184454b7790215b47f72d0eb4488c",
     "packages": [
         {
             "name": "brick/math",
@@ -1406,22 +1406,22 @@
         },
         {
             "name": "laminas/laminas-hydrator",
-            "version": "3.1.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-hydrator.git",
-                "reference": "244cfb1aa094ce3b17ef1a185b3ad6e8cb3aa792"
+                "reference": "aa9b10c02d9dca7640ead564b9f88e34c2e0296e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/244cfb1aa094ce3b17ef1a185b3ad6e8cb3aa792",
-                "reference": "244cfb1aa094ce3b17ef1a185b3ad6e8cb3aa792",
+                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/aa9b10c02d9dca7640ead564b9f88e34c2e0296e",
+                "reference": "aa9b10c02d9dca7640ead564b9f88e34c2e0296e",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-stdlib": "^3.2.1",
+                "laminas/laminas-stdlib": "^3.3",
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.2"
+                "php": "^7.3 || ~8.0.0"
             },
             "replace": {
                 "zendframework/zend-hydrator": "^3.0.2"
@@ -1432,9 +1432,8 @@
                 "laminas/laminas-modulemanager": "^2.8",
                 "laminas/laminas-serializer": "^2.9",
                 "laminas/laminas-servicemanager": "^3.3.2",
-                "phpspec/prophecy": ">=1.10.2",
-                "phpstan/phpstan": "^0.10.5",
-                "phpunit/phpunit": "^8.5.2 || ^9.0"
+                "phpunit/phpunit": "~9.3.0",
+                "vimeo/psalm": "^3.16"
             },
             "suggest": {
                 "laminas/laminas-eventmanager": "^3.2, to support aggregate hydrator usage",
@@ -1443,11 +1442,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-release-2.4": "2.4.x-dev",
-                    "dev-master": "3.1.x-dev",
-                    "dev-develop": "3.2.x-dev"
-                },
                 "laminas": {
                     "component": "Laminas\\Hydrator",
                     "config-provider": "Laminas\\Hydrator\\ConfigProvider"
@@ -1474,7 +1468,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-07-14T21:04:59+00:00"
+            "time": "2020-10-06T21:18:17+00:00"
         },
         {
             "name": "laminas/laminas-i18n",
