@@ -7,5 +7,7 @@ parameters:
         - dist
     reportUnmatchedIgnoredErrors: true
     checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
-        - '#Class Mezzio\\Swoole\\ConfigProvider not found#'
+        - '#Variable property access on Laminas\\Db\\RowGateway\\RowGateway.#'
+        - '#Variable method call on \$this\(App\\Permissions\).#'
