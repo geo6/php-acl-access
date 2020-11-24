@@ -63,23 +63,23 @@ class UsersHandler implements RequestHandlerInterface
         $query = $request->getQueryParams();
 
         $resources = DataModel::getResources($adapter, $this->tableResource);
-        $homepages = array_filter($resources, function ($resource) {
+        $homepages = array_filter($resources, function ($resource): bool {
             return preg_match('/^home-.+$/', $resource->name) === 1;
         });
-        $applications = array_filter($resources, function ($resource) {
+        $applications = array_filter($resources, function ($resource): bool {
             return preg_match('/^home-.+$/', $resource->name) !== 1;
         });
 
         $users = DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole);
-        if (isset($query['role']) && strlen(trim($query['role']))) {
-            $users = array_filter($users, function (User $user) use ($query) {
-                return in_array($query['role'], $user->getRoles()) === true;
+        if (isset($query['role']) && strlen(trim($query['role'])) > 0) {
+            $users = array_filter($users, function (User $user) use ($query): bool {
+                return in_array($query['role'], $user->getRoles(), true) === true;
             });
         }
         $users = array_map(
             function (User $user) use ($resources) {
                 if (!is_null($user->redirect)) {
-                    $user->redirect = current(array_filter($resources, function (Resource $resource) use ($user) {
+                    $user->redirect = current(array_filter($resources, function (Resource $resource) use ($user): bool {
                         return $user->redirect === $resource->id;
                     }));
                 }

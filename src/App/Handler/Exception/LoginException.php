@@ -10,7 +10,7 @@ use Throwable;
 
 class LoginException extends AbstractException
 {
-    /** @var string */
+    /** @var string|null */
     private $username;
 
     public function __construct(

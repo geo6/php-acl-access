@@ -8,8 +8,11 @@ use JsonSerializable;
 
 class Resource implements JsonSerializable
 {
+    /** @var int */
     public $id;
+    /** @var string */
     public $name;
+    /** @var string */
     public $path;
 
     public function jsonSerialize(): array

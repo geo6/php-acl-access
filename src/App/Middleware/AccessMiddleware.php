@@ -24,7 +24,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class AccessMiddleware implements MiddlewareInterface
 {
-    /** @var AuthenticationInterface */
+    /** @var AuthenticationInterface|null */
     private $auth;
 
     /** @var array */
@@ -101,7 +101,7 @@ class AccessMiddleware implements MiddlewareInterface
         }
 
         $resources = DataModel::getResources($adapter, $this->tableResource);
-        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $user) {
+        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $user): bool {
             return preg_match('/^home-.+$/', $resource->name) === 1
                 && $acl->isAllowed($user->getIdentity(), $resource->name);
         }));

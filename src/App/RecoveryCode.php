@@ -69,16 +69,18 @@ class RecoveryCode
         return $this->uuid;
     }
 
-    public static function clean(string $directory = self::DIRECTORY, $timeout = self::TIMEOUT): void
+    public static function clean(string $directory = self::DIRECTORY, int $timeout = self::TIMEOUT): void
     {
         if (file_exists($directory) && is_dir($directory) && is_readable($directory)) {
             $glob = glob($directory.'/*');
 
-            foreach ($glob as $file) {
-                $time = filemtime($file);
+            if ($glob !== false) {
+                foreach ($glob as $file) {
+                    $time = filemtime($file);
 
-                if ($time < time() - $timeout) {
-                    unlink($file);
+                    if ($time < time() - $timeout) {
+                        unlink($file);
+                    }
                 }
             }
         }

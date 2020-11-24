@@ -8,11 +8,13 @@ use App\Handler\Exception\FormException;
 use App\Middleware\DbMiddleware;
 use Exception;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\RowGateway\RowGateway;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Db\TableGateway\Feature\FeatureSet;
 use Laminas\Db\TableGateway\Feature\SequenceFeature;
 use Laminas\Db\TableGateway\TableGateway;
+use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Permissions\Acl\AclInterface;
@@ -36,13 +38,16 @@ abstract class DefaultHandler implements RequestHandlerInterface
     /** @var ServerRequestInterface */
     protected $request;
 
-    public function init(TableIdentifier $table, SequenceFeature $sequenceFeature, string $class)
+    public function init(TableIdentifier $table, SequenceFeature $sequenceFeature, string $class): void
     {
         $this->table = $table;
         $this->sequenceFeature = $sequenceFeature;
         $this->class = $class;
     }
 
+    /**
+     * @param \App\Model\Resource|\App\Model\Role|\App\Model\User $object
+     */
     protected static function toArray($object): array
     {
         return $object->jsonSerialize();
@@ -65,13 +70,14 @@ abstract class DefaultHandler implements RequestHandlerInterface
         $this->request = $request;
 
         $id = $request->getAttribute('id');
+
         $data = $request->getParsedBody();
 
         try {
             $objects = $this->getObjects($adapter);
 
             if (!is_null($id)) {
-                $filter = array_filter($objects, function ($object) use ($id) {
+                $filter = array_filter($objects, function ($object) use ($id): bool {
                     return $object->id === intval($id);
                 });
 
@@ -89,25 +95,22 @@ abstract class DefaultHandler implements RequestHandlerInterface
                     } else {
                         return new JsonResponse(new stdClass(), 404);
                     }
-                    break;
                 case 'POST':
                     if (!is_null($data)) {
-                        $object = $this->insert($adapter, $data);
+                        $object = $this->insert($adapter, (array)$data);
 
                         return new JsonResponse($object);
                     } else {
                         return new JsonResponse(new stdClass(), 404);
                     }
-                    break;
                 case 'PUT':
                     if (isset($object) && !is_null($data)) {
-                        $object = $this->update($adapter, $object, $data);
+                        $object = $this->update($adapter, $object, (array)$data);
 
                         return new JsonResponse($object);
                     } else {
                         return new JsonResponse(new stdClass(), 404);
                     }
-                    break;
                 case 'DELETE':
                     if (isset($object)) {
                         $object = $this->delete($adapter, $object);
@@ -116,8 +119,8 @@ abstract class DefaultHandler implements RequestHandlerInterface
                     } else {
                         return new JsonResponse(new stdClass(), 404);
                     }
-
-                    break;
+                default:
+                    return new EmptyResponse(405);
             }
         } catch (FormException $e) {
             return new JsonResponse([
@@ -131,6 +134,9 @@ abstract class DefaultHandler implements RequestHandlerInterface
         }
     }
 
+    /**
+     * @return \App\Model\Resource|\App\Model\Role|\App\Model\User
+     */
     protected function insert(Adapter $adapter, array $data)
     {
         $tableGateway = new TableGateway(
@@ -145,11 +151,18 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         $id = $tableGateway->getLastInsertValue();
 
-        $result = $tableGateway->select(['id' => $id])->toArray();
+        /** @var ResultSet */ $result = $tableGateway->select(['id' => $id]);
 
-        return (new ReflectionHydrator())->hydrate(current($result), new $this->class());
+        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate((array)$result->current(), new $this->class());
+
+        return $object;
     }
 
+    /**
+     * @param \App\Model\Resource|\App\Model\Role|\App\Model\User $object
+     *
+     * @return \App\Model\Resource|\App\Model\Role|\App\Model\User
+     */
     protected function update(Adapter $adapter, $object, array $data)
     {
         $rowGateway = new RowGateway('id', $this->table, $adapter);
@@ -157,15 +170,23 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         foreach ($data as $key => $value) {
             if (property_exists($this->class, $key) === true) {
+
                 $rowGateway->{$key} = $value;
             }
         }
 
         $rowGateway->save();
 
-        return (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class());
+        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class());
+
+        return $object;
     }
 
+    /**
+     * @param \App\Model\Resource|\App\Model\Role|\App\Model\User $object
+     *
+     * @return \App\Model\Resource|\App\Model\Role|\App\Model\User
+     */
     protected function delete(Adapter $adapter, $object)
     {
         $rowGateway = new RowGateway('id', $this->table, $adapter);

@@ -29,14 +29,14 @@ class RoleHandler extends DefaultHandler
         $roles = DataModel::getRoles($adapter, $this->table);
 
         $name = $data['name'];
-        $checkLogin = array_filter($roles, function (Role $role) use ($name) {
+        $checkLogin = array_filter($roles, function (Role $role) use ($name): bool {
             return $role->name === $name;
         });
         if (count($checkLogin) > 0) {
             throw new FormException('name', 'Name must be unique.');
         }
 
-        $role = parent::insert($adapter, $data);
+        /** @var \App\Model\Role */ $role = parent::insert($adapter, $data);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
@@ -51,7 +51,7 @@ class RoleHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $role): Role
     {
-        $role = parent::delete($adapter, $role);
+        /** @var \App\Model\Role */ $role = parent::delete($adapter, $role);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),

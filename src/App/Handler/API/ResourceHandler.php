@@ -29,14 +29,14 @@ class ResourceHandler extends DefaultHandler
         $resources = DataModel::getResources($adapter, $this->table);
 
         $name = $data['name'];
-        $checkLogin = array_filter($resources, function (Resource $resource) use ($name) {
+        $checkLogin = array_filter($resources, function (Resource $resource) use ($name): bool {
             return $resource->name === $name;
         });
         if (count($checkLogin) > 0) {
             throw new FormException('name', 'Name must be unique.');
         }
 
-        $resource = parent::insert($adapter, $data);
+        /** @var \App\Model\Resource */ $resource = parent::insert($adapter, $data);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
@@ -51,7 +51,7 @@ class ResourceHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $resource): Resource
     {
-        $resource = parent::delete($adapter, $resource);
+        /** @var \App\Model\Resource */ $resource = parent::delete($adapter, $resource);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),

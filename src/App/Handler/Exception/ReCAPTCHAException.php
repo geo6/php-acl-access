@@ -10,10 +10,10 @@ use Throwable;
 
 class ReCAPTCHAException extends AbstractException
 {
-    /** @var string */
+    /** @var string|null */
     private $username;
 
-    /** @var float */
+    /** @var float|null */
     private $score;
 
     /** @var float */

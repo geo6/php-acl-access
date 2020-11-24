@@ -58,7 +58,7 @@ class LogHandler implements RequestHandlerInterface
         return new HtmlResponse($this->renderer->render('app::admin/log', $data));
     }
 
-    private function getExternal(int $id, ?string $year = null, ?string $month = null)
+    private function getExternal(int $id, ?string $year = null, ?string $month = null): ArrayObject
     {
         $keys = array_keys($this->external);
         $directory = isset($keys[$id]) ? $this->external[$keys[$id]] : null;
@@ -70,16 +70,21 @@ class LogHandler implements RequestHandlerInterface
         if (is_null($year) && is_null($month)) {
             $directory = rtrim($directory, '/');
 
-            $logs = array_filter(
-                glob($directory.'/*.log'),
-                function (string $path) {
-                    return preg_match(self::FNAME_REGEX, basename($path)) === 1;
-                }
-            );
-            $last = end($logs);
+            $logs = glob($directory . '/*.log');
+            if ($logs !== false) {
+                $logs = array_filter(
+                    $logs,
+                    function (string $path): bool {
+                        return preg_match(self::FNAME_REGEX, basename($path)) === 1;
+                    }
+                );
+                $last = end($logs);
 
-            preg_match(self::FNAME_REGEX, basename($last), $matches);
-            [, $year, $month] = $matches;
+                if ($last !== false) {
+                    preg_match(self::FNAME_REGEX, basename($last), $matches);
+                    [, $year, $month] = $matches;
+                }
+            }
         }
 
         $path = self::getPath($directory, intval($year), $month);
@@ -113,16 +118,20 @@ class LogHandler implements RequestHandlerInterface
         ]);
     }
 
-    private function getLocal(?string $year = null, ?string $month = null)
+    private function getLocal(?string $year = null, ?string $month = null): ArrayObject
     {
         if (is_null($year) && is_null($month)) {
             $directory = rtrim(self::LOCAL_DIRECTORY, '/');
 
-            $logs = glob($directory.'/*-login.log');
-            $last = end($logs);
+            $logs = glob($directory . '/*-login.log');
+            if ($logs !== false) {
+                $last = end($logs);
 
-            preg_match('/^([0-9]{4})([0-9]{2})-login\.log$/', basename($last), $matches);
-            [, $year, $month] = $matches;
+                if ($last !== false) {
+                    preg_match('/^([0-9]{4})([0-9]{2})-login\.log$/', basename($last), $matches);
+                    [, $year, $month] = $matches;
+                }
+            }
         }
 
         $path = self::getPath(self::LOCAL_DIRECTORY, intval($year), $month, 'login');

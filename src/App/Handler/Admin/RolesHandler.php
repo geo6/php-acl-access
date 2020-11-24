@@ -7,6 +7,7 @@ namespace App\Handler\Admin;
 use App\DataModel;
 use App\Middleware\DbMiddleware;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
@@ -88,7 +89,7 @@ class RolesHandler implements RequestHandlerInterface
         $select->group('id_role');
         $select->order('id_role');
 
-        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $usersByRole = [];
         foreach ($result as $record) {

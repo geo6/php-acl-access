@@ -25,7 +25,7 @@ class BruteForceProtection
     /** @var DateTime */
     private $lastUpdate;
 
-    /** @var DateTime */
+    /** @var DateTime|null */
     private $lockUntil;
 
     public function __construct(ServerRequestInterface $request)
@@ -51,12 +51,15 @@ class BruteForceProtection
                 );
             }
 
-            $data = json_decode(file_get_contents($this->getPath()), true);
+            $content = file_get_contents($this->getPath());
+            if ($content !== false) {
+                $data = json_decode($content, true);
 
-            $this->creation = new DateTime($data['creation']);
-            $this->count = $data['count'];
-            $this->lastUpdate = new DateTime($data['lastUpdate']);
-            $this->lockUntil = !is_null($data['lockUntil']) ? new DateTime($data['lockUntil']) : null;
+                $this->creation = new DateTime($data['creation']);
+                $this->count = $data['count'];
+                $this->lastUpdate = new DateTime($data['lastUpdate']);
+                $this->lockUntil = !is_null($data['lockUntil']) ? new DateTime($data['lockUntil']) : null;
+            }
         }
     }
 
@@ -128,14 +131,19 @@ class BruteForceProtection
     {
         $glob = glob(self::DIRECTORY.'/*');
 
-        foreach ($glob as $path) {
-            $json = json_decode(file_get_contents($path), true);
+        if ($glob !== false) {
+            foreach ($glob as $path) {
+                $content = file_get_contents($path);
+                if ($content !== false) {
+                    $json = json_decode($content, true);
 
-            $now = new DateTime();
-            $diff = $now->diff(new DateTime($json['lastUpdate']));
+                    $now = new DateTime();
+                    $diff = $now->diff(new DateTime($json['lastUpdate']));
 
-            if ($diff->days >= 1) {
-                unlink($path);
+                    if ($diff->days >= 1) {
+                        unlink($path);
+                    }
+                }
             }
         }
     }

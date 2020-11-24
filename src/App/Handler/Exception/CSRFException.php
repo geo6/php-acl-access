@@ -10,6 +10,7 @@ use Throwable;
 
 class CSRFException extends AbstractException
 {
+    /** @var string|null */
     private $username;
 
     public function __construct(

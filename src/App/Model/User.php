@@ -8,20 +8,26 @@ use JsonSerializable;
 
 class User implements JsonSerializable
 {
+    /** @var int */
     public $id;
+    /** @var string */
     public $login;
+    /** @var string */
     public $fullname;
+    /** @var string */
     public $email;
+    /** @var int|null */
     public $redirect;
 
+    /** @var array */
     protected $roles = [];
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function addRole(Role $role)
+    public function addRole(Role $role): void
     {
         $this->roles[] = $role;
     }

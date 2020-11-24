@@ -53,7 +53,7 @@ class UserRepository extends PdoDatabase
         $stmt->execute();
 
         $result = $stmt->fetchObject();
-        if (!$result) {
+        if ($result === false) {
             return null;
         }
 
@@ -66,7 +66,7 @@ class UserRepository extends PdoDatabase
         );
     }
 
-    public static function createUser(string $identity, array $roles = [], array $details = [])
+    public static function createUser(string $identity, array $roles = [], array $details = []): DefaultUser
     {
         return new DefaultUser($identity, $roles, $details);
     }

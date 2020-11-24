@@ -65,11 +65,11 @@ class ProfileHandler implements RequestHandlerInterface
         }
 
         $resources = DataModel::getResources($adapter, $this->tableResource);
-        $applications = array_values(array_filter($resources, function (Resource $resource) use ($acl, $profile) {
+        $applications = array_values(array_filter($resources, function (Resource $resource) use ($acl, $profile): bool {
             return preg_match('/^(?!home-).+$/', $resource->name) === 1
                 && $acl->isAllowed($profile->getIdentity(), $resource->name);
         }));
-        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $profile) {
+        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $profile): bool {
             return preg_match('/^home-.+$/', $resource->name) === 1
                 && $acl->isAllowed($profile->getIdentity(), $resource->name);
         }));

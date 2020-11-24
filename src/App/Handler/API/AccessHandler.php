@@ -8,8 +8,10 @@ use App\DataModel;
 use App\Middleware\DbMiddleware;
 use ErrorException;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
+use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Permissions\Acl\AclInterface;
 use Mezzio\Authentication\UserInterface;
@@ -50,8 +52,9 @@ class AccessHandler implements RequestHandlerInterface
         //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
-        $type = $request->getAttribute('type');
-        $id = $request->getAttribute('id');
+        /** @var string|null */ $type = $request->getAttribute('type');
+        /** @var string|null */ $id = $request->getAttribute('id');
+
         $data = $request->getParsedBody();
 
         switch ($request->getMethod()) {
@@ -64,16 +67,17 @@ class AccessHandler implements RequestHandlerInterface
                     return new JsonResponse([], 403);
                 } elseif (!is_null($type) && !is_null($id)) {
                     $this->delete($adapter, $type, intval($id));
-                    $this->insert($adapter, $type, intval($id), $data);
+                    $this->insert($adapter, $type, intval($id), (array)$data);
 
-                    $objects = $this->get($adapter, $type, !is_null($id) ? intval($id) : null);
+                    $objects = $this->get($adapter, $type, intval($id));
 
                     return new JsonResponse($objects);
                 } else {
                     return new JsonResponse([], 404);
                 }
-                break;
         }
+
+        return new EmptyResponse(405);
     }
 
     private function get(Adapter $adapter, ?string $type, ?int $id): array
@@ -81,7 +85,7 @@ class AccessHandler implements RequestHandlerInterface
         $objects = DataModel::getRolesResources($adapter, $this->tableRoleResource, $this->tableResource, $this->tableRole);
 
         if (!is_null($type) && !is_null($id)) {
-            $objects = array_filter($objects, function ($object) use ($type, $id) {
+            $objects = array_filter($objects, function ($object) use ($type, $id): bool {
                 if ($type === 'resource') {
                     return $object['resource']->id === $id;
                 } elseif ($type === 'role') {
@@ -97,7 +101,7 @@ class AccessHandler implements RequestHandlerInterface
         return $objects;
     }
 
-    private function delete(Adapter $adapter, string $type, int $id)
+    private function delete(Adapter $adapter, string $type, int $id): ResultSet
     {
         $sql = new Sql($adapter);
 
@@ -111,14 +115,16 @@ class AccessHandler implements RequestHandlerInterface
             throw new ErrorException(sprintf('Invalid type "%s".', $type));
         }
 
-        return $adapter->query($sql->buildSqlString($delete), $adapter::QUERY_MODE_EXECUTE);
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($delete), $adapter::QUERY_MODE_EXECUTE);
+
+        return $result;
     }
 
-    private function insert(Adapter $adapter, string $type, int $id, array $data)
+    private function insert(Adapter $adapter, string $type, int $id, array $data): void
     {
         $sql = new Sql($adapter);
 
-        $allow = array_filter($data, function ($value) {
+        $allow = array_filter($data, function ($value): bool {
             return intval($value) === 1;
         });
 

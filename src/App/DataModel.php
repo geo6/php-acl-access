@@ -8,6 +8,8 @@ use App\Model\Resource;
 use App\Model\Role;
 use App\Model\User;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\Driver\StatementInterface;
+use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
@@ -27,11 +29,11 @@ class DataModel
         ]);
         $select->order('name');
 
-        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $resources = [];
         foreach ($result as $record) {
-            $resources[] = (new ReflectionHydrator())->hydrate($record, new Resource());
+            $resources[] = (new ReflectionHydrator())->hydrate((array)$record, new Resource());
         }
 
         return $resources;
@@ -49,11 +51,11 @@ class DataModel
         ]);
         $select->order(['priority DESC', 'name']);
 
-        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $roles = [];
         foreach ($result as $record) {
-            $roles[] = (new ReflectionHydrator())->hydrate($record, new Role());
+            $roles[] = (new ReflectionHydrator())->hydrate((array)$record, new Role());
         }
 
         return $roles;
@@ -72,7 +74,7 @@ class DataModel
             'role' => new Expression('row_to_json(ro.*)'),
         ]);
 
-        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $rr = [];
         foreach ($result as $record) {
@@ -102,17 +104,17 @@ class DataModel
         ]);
         $select->order('login');
 
-        $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE)->toArray();
+        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $users = [];
         foreach ($result as $record) {
-            $user = (new ReflectionHydrator())->hydrate($record, new User());
+            /** @var User */ $user = (new ReflectionHydrator())->hydrate((array)$record, new User());
 
             if (!is_null($record['_roles'])) {
                 $ids = json_decode($record['_roles']);
 
-                $userRoles = array_filter($roles, function (Role $role) use ($ids) {
-                    return in_array($role->id, $ids);
+                $userRoles = array_filter($roles, function (Role $role) use ($ids): bool {
+                    return in_array($role->id, $ids, true);
                 });
 
                 foreach ($userRoles as $role) {

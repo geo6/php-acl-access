@@ -71,7 +71,7 @@ class UserHandler extends DefaultHandler
         $users = DataModel::getUsers($adapter, $this->table, $this->tableRole, $this->tableUserRole);
 
         $login = $data['user']['login'];
-        $checkLogin = array_filter($users, function (User $user) use ($login) {
+        $checkLogin = array_filter($users, function (User $user) use ($login): bool {
             return $user->login === $login;
         });
         if (count($checkLogin) > 0) {
@@ -79,7 +79,7 @@ class UserHandler extends DefaultHandler
         }
 
         $email = $data['user']['email'];
-        $checkEmail = array_filter($users, function (User $user) use ($email) {
+        $checkEmail = array_filter($users, function (User $user) use ($email): bool {
             return $user->email === $email;
         });
         if (count($checkEmail) > 0) {
@@ -90,7 +90,7 @@ class UserHandler extends DefaultHandler
 
         $data['user']['password'] = password_hash($password, PASSWORD_DEFAULT);
 
-        $user = parent::insert($adapter, $data['user']);
+        /** @var \App\Model\User */ $user = parent::insert($adapter, $data['user']);
 
         if (isset($data['roles'])) {
             self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
@@ -124,7 +124,7 @@ class UserHandler extends DefaultHandler
 
     protected function update(Adapter $adapter, $user, array $data): User
     {
-        $user = parent::update($adapter, $user, $data['user']);
+        /** @var \App\Model\User */ $user = parent::update($adapter, $user, $data['user']);
 
         if (isset($data['roles'])) {
             self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
@@ -163,7 +163,7 @@ class UserHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $user): User
     {
-        $user = parent::delete($adapter, $user);
+        /** @var \App\Model\User */ $user = parent::delete($adapter, $user);
 
         Mail::send(
             $this->configMail,
@@ -189,7 +189,7 @@ class UserHandler extends DefaultHandler
 
     private static function generatePassword(): string
     {
-        $generator = new ComputerPasswordGenerator(new Php7RandomGenerator());
+        $generator = new ComputerPasswordGenerator();
 
         $generator
             ->setUppercase(true)

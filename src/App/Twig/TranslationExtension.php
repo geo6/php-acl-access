@@ -25,9 +25,9 @@ class TranslationExtension extends AbstractExtension
         ];
     }
 
-    public function translate($context, $message, $textDomain = 'default', $count = null): string
+    public function translate(array $context, string $message, string $textDomain = 'default', ?int $count = null): string
     {
-        if ($count > 1) {
+        if (!is_null($count) && $count > 1) {
             return $this->translator->translatePlural($message, '', $count, $textDomain, $context['lang'] ?? 'en');
         } else {
             return $this->translator->translate($message, $textDomain, $context['lang'] ?? 'en');

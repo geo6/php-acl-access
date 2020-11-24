@@ -8,8 +8,11 @@ use JsonSerializable;
 
 class Role implements JsonSerializable
 {
+    /** @var int */
     public $id;
+    /** @var string */
     public $name;
+    /** @var int */
     public $priority;
 
     public function __toString(): string
