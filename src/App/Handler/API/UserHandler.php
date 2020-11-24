@@ -132,6 +132,32 @@ class UserHandler extends DefaultHandler
             // To-Do: Update $user with roles!
         }
 
+        if (isset($data['user']['password'])) {
+            $password = self::generatePassword();
+
+            self::updatePassword($adapter, $this->table, $user->id, $password);
+
+            Mail::send(
+                $this->configMail,
+                $this->renderer,
+                $user->email,
+                'Password reset',
+                '@mail/password/reset.html.twig',
+                [
+                    'fullname' => $user->fullname,
+                    'password' => $password,
+                ]
+            );
+
+            Log::write(
+                sprintf('data/log/%s-admin.log', date('Ym')),
+                'Password for user "{username}" has been reset by an administrator.',
+                ['username' => $user->login],
+                Logger::NOTICE,
+                $this->request
+            );
+        }
+
         return $user;
     }
 
@@ -192,5 +218,16 @@ class UserHandler extends DefaultHandler
 
             $adapter->query($sql->buildSqlString($insert), $adapter::QUERY_MODE_EXECUTE);
         }
+    }
+
+    private static function updatePassword(Adapter $adapter, TableIdentifier $table, int $id, string $password): void
+    {
+        $sql = new Sql($adapter);
+
+        $update = $sql->update($table);
+        $update->set(['password' => password_hash($password, PASSWORD_DEFAULT)]);
+        $update->where->equalTo('id', $id);
+
+        $adapter->query($sql->buildSqlString($update), $adapter::QUERY_MODE_EXECUTE);
     }
 }

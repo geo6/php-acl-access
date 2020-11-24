@@ -6,7 +6,7 @@ import request from "../../../global/fetch";
 
 export default async function(
   id: number,
-  data: { user: User; roles: Array<number> }
+  data: { user: User; roles?: Array<number> }
 ): Promise<User> {
   return request("PUT", `${apiURL}/${id}`, data);
 }

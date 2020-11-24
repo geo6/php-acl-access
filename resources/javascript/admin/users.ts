@@ -12,6 +12,7 @@ import "bootstrap/js/dist/util";
 
 import getUser from "./api/get";
 import deleteUser from "./api/delete";
+import updateUser from "./users/api/put";
 import { init as initModal, load as loadUserInModal } from "./users/modal";
 import { User } from "../model/User";
 import { reset as resetForm, submit as submitForm } from "./users/form";
@@ -99,6 +100,26 @@ import { FormError, display as displayFormError } from "../global/FormError";
     });
   }
 
+  /**
+   * Reset user password
+   */
+  if (document.getElementById("btn-password") !== null) {
+    document.getElementById("btn-password").addEventListener("click", () => {
+      if (
+        window.confirm("Are you sure you want to reset this user password ?") === true
+      ) {
+        const user = new User();
+        user.password = "";
+
+        updateUser(currentUserId, { user }).then(() => {
+          currentUserId = null;
+
+          $("#modal-user").modal("hide");
+        });
+      }
+    });
+  }
+
   if (document.querySelector("#modal-user form") !== null) {
     /**
      * Submit form
@@ -114,7 +135,7 @@ import { FormError, display as displayFormError } from "../global/FormError";
           currentUserId = null;
 
           document.location.reload();
-        }).catch((error: FormError|Error) => {
+        }).catch((error: FormError | Error) => {
           if (error.name === "FormError") {
             displayFormError(target, error as FormError);
           } else {

@@ -5,6 +5,7 @@ export class User {
   login: string;
   email: string;
   fullname: string;
+  password?: string;
   redirect: number;
   roles: Role[];
 }
