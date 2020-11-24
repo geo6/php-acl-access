@@ -97,7 +97,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
                     }
                 case 'POST':
                     if (!is_null($data)) {
-                        $object = $this->insert($adapter, (array)$data);
+                        $object = $this->insert($adapter, (array) $data);
 
                         return new JsonResponse($object);
                     } else {
@@ -105,7 +105,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
                     }
                 case 'PUT':
                     if (isset($object) && !is_null($data)) {
-                        $object = $this->update($adapter, $object, (array)$data);
+                        $object = $this->update($adapter, $object, (array) $data);
 
                         return new JsonResponse($object);
                     } else {
@@ -153,7 +153,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         /** @var ResultSet */ $result = $tableGateway->select(['id' => $id]);
 
-        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate((array)$result->current(), new $this->class());
+        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate((array) $result->current(), new $this->class());
 
         return $object;
     }
@@ -170,7 +170,6 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         foreach ($data as $key => $value) {
             if (property_exists($this->class, $key) === true) {
-
                 $rowGateway->{$key} = $value;
             }
         }

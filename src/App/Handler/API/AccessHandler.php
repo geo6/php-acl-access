@@ -67,7 +67,7 @@ class AccessHandler implements RequestHandlerInterface
                     return new JsonResponse([], 403);
                 } elseif (!is_null($type) && !is_null($id)) {
                     $this->delete($adapter, $type, intval($id));
-                    $this->insert($adapter, $type, intval($id), (array)$data);
+                    $this->insert($adapter, $type, intval($id), (array) $data);
 
                     $objects = $this->get($adapter, $type, intval($id));
 

@@ -70,7 +70,7 @@ class LogHandler implements RequestHandlerInterface
         if (is_null($year) && is_null($month)) {
             $directory = rtrim($directory, '/');
 
-            $logs = glob($directory . '/*.log');
+            $logs = glob($directory.'/*.log');
             if ($logs !== false) {
                 $logs = array_filter(
                     $logs,
@@ -123,7 +123,7 @@ class LogHandler implements RequestHandlerInterface
         if (is_null($year) && is_null($month)) {
             $directory = rtrim(self::LOCAL_DIRECTORY, '/');
 
-            $logs = glob($directory . '/*-login.log');
+            $logs = glob($directory.'/*-login.log');
             if ($logs !== false) {
                 $last = end($logs);
 

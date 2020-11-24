@@ -10,7 +10,6 @@ use App\Mail;
 use App\Model\User;
 use Geo6\Laminas\Log\Log;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
-use Hackzilla\PasswordGenerator\RandomGenerator\Php7RandomGenerator;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;

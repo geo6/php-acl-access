@@ -8,7 +8,6 @@ use App\Model\Resource;
 use App\Model\Role;
 use App\Model\User;
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Sql;
@@ -33,7 +32,7 @@ class DataModel
 
         $resources = [];
         foreach ($result as $record) {
-            $resources[] = (new ReflectionHydrator())->hydrate((array)$record, new Resource());
+            $resources[] = (new ReflectionHydrator())->hydrate((array) $record, new Resource());
         }
 
         return $resources;
@@ -55,7 +54,7 @@ class DataModel
 
         $roles = [];
         foreach ($result as $record) {
-            $roles[] = (new ReflectionHydrator())->hydrate((array)$record, new Role());
+            $roles[] = (new ReflectionHydrator())->hydrate((array) $record, new Role());
         }
 
         return $roles;
@@ -108,7 +107,7 @@ class DataModel
 
         $users = [];
         foreach ($result as $record) {
-            /** @var User */ $user = (new ReflectionHydrator())->hydrate((array)$record, new User());
+            /** @var User */ $user = (new ReflectionHydrator())->hydrate((array) $record, new User());
 
             if (!is_null($record['_roles'])) {
                 $ids = json_decode($record['_roles']);
