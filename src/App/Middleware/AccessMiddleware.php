@@ -97,7 +97,7 @@ class AccessMiddleware implements MiddlewareInterface
                 $request = $request->withAttribute(UserInterface::class, $user);
             } else {
                 // return $this->auth->unauthorizedResponse($request);
-                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
             }
 
             $resources = DataModel::getResources($adapter, $this->tableResource);
