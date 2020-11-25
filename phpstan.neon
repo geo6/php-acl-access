@@ -9,5 +9,25 @@ parameters:
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
-        - '#Variable property access on Laminas\\Db\\RowGateway\\RowGateway.#'
-        - '#Variable method call on \$this\(App\\Permissions\).#'
+        - message: '#Variable property access on Laminas\\Db\\RowGateway\\RowGateway\.#'
+          path: src/App/Handler/API/DefaultHandler.php
+        - message: '#Variable method call on \$this\(App\\Permissions\)\.#'
+          path: src/App/Permissions.php
+        - message: '#Offset ''[a-zA-Z0-9_]+'' does not exist on array\|ArrayObject\|null\.#'
+          paths:
+            - src/App/DataModel.php
+            - src/App/Handler/Admin/RolesHandler.php
+        - message: '#Cannot access offset ''[a-zA-Z0-9_]+'' on array\|object\|null\.#'
+          paths:
+            - src/App/Handler/LoginHandler.php
+            - src/App/Handler/PasswordHandler.php
+            - src/App/Handler/RecoveryCodeHandler.php
+        - message: '#Cannot access offset ''[a-zA-Z0-9]+'' on array\|false\.#'
+          paths:
+            - src/App/Handler/RecoveryCodeHandler.php
+        - message: '#Cannot access property \$[a-zA-Z0-9]+ on array\|ArrayObject\|null\.#'
+          path: src/App/Permissions.php
+        - message: '#Cannot access offset string on array\|object\|null\.#'
+          path: src/App/Handler/LoginHandler.php
+        - message: '#Variable property access on mixed\.#'
+          path: src/App/UserRepository.php

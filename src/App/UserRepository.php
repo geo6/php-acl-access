@@ -39,7 +39,7 @@ class UserRepository extends PdoDatabase
             $this->config['table'],
             $column
         );
-        $stmt = $this->pdo->prepare($sql);
+        /** @var \PDOStatement|false */ $stmt = $this->pdo->prepare($sql);
 
         if (false === $stmt) {
             throw new Exception(

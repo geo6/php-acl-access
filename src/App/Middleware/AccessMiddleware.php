@@ -88,6 +88,8 @@ class AccessMiddleware implements MiddlewareInterface
             $this->tableUserRole
         );
 
+        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'acl', $acl);
+
         if (null !== $this->auth) {
             $user = $this->auth->authenticate($request);
             if (null !== $user) {
@@ -95,20 +97,18 @@ class AccessMiddleware implements MiddlewareInterface
                 $request = $request->withAttribute(UserInterface::class, $user);
             } else {
                 // return $this->auth->unauthorizedResponse($request);
-
-                return new RedirectResponse($basePath !== '/' ? $basePath : ''.$this->redirect);
+                return new RedirectResponse($basePath !== '/' ? $basePath : '' . $this->redirect);
             }
+
+            $resources = DataModel::getResources($adapter, $this->tableResource);
+            $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $user): bool {
+                return preg_match('/^home-.+$/', $resource->name) === 1
+                    && $acl->isAllowed($user->getIdentity(), $resource->name);
+            }));
+
+            $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'user', $user);
+            $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'homepages', $homepages);
         }
-
-        $resources = DataModel::getResources($adapter, $this->tableResource);
-        $homepages = array_values(array_filter($resources, function (Resource $resource) use ($acl, $user): bool {
-            return preg_match('/^home-.+$/', $resource->name) === 1
-                && $acl->isAllowed($user->getIdentity(), $resource->name);
-        }));
-
-        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'acl', $acl);
-        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'user', $user);
-        $this->renderer->addDefaultParam($this->renderer::TEMPLATE_ALL, 'homepages', $homepages);
 
         return $handler->handle($request);
     }

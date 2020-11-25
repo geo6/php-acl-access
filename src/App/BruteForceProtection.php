@@ -101,7 +101,7 @@ class BruteForceProtection
     {
         $time = new DateTime();
 
-        if (is_null($this->creation)) {
+        if (!isset($this->creation)) {
             $this->creation = $time;
         }
 
@@ -117,7 +117,7 @@ class BruteForceProtection
     {
         $time = new DateTime();
 
-        if (is_null($this->creation)) {
+        if (!isset($this->creation)) {
             $this->creation = $time;
         }
 

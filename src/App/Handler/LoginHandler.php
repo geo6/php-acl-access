@@ -168,7 +168,7 @@ class LoginHandler implements RequestHandlerInterface
 
         $query = $request->getParsedBody();
 
-        $usernameField = $this->config['authentication']['username'];
+        /** @var string */ $usernameField = $this->config['authentication']['username'];
 
         // User session takes precedence over user/pass POST in
         // the auth adapter so we remove the session prior
