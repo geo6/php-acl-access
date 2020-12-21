@@ -1396,16 +1396,16 @@
         },
         {
             "name": "laminas/laminas-hydrator",
-            "version": "4.0.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-hydrator.git",
-                "reference": "725b70b2af90d1b505fe16d6369b86e49f4f3675"
+                "reference": "fc201f29280a8308579e7fb4c1fbc2fb3dfdbd8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/725b70b2af90d1b505fe16d6369b86e49f4f3675",
-                "reference": "725b70b2af90d1b505fe16d6369b86e49f4f3675",
+                "url": "https://api.github.com/repos/laminas/laminas-hydrator/zipball/fc201f29280a8308579e7fb4c1fbc2fb3dfdbd8f",
+                "reference": "fc201f29280a8308579e7fb4c1fbc2fb3dfdbd8f",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,8 @@
                 "laminas/laminas-serializer": "^2.9",
                 "laminas/laminas-servicemanager": "^3.3.2",
                 "phpunit/phpunit": "~9.3.0",
-                "vimeo/psalm": "^3.16"
+                "psalm/plugin-phpunit": "^0.15.0",
+                "vimeo/psalm": "^4.2"
             },
             "suggest": {
                 "laminas/laminas-eventmanager": "^3.2, to support aggregate hydrator usage",
@@ -1458,7 +1459,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-11T22:23:25+00:00"
+            "time": "2020-12-16T21:35:39+00:00"
         },
         {
             "name": "laminas/laminas-i18n",
