@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - ".github/workflows/php-ci.yml"
+      - "phpcs.xml.dist"
+      - "phpstan.neon"
+      - "phpunit.xml.dist"
       - "composer.json"
       - "composer.lock"
       - "bin/**"
@@ -14,6 +17,9 @@ on:
   pull_request:
     paths:
       - ".github/workflows/php-ci.yml"
+      - "phpcs.xml.dist"
+      - "phpstan.neon"
+      - "phpunit.xml.dist"
       - "composer.json"
       - "composer.lock"
       - "bin/**"
