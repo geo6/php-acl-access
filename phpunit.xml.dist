@@ -5,9 +5,9 @@
       <directory suffix=".php">./src</directory>
     </include>
   </coverage>
-  <testsuites>
+  <!-- <testsuites>
     <testsuite name="App\\Tests">
       <directory>./test</directory>
     </testsuite>
-  </testsuites>
+  </testsuites> -->
 </phpunit>

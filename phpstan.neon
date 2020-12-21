@@ -17,7 +17,7 @@ parameters:
           paths:
             - src/App/DataModel.php
             - src/App/Handler/Admin/RolesHandler.php
-        - message: '#Cannot access offset ''[a-zA-Z0-9_]+'' on array\|object\|null\.#'
+        - message: '#Cannot access offset ((''[a-zA-Z0-9_]+'')|string) on array\|object\|null\.#'
           paths:
             - src/App/Handler/LoginHandler.php
             - src/App/Handler/PasswordHandler.php
@@ -27,7 +27,7 @@ parameters:
             - src/App/Handler/RecoveryCodeHandler.php
         - message: '#Cannot access property \$[a-zA-Z0-9]+ on array\|ArrayObject\|null\.#'
           path: src/App/Permissions.php
-        - message: '#Cannot access offset string on array\|object\|null\.#'
-          path: src/App/Handler/LoginHandler.php
         - message: '#Variable property access on mixed\.#'
           path: src/App/UserRepository.php
+        - message: '#Parameter \#2 \$timestamp of function date expects int\|null, int\|false given.#'
+          path: src/App/Handler/Admin/LogHandler.php
