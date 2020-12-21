@@ -29,5 +29,5 @@ parameters:
           path: src/App/Permissions.php
         - message: '#Variable property access on mixed\.#'
           path: src/App/UserRepository.php
-        - message: '#Parameter \#2 \$timestamp of function date expects int\|null, int\|false given.#'
+        - message: '#Parameter \#2 \$timestamp of function date expects (int|(int\|null)), int\|false given.#'
           path: src/App/Handler/Admin/LogHandler.php
