@@ -2683,16 +2683,16 @@
         },
         {
             "name": "mezzio/mezzio-authentication-session",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-authentication-session.git",
-                "reference": "e1767be6ef226392254e46e865bb2cce72e57c7b"
+                "reference": "e113433f5238a5416e13f7c1c940693e4a241e71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-authentication-session/zipball/e1767be6ef226392254e46e865bb2cce72e57c7b",
-                "reference": "e1767be6ef226392254e46e865bb2cce72e57c7b",
+                "url": "https://api.github.com/repos/mezzio/mezzio-authentication-session/zipball/e113433f5238a5416e13f7c1c940693e4a241e71",
+                "reference": "e113433f5238a5416e13f7c1c940693e4a241e71",
                 "shasum": ""
             },
             "require": {
@@ -2704,7 +2704,7 @@
                 "psr/http-message": "^1.0.1"
             },
             "replace": {
-                "zendframework/zend-expressive-authentication-session": "self.version"
+                "zendframework/zend-expressive-authentication-session": "^1.0.1"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
@@ -2712,10 +2712,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                },
                 "laminas": {
                     "config-provider": "Mezzio\\Authentication\\Session\\ConfigProvider"
                 }
@@ -2745,7 +2741,13 @@
                 "rss": "https://github.com/mezzio/mezzio-authentication-session/releases.atom",
                 "source": "https://github.com/mezzio/mezzio-authentication-session"
             },
-            "time": "2019-12-31T15:43:23+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2021-01-21T17:17:48+00:00"
         },
         {
             "name": "mezzio/mezzio-csrf",
@@ -4504,12 +4506,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -4547,8 +4549,8 @@
                 "validate"
             ],
             "support": {
-                "issues": "https://github.com/webmozart/assert/issues",
-                "source": "https://github.com/webmozart/assert/tree/master"
+                "issues": "https://github.com/webmozarts/assert/issues",
+                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
             },
             "time": "2020-07-08T17:02:28+00:00"
         }
