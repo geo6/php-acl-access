@@ -77,7 +77,7 @@ class UsersHandler implements RequestHandlerInterface
             });
         }
         $users = array_map(
-            function (User $user) use ($resources) {
+            function (User $user) use ($resources): User {
                 if (!is_null($user->redirect)) {
                     $user->redirect = current(array_filter($resources, function (Resource $resource) use ($user): bool {
                         return $user->redirect === $resource->id;
