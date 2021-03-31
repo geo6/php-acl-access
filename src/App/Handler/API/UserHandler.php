@@ -89,7 +89,7 @@ class UserHandler extends DefaultHandler
 
         $data['user']['password'] = password_hash($password, PASSWORD_DEFAULT);
 
-        /** @var \App\Model\User */ $user = parent::insert($adapter, $data['user']);
+/** @var \App\Model\User */ $user = parent::insert($adapter, $data['user']);
 
         if (isset($data['roles'])) {
             self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
@@ -123,7 +123,7 @@ class UserHandler extends DefaultHandler
 
     protected function update(Adapter $adapter, $user, array $data): User
     {
-        /** @var \App\Model\User */ $user = parent::update($adapter, $user, $data['user']);
+/** @var \App\Model\User */ $user = parent::update($adapter, $user, $data['user']);
 
         if (isset($data['roles'])) {
             self::updateRoles($adapter, $this->tableUserRole, $user->id, $data['roles']);
@@ -162,7 +162,7 @@ class UserHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $user): User
     {
-        /** @var \App\Model\User */ $user = parent::delete($adapter, $user);
+/** @var \App\Model\User */ $user = parent::delete($adapter, $user);
 
         Mail::send(
             $this->configMail,

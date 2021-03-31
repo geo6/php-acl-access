@@ -36,7 +36,7 @@ class RoleHandler extends DefaultHandler
             throw new FormException('name', 'Name must be unique.');
         }
 
-        /** @var \App\Model\Role */ $role = parent::insert($adapter, $data);
+/** @var \App\Model\Role */ $role = parent::insert($adapter, $data);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
@@ -51,7 +51,7 @@ class RoleHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $role): Role
     {
-        /** @var \App\Model\Role */ $role = parent::delete($adapter, $role);
+/** @var \App\Model\Role */ $role = parent::delete($adapter, $role);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),

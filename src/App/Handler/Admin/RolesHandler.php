@@ -89,7 +89,7 @@ class RolesHandler implements RequestHandlerInterface
         $select->group('id_role');
         $select->order('id_role');
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $usersByRole = [];
         foreach ($result as $record) {

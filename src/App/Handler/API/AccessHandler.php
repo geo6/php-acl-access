@@ -52,8 +52,8 @@ class AccessHandler implements RequestHandlerInterface
         //
         $adapter = $request->getAttribute(DbMiddleware::class);
 
-        /** @var string|null */ $type = $request->getAttribute('type');
-        /** @var string|null */ $id = $request->getAttribute('id');
+/** @var string|null */ $type = $request->getAttribute('type');
+/** @var string|null */ $id = $request->getAttribute('id');
 
         $data = $request->getParsedBody();
 
@@ -115,7 +115,7 @@ class AccessHandler implements RequestHandlerInterface
             throw new ErrorException(sprintf('Invalid type "%s".', $type));
         }
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($delete), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($delete), $adapter::QUERY_MODE_EXECUTE);
 
         return $result;
     }

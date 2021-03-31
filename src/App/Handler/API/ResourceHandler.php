@@ -36,7 +36,7 @@ class ResourceHandler extends DefaultHandler
             throw new FormException('name', 'Name must be unique.');
         }
 
-        /** @var \App\Model\Resource */ $resource = parent::insert($adapter, $data);
+/** @var \App\Model\Resource */ $resource = parent::insert($adapter, $data);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
@@ -51,7 +51,7 @@ class ResourceHandler extends DefaultHandler
 
     protected function delete(Adapter $adapter, $resource): Resource
     {
-        /** @var \App\Model\Resource */ $resource = parent::delete($adapter, $resource);
+/** @var \App\Model\Resource */ $resource = parent::delete($adapter, $resource);
 
         Log::write(
             sprintf('data/log/%s-admin.log', date('Ym')),
