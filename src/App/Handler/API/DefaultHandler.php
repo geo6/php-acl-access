@@ -151,9 +151,9 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         $id = $tableGateway->getLastInsertValue();
 
-        /** @var ResultSet */ $result = $tableGateway->select(['id' => $id]);
+/** @var ResultSet */ $result = $tableGateway->select(['id' => $id]);
 
-        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate((array) $result->current(), new $this->class());
+/** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate((array) $result->current(), new $this->class());
 
         return $object;
     }
@@ -176,7 +176,7 @@ abstract class DefaultHandler implements RequestHandlerInterface
 
         $rowGateway->save();
 
-        /** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class());
+/** @var \App\Model\Resource|\App\Model\Role|\App\Model\User */ $object = (new ReflectionHydrator())->hydrate($rowGateway->toArray(), new $this->class());
 
         return $object;
     }

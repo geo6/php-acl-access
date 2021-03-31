@@ -71,7 +71,7 @@ class Permissions extends Acl
         $select = $sql->select(['r' => $this->tableRole]);
         $select->columns(['name']);
 
-        /** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
         foreach ($result as $r) {
             $this->addRole($r->name);
@@ -92,7 +92,7 @@ class Permissions extends Acl
         $select->join(['r' => $this->tableRole], 'r.id = ur.id_role', ['roles' => new Expression('to_json(array_agg(name))')]);
         $select->group('u.login');
 
-        /** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
         foreach ($result as $r) {
             $roles = json_decode($r->roles);
@@ -105,7 +105,7 @@ class Permissions extends Acl
         $select->columns(['login']);
         $select->where->notIn('id', $sql->select(['ur' => $this->tableUserRole])->columns(['id_user']));
 
-        /** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
         foreach ($result as $r) {
             if (!$this->hasRole($r->login)) {
@@ -124,7 +124,7 @@ class Permissions extends Acl
         $select = $sql->select(['r' => $this->tableResource]);
         $select->columns(['name']);
 
-        /** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
         foreach ($result as $r) {
             $this->addResource($r->name);
@@ -143,7 +143,7 @@ class Permissions extends Acl
         $select->join(['re' => $this->tableResource], 're.id = rr.id_resource', ['resource' => 'name']);
         $select->join(['ro' => $this->tableRole], 'ro.id = rr.id_role', ['role' => 'name']);
 
-        /** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $this->adapter->query($sql->buildSqlString($select), $this->adapter::QUERY_MODE_EXECUTE);
 
         foreach ($result as $r) {
             $this->allow($r->role, $r->resource);

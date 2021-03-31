@@ -28,7 +28,7 @@ class DataModel
         ]);
         $select->order('name');
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $resources = [];
         foreach ($result as $record) {
@@ -50,7 +50,7 @@ class DataModel
         ]);
         $select->order(['priority DESC', 'name']);
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $roles = [];
         foreach ($result as $record) {
@@ -73,7 +73,7 @@ class DataModel
             'role' => new Expression('row_to_json(ro.*)'),
         ]);
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $rr = [];
         foreach ($result as $record) {
@@ -103,11 +103,11 @@ class DataModel
         ]);
         $select->order('login');
 
-        /** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
+/** @var ResultSet */ $result = $adapter->query($sql->buildSqlString($select), $adapter::QUERY_MODE_EXECUTE);
 
         $users = [];
         foreach ($result as $record) {
-            /** @var User */ $user = (new ReflectionHydrator())->hydrate((array) $record, new User());
+/** @var User */ $user = (new ReflectionHydrator())->hydrate((array) $record, new User());
 
             if (!is_null($record['_roles'])) {
                 $ids = json_decode($record['_roles']);
