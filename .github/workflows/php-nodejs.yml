@@ -79,7 +79,7 @@ jobs:
       - run: npm run build:admin --if-present
 
   js-eslint:
-    name: Node.js ${{ matrix.node-version }}
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -87,4 +87,4 @@ jobs:
         with:
           node-version: 15.x
       - run: npm ci
-      - run: npm lint
+      - run: npm run lint --if-present
