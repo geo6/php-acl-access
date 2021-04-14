@@ -2,7 +2,7 @@
     "name": "geo6/php-acl-access",
     "type": "project",
     "description": "",
-    "license": "",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.1",
         "geo6/laminas-log-filesystem": "^2.0",
