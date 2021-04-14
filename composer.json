@@ -4,7 +4,7 @@
     "description": "",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
         "geo6/laminas-log-filesystem": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "hackzilla/password-generator": "^1.4",
