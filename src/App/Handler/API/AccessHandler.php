@@ -8,7 +8,6 @@ use App\DataModel;
 use App\Middleware\DbMiddleware;
 use ErrorException;
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\EmptyResponse;
