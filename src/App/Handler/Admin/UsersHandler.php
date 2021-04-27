@@ -7,6 +7,7 @@ namespace App\Handler\Admin;
 use App\DataModel;
 use App\Middleware\DbMiddleware;
 use App\Model\Resource;
+use App\Model\Role;
 use App\Model\User;
 use Laminas\Db\Sql\TableIdentifier;
 use Laminas\Diactoros\Response\HtmlResponse;
@@ -73,7 +74,9 @@ class UsersHandler implements RequestHandlerInterface
         $users = DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole);
         if (isset($query['role']) && strlen(trim($query['role'])) > 0) {
             $users = array_filter($users, function (User $user) use ($query): bool {
-                return in_array($query['role'], $user->getRoles(), true) === true;
+                $roles = array_map(function (Role $role) { return $role->name; }, $user->getRoles());
+
+                return in_array($query['role'], $roles, true) === true;
             });
         }
         $users = array_map(
