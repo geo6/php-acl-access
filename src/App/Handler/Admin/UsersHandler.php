@@ -74,7 +74,9 @@ class UsersHandler implements RequestHandlerInterface
         $users = DataModel::getUsers($adapter, $this->tableUser, $this->tableRole, $this->tableUserRole);
         if (isset($query['role']) && strlen(trim($query['role'])) > 0) {
             $users = array_filter($users, function (User $user) use ($query): bool {
-                $roles = array_map(function (Role $role) { return $role->name; }, $user->getRoles());
+                $roles = array_map(function (Role $role): string {
+                    return $role->name;
+                }, $user->getRoles());
 
                 return in_array($query['role'], $roles, true) === true;
             });
