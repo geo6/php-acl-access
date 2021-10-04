@@ -2778,38 +2778,35 @@
         },
         {
             "name": "mezzio/mezzio-csrf",
-            "version": "1.1.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-csrf.git",
-                "reference": "5f254e0fbe9fec77cc7aa9dc7e8fb8f94cb0055c"
+                "reference": "e88e7f8764bca0d06062c9ffe1074f0d457f2f9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-csrf/zipball/5f254e0fbe9fec77cc7aa9dc7e8fb8f94cb0055c",
-                "reference": "5f254e0fbe9fec77cc7aa9dc7e8fb8f94cb0055c",
+                "url": "https://api.github.com/repos/mezzio/mezzio-csrf/zipball/e88e7f8764bca0d06062c9ffe1074f0d457f2f9d",
+                "reference": "e88e7f8764bca0d06062c9ffe1074f0d457f2f9d",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-zendframework-bridge": "^1.0",
                 "mezzio/mezzio-session": "^1.0",
-                "php": "^7.3 || ~8.0.0",
-                "psr/container": "^1.0",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0",
+                "psr/container": "^1.0|^2.0",
                 "psr/http-server-middleware": "^1.0"
             },
             "conflict": {
-                "phpspec/prophecy": "<1.7.2"
-            },
-            "replace": {
-                "zendframework/zend-expressive-csrf": "^1.0.1"
+                "phpspec/prophecy": "<1.7.2",
+                "zendframework/zend-expressive-csrf": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~2.1.0",
+                "laminas/laminas-coding-standard": "~2.2.0",
                 "mezzio/mezzio-flash": "^1.0",
                 "phpunit/phpunit": "^9.3"
             },
             "suggest": {
-                "mezzio/mezzio-flash": "^1.0.0alpha1 || ^1.0 To back CSRF tokens using flash messages"
+                "mezzio/mezzio-flash": "^1.0 To back CSRF tokens using flash messages"
             },
             "type": "library",
             "extra": {
@@ -2851,7 +2848,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-05-11T19:02:55+00:00"
+            "time": "2021-09-16T17:08:09+00:00"
         },
         {
             "name": "mezzio/mezzio-fastroute",
