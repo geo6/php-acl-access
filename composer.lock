@@ -2851,25 +2851,25 @@
         },
         {
             "name": "mezzio/mezzio-fastroute",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-fastroute.git",
-                "reference": "faa586b35dc76231a5dce736227046ccbee2b5f1"
+                "reference": "81550ddd3fa31abb7e5f1442e997a033d01fe9ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-fastroute/zipball/faa586b35dc76231a5dce736227046ccbee2b5f1",
-                "reference": "faa586b35dc76231a5dce736227046ccbee2b5f1",
+                "url": "https://api.github.com/repos/mezzio/mezzio-fastroute/zipball/81550ddd3fa31abb7e5f1442e997a033d01fe9ee",
+                "reference": "81550ddd3fa31abb7e5f1442e997a033d01fe9ee",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "^1.1.2",
                 "laminas/laminas-stdlib": "^2.0 || ^3.1",
                 "laminas/laminas-zendframework-bridge": "^1.0",
-                "mezzio/mezzio-router": "^3.2",
+                "mezzio/mezzio-router": "^3.7",
                 "nikic/fast-route": "^1.2",
-                "php": "^7.3 || ~8.0.0",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0",
                 "psr/container": "^1.0",
                 "psr/http-message": "^1.0.1"
             },
@@ -2880,11 +2880,10 @@
                 "zendframework/zend-expressive-fastroute": "^3.0.3"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~1.0.0",
-                "laminas/laminas-diactoros": "^1.7.1",
+                "laminas/laminas-coding-standard": "~2.2.0",
+                "laminas/laminas-diactoros": "^2.5.0",
                 "laminas/laminas-stratigility": "^3.0",
-                "malukenho/docheader": "^0.1.6",
-                "mikey179/vfsstream": "^1.6.7",
+                "mikey179/vfsstream": "^1.6.10",
                 "phpspec/prophecy-phpunit": "^2.0",
                 "phpunit/phpunit": "^9.4.1",
                 "psalm/plugin-phpunit": "^0.15.1",
@@ -2930,7 +2929,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-04-19T21:45:49+00:00"
+            "time": "2021-10-05T09:54:53+00:00"
         },
         {
             "name": "mezzio/mezzio-helpers",
@@ -3014,22 +3013,21 @@
         },
         {
             "name": "mezzio/mezzio-router",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio-router.git",
-                "reference": "f36f7149db1c17c0bdff86ddcfea66ae22b1737f"
+                "reference": "08d52bdad8a9e89ef482a10516264563bd596c93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio-router/zipball/f36f7149db1c17c0bdff86ddcfea66ae22b1737f",
-                "reference": "f36f7149db1c17c0bdff86ddcfea66ae22b1737f",
+                "url": "https://api.github.com/repos/mezzio/mezzio-router/zipball/08d52bdad8a9e89ef482a10516264563bd596c93",
+                "reference": "08d52bdad8a9e89ef482a10516264563bd596c93",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "^1.1.2",
-                "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.3 || ~8.0.0",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0",
                 "psr/container": "^1.0",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0.1",
@@ -3037,10 +3035,8 @@
                 "webmozart/assert": "^1.10"
             },
             "conflict": {
-                "mezzio/mezzio": "<3.5"
-            },
-            "replace": {
-                "zendframework/zend-expressive-router": "^3.1.1"
+                "mezzio/mezzio": "<3.5",
+                "zendframework/zend-expressive-router": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~2.2.0",
@@ -3096,7 +3092,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-07-25T13:17:10+00:00"
+            "time": "2021-09-14T04:06:31+00:00"
         },
         {
             "name": "mezzio/mezzio-session",
@@ -5491,16 +5487,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "5.2.2",
+            "version": "5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556"
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/069a785b2141f5bcf49f3e353548dc1cce6df556",
-                "reference": "069a785b2141f5bcf49f3e353548dc1cce6df556",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/622548b623e81ca6d78b721c5e029f4ce664f170",
+                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170",
                 "shasum": ""
             },
             "require": {
@@ -5511,7 +5507,8 @@
                 "webmozart/assert": "^1.9.1"
             },
             "require-dev": {
-                "mockery/mockery": "~1.3.2"
+                "mockery/mockery": "~1.3.2",
+                "psalm/phar": "^4.8"
             },
             "type": "library",
             "extra": {
@@ -5541,22 +5538,22 @@
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
             "support": {
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
+                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.3.0"
             },
-            "time": "2020-09-03T19:13:55+00:00"
+            "time": "2021-10-19T17:43:47+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "30f38bffc6f24293dadd1823936372dfa9e86e2f"
+                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/30f38bffc6f24293dadd1823936372dfa9e86e2f",
-                "reference": "30f38bffc6f24293dadd1823936372dfa9e86e2f",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/a12f7e301eb7258bb68acd89d4aefa05c2906cae",
+                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae",
                 "shasum": ""
             },
             "require": {
@@ -5591,9 +5588,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.5.0"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.5.1"
             },
-            "time": "2021-09-17T15:28:14+00:00"
+            "time": "2021-10-02T14:08:47+00:00"
         },
         {
             "name": "phpspec/prophecy",
