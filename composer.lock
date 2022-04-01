@@ -1982,32 +1982,31 @@
         },
         {
             "name": "laminas/laminas-permissions-acl",
-            "version": "2.8.0",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-permissions-acl.git",
-                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e"
+                "reference": "cd5689d8360c9a3f29bb62b32fc8ad45e0947e1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
-                "reference": "7af6463695d76dbf25c6b03e6ebb792c8f1ab67e",
+                "url": "https://api.github.com/repos/laminas/laminas-permissions-acl/zipball/cd5689d8360c9a3f29bb62b32fc8ad45e0947e1e",
+                "reference": "cd5689d8360c9a3f29bb62b32fc8ad45e0947e1e",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-zendframework-bridge": "^1.0",
-                "php": "^7.3 || ~8.0.0"
+                "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
             "conflict": {
-                "laminas/laminas-servicemanager": "<3.0"
-            },
-            "replace": {
-                "zendframework/zend-permissions-acl": "^2.7.1"
+                "laminas/laminas-servicemanager": "<3.0",
+                "zendframework/zend-permissions-acl": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "~1.0.0",
                 "laminas/laminas-servicemanager": "^3.0.3",
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^9.5.0",
+                "psalm/plugin-phpunit": "^0.15.1",
+                "vimeo/psalm": "^4.7"
             },
             "suggest": {
                 "laminas/laminas-servicemanager": "To support Laminas\\Permissions\\Acl\\Assertion\\AssertionManager plugin manager usage"
@@ -2042,7 +2041,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-04-08T12:56:14+00:00"
+            "time": "2021-12-03T08:59:59+00:00"
         },
         {
             "name": "laminas/laminas-servicemanager",
