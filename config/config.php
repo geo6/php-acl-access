@@ -18,7 +18,14 @@ $aggregator = new ConfigAggregator([
 
     \Blast\BaseUrl\ConfigProvider::class,
     \Laminas\Db\ConfigProvider::class,
+    \Laminas\Diactoros\ConfigProvider::class,
+    \Laminas\HttpHandlerRunner\ConfigProvider::class,
     \Laminas\Hydrator\ConfigProvider::class,
+    \Laminas\I18n\ConfigProvider::class,
+    \Laminas\Log\ConfigProvider::class,
+    \Laminas\Mail\ConfigProvider::class,
+    \Laminas\Session\ConfigProvider::class,
+    \Laminas\Validator\ConfigProvider::class,
     \Mezzio\Authentication\ConfigProvider::class,
     \Mezzio\Authentication\Session\ConfigProvider::class,
     \Mezzio\Csrf\ConfigProvider::class,
@@ -28,13 +35,8 @@ $aggregator = new ConfigAggregator([
     \Mezzio\Router\FastRouteRouter\ConfigProvider::class,
     \Mezzio\Session\ConfigProvider::class,
     \Mezzio\Session\Ext\ConfigProvider::class,
+    \Mezzio\Tooling\ConfigProvider::class,
     \Mezzio\Twig\ConfigProvider::class,
-    \Laminas\HttpHandlerRunner\ConfigProvider::class,
-    \Laminas\I18n\ConfigProvider::class,
-    \Laminas\Log\ConfigProvider::class,
-    \Laminas\Mail\ConfigProvider::class,
-    \Laminas\Session\ConfigProvider::class,
-    \Laminas\Validator\ConfigProvider::class,
 
     // Swoole config to overwrite some services (if installed)
     class_exists(\Mezzio\Swoole\ConfigProvider::class)
